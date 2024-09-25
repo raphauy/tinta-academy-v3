@@ -196,7 +196,7 @@ export function WsetLevel1({ course, educator }: Props) {
       </Card>
 
       <div className="text-center mb-8">
-        <Button size="lg" className="font-bold">
+        <Button size="lg" className="font-bold" disabled>
           Inscribite ahora
         </Button>
         <p className="mt-2 text-sm text-muted-foreground">
