@@ -37,7 +37,6 @@ export function CourseForm({ id, closeDialog }: Props) {
       type: CourseType.WSET_LEVEL_1,
       totalDuration: "6",
       classDuration: "2",
-      classDates: [],
       location: "",
       maxCapacity: "15",
       educatorId: "cm1htv3xf0000afkwt4cn4o98",

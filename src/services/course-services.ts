@@ -31,7 +31,6 @@ export const courseSchema = z.object({
 	maxCapacity: z.string().refine((val) => !isNaN(Number(val)), { message: "(debe ser un número)" }).optional(),
 	priceUSD: z.string().refine((val) => !isNaN(Number(val)), { message: "(debe ser un número)" }).optional(),
 	priceUYU: z.string().refine((val) => !isNaN(Number(val)), { message: "(debe ser un número)" }).optional(),
-  classDates: z.array(z.date()),
 	examDate: z.date({required_error: "examDate is required."}),
 	registrationDeadline: z.date({required_error: "registrationDeadline is required."}),
 	educatorId: z.string().min(1, "educatorId is required."),
