@@ -32,7 +32,7 @@ export function WsetLevel1Card({ course, educator }: Props) {
         </div>
         <div className="relative w-full h-64 sm:h-80 rounded-t-lg overflow-hidden">
           <Image
-            src="/Wine_WSET_202002.jpg"
+            src="/Wine_WSET.jpg"
             alt="WSET course"
             layout="fill"
             objectFit="cover"
