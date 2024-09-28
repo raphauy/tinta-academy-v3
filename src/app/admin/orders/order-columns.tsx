@@ -50,7 +50,7 @@ export const columns: ColumnDef<OrderDAO>[] = [
     cell: ({ row }) => {
       const data= row.original
       return (
-        <div className="">
+        <div className="flex flex-col gap-2 items-center">
           <Badge className={cn("text-black whitespace-nowrap w-52 border border-gray-500 flex justify-center", data.status === "Paid" ? "bg-green-300" : "bg-orange-300")}>
             {getLabel(data.status, data.paymentMethod)}
           </Badge>
