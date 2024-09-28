@@ -6,7 +6,7 @@ import { CourseDAO } from "./course-services"
 import { StudentDAO } from "./student-services"
 import { MercadoPagoConfig, Preference } from 'mercadopago'
 import { getCourseTitle } from "@/lib/utils"
-import { sendNotifyTransferSentEmail } from "./email-services"
+import { sendNotifyPaymentEmail, sendNotifyTransferSentEmail, sendWelcomeToTintaAcademy } from "./email-services"
 
 export type OrderDAO = {
 	id: string
@@ -260,8 +260,8 @@ export async function processOrderConfirmation(orderId: string) {
       return null
   }
   
-  // await sendPaymentConfirmationEmail(order.id)
-  // await sendNotifyPaymentEmail(order.id)
+  await sendWelcomeToTintaAcademy(order.id)
+  await sendNotifyPaymentEmail(order.id)
 
   return updated
 }

@@ -1,7 +1,7 @@
 "use server"
   
 import { getCourseDAO } from "@/services/course-services"
-import { OrderDAO, OrderFormValues, createOrder, deleteOrder, getFullOrderDAO, getOrderByStudentAndCourse, getOrderDAO, processOrderMercadoPago, setOrderStatus, setOrderTransferenciaBancariaPaymentSentWithBank, updateOrder, updatePaymentMethod } from "@/services/order-services"
+import { OrderDAO, OrderFormValues, createOrder, deleteOrder, getFullOrderDAO, getOrderByStudentAndCourse, getOrderDAO, processOrderConfirmation, processOrderMercadoPago, setOrderStatus, setOrderTransferenciaBancariaPaymentSentWithBank, updateOrder, updatePaymentMethod } from "@/services/order-services"
 import { getStudentDAO } from "@/services/student-services"
 import { OrderStatus, PaymentMethod } from "@prisma/client"
 import { revalidatePath } from "next/cache"
@@ -109,6 +109,14 @@ export async function setOrderStatusAction(id: string, status: OrderStatus): Pro
     const updated= await setOrderStatus(id, status)
 
     revalidatePath("/admin/orders")
+
+    return updated as OrderDAO
+}
+
+export async function processOrderConfirmationAction(id: string): Promise<OrderDAO | null> {
+    const updated= await processOrderConfirmation(id)
+
+    revalidatePath("/[storeSlug]/orders", "page")
 
     return updated as OrderDAO
 }

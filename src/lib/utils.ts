@@ -1,7 +1,7 @@
 import { CourseDAO } from "@/services/course-services"
-import { CourseType } from "@prisma/client"
+import { CourseType, OrderStatus, PaymentMethod } from "@prisma/client"
 import { clsx, type ClassValue } from "clsx"
-import { format } from "date-fns"
+import { format, isThisWeek, isToday, isYesterday, parseISO } from "date-fns"
 import { es } from "date-fns/locale"
 import { twMerge } from "tailwind-merge"
 
@@ -71,4 +71,49 @@ export function getCourseDateSlug(course: CourseDAO) {
 
 export function completeWithZeros(number: number): string {
   return number.toString().padStart(4, "0")
+}
+
+
+export function getLabel(status: OrderStatus, paymentMethod: PaymentMethod) {
+  switch (status) {
+    case OrderStatus.Created:
+      return "Creada"
+    case OrderStatus.Pending:
+      if (paymentMethod === PaymentMethod.TransferenciaBancaria)
+        return "Transferencia Pendiente"
+      else if (paymentMethod === PaymentMethod.MercadoPago)
+        return "Confirmación MP pendiente"
+      else
+        return "Pago Pendiente"
+    case OrderStatus.PaymentSent:
+      return "Transferencia enviada"
+    case OrderStatus.Paid:
+      return "Pagada"
+    case OrderStatus.Rejected:
+      return "Rechazada"
+    case OrderStatus.Refunded:
+      return "Reembolsada"
+    case OrderStatus.Cancelled:
+      return "Cancelada"
+    default:
+      return "Sin estado"
+  }
+  
+}
+
+export function formatWhatsAppStyle(date: Date | string): string {
+  let parsedDate = typeof date === 'string' ? parseISO(date) : date;
+
+  // todo timezone
+  
+  if (isToday(parsedDate)) {
+    // return "hoy"
+    return format(parsedDate, 'HH:mm')
+  } else if (isYesterday(parsedDate)) {
+    return 'Ayer'
+  } else if (isThisWeek(parsedDate)) {
+    return format(parsedDate, 'eeee', { locale: es })
+  } else {
+    return format(parsedDate, 'dd/MM/yyyy')
+  }
 }
