@@ -50,10 +50,11 @@ export const columns: ColumnDef<OrderDAO>[] = [
     cell: ({ row }) => {
       const data= row.original
       return (
-        <div className="h-12">
+        <div className="">
           <Badge className={cn("text-black whitespace-nowrap w-52 border border-gray-500 flex justify-center", data.status === "Paid" ? "bg-green-300" : "bg-orange-300")}>
             {getLabel(data.status, data.paymentMethod)}
           </Badge>
+          <p>{data.email}</p>
         </div>
       )
     },
