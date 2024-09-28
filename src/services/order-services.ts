@@ -201,9 +201,9 @@ export async function processOrderMercadoPago(order: OrderDAO) {
 
   const client = new MercadoPagoConfig({ accessToken: MP_ACCESS_TOKEN });
 
-  const VERCEL_URL= process.env.VERCEL_URL
-  if (!VERCEL_URL) throw new Error("VERCEL_URL no definido")
-  const basePath= VERCEL_URL.endsWith("/") ? VERCEL_URL.slice(0, -1) : VERCEL_URL
+  const APP_URL= process.env.APP_URL
+  if (!APP_URL) throw new Error("APP_URL no definido")
+  const basePath= APP_URL.endsWith("/") ? APP_URL.slice(0, -1) : APP_URL
 
 	let redirectUrl = basePath + "/cursos/inscripcion/" + order.courseId
 
