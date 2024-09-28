@@ -197,7 +197,7 @@ export function WsetLevel1({ course, educator }: Props) {
       </Card>
 
       <div className="text-center mb-8">
-        <Link href={`/cursos/inscripcion?courseId=${course.id}`}>
+        <Link href={`/cursos/inscripcion/${course.id}`}>
           <Button size="lg" className="font-bold">
             Inscribite ahora
           </Button>

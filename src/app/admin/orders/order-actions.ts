@@ -1,10 +1,11 @@
 "use server"
   
 import { getCourseDAO } from "@/services/course-services"
-import { OrderDAO, OrderFormValues, createOrder, deleteOrder, getOrderByStudentAndCourse, getOrderDAO, setOrderStatus, setOrderTransferenciaBancariaPaymentSentWithBank, updateOrder, updatePaymentMethod } from "@/services/order-services"
+import { OrderDAO, OrderFormValues, createOrder, deleteOrder, getFullOrderDAO, getOrderByStudentAndCourse, getOrderDAO, processOrderMercadoPago, setOrderStatus, setOrderTransferenciaBancariaPaymentSentWithBank, updateOrder, updatePaymentMethod } from "@/services/order-services"
 import { getStudentDAO } from "@/services/student-services"
 import { OrderStatus, PaymentMethod } from "@prisma/client"
 import { revalidatePath } from "next/cache"
+import { redirect } from "next/navigation"
 
 
 export async function getOrderDAOAction(id: string): Promise<OrderDAO | null> {
@@ -26,7 +27,8 @@ export async function createOrderAction(courseId: string, studentId: string, pay
     if (!student) {
         throw new Error("Student not found")
     }
-    const order = await getOrderByStudentAndCourse(studentId, courseId)
+    let orderId
+    let order= await getOrderByStudentAndCourse(studentId, courseId)
     if (!order) {
         const orderValues: OrderFormValues = {
             courseId,
@@ -36,16 +38,47 @@ export async function createOrderAction(courseId: string, studentId: string, pay
             amount,
             currency
         }
-        const created= await createOrder(orderValues)
-        revalidatePath("/admin/orders")
-        return created as OrderDAO
+        try {
+            const created= await createOrder(orderValues)
+            orderId= created.id
+        } catch (error) {
+            console.log(error)
+            throw new Error("Error al crear la orden")
+        }
+          
     } else {
         const amount = paymentMethod === "MercadoPago" ? course.priceUYU : course.priceUSD
         const currency = paymentMethod === "MercadoPago" ? "UYU" : "USD"
-        const updated = await updatePaymentMethod(order.id, paymentMethod as PaymentMethod, amount, currency)
-        revalidatePath("/admin/orders")
-        return updated as OrderDAO
+        const updated= await updatePaymentMethod(order.id, paymentMethod as PaymentMethod, amount, currency)
+        orderId= updated.id
     }
+
+    if (!orderId) throw new Error("Order not found")
+
+    revalidatePath("/admin/orders")
+
+    order= await getFullOrderDAO(orderId)
+
+    if (order.paymentMethod === PaymentMethod.MercadoPago && order.status === OrderStatus.Pending) {
+        let redirectUrl= null
+    
+        try {
+            console.log("processOrder")
+            redirectUrl= await processOrderMercadoPago(order)
+        } catch (error) {
+            console.log(error)
+            throw new Error("Error al procesar la orden")
+        }
+    
+        console.log("redirectUrl:", redirectUrl)
+        if (redirectUrl) {
+            redirect(redirectUrl)        
+        } else {
+            console.log("redirectUrl is null")            
+        }
+    }
+
+    return order
 }
 
 export async function updateOrderAction(id: string, data: OrderFormValues): Promise<OrderDAO | null> {    

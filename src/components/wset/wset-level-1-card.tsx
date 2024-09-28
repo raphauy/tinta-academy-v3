@@ -91,7 +91,7 @@ export function WsetLevel1Card({ course, educator }: Props) {
               <Link href={courseLink}>Ver detalles</Link>
             </Button>
             <Button className="w-32">
-              <Link href={`/cursos/inscripcion?courseId=${course.id}`}>
+              <Link href={`/cursos/inscripcion/${course.id}`}>
                 Inscribite ahora
               </Link>
             </Button>

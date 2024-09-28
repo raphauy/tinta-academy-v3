@@ -1,19 +1,19 @@
-import { MultiStepForm } from "@/app/cursos/inscripcion/multi-step-form";
 import { getBankDatasDAO } from "@/services/bankdata-services";
 import { getOrderByStudentAndCourse } from "@/services/order-services";
-import { auth, currentUser } from "@clerk/nextjs/server";
+import { auth } from "@clerk/nextjs/server";
+import { MultiStepForm } from "./multi-step-form";
 
 type Props = {
-  searchParams: {
+  params: {
     courseId: string
   }
 }
-export default async function Inscripcion({ searchParams }: Props) {
+export default async function Inscripcion({ params }: Props) {
   const { sessionClaims } = auth()
   const studentId= sessionClaims?.metadata.studentId
 
   const bankData = await getBankDatasDAO()
-  const courseId = searchParams.courseId
+  const courseId = params.courseId
   let order = null
   if (studentId && courseId) {
     order = await getOrderByStudentAndCourse(studentId, courseId)

@@ -2,24 +2,22 @@
 
 import { getCourseDAOAction } from "@/app/admin/courses/course-actions"
 import { createOrderAction } from "@/app/admin/orders/order-actions"
-import { getCurrentStudentIdAction } from "@/app/admin/students/student-actions"
-import { StudentForm } from "@/app/cursos/inscripcion/student-forms"
-import { BankDataList } from "@/components/bank-data-list"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Label } from "@/components/ui/label"
 import { toast } from "@/hooks/use-toast"
 import { cn, getCourseDateSlug, getCourseTitle } from "@/lib/utils"
 import { BankDataDAO } from "@/services/bankdata-services"
 import { CourseDAO } from "@/services/course-services"
-import { OrderDAO, OrderFormValues } from "@/services/order-services"
+import { OrderDAO } from "@/services/order-services"
+import { useUser } from "@clerk/nextjs"
 import { PaymentMethod } from "@prisma/client"
 import { CheckIcon, Loader } from 'lucide-react'
-import { useSearchParams } from "next/navigation"
+import { useParams, useSearchParams } from "next/navigation"
 import { useEffect, useState } from 'react'
-import Step2Box from "./step-2-box"
 import { MarkAsPaidForm } from "./bank-form-and-dialog"
-import { useUser } from "@clerk/nextjs"
+import MpCallback from "./mp-callback"
+import Step2Box from "./step-2-box"
+import { StudentForm } from "./student-forms"
 
 type Props = {
   bankData: BankDataDAO[]
@@ -32,12 +30,22 @@ export function MultiStepForm({ bankData, initialOrder }: Props) {
   const [order, setOrder] = useState<OrderDAO | null>(initialOrder)
   const [step, setStep] = useState(1)
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod | "">(order?.paymentMethod || "")
+  const [mpStatus, setMpStatus] = useState<string | null>(null)
 
   const [loading, setLoading] = useState(false)
   const searchParams = useSearchParams()
-  const courseId = searchParams.get('courseId')
+  const params= useParams()
+  const courseId = params.courseId as string
 
   const clerkData = useUser()
+
+  useEffect(() => {
+    const mpStatusParam = searchParams.get('status')
+    if (mpStatusParam) {
+      setMpStatus(mpStatusParam)
+      setStep(4)
+    }
+  }, [searchParams])
 
   useEffect(() => {
     if (!courseId) return
@@ -159,7 +167,10 @@ export function MultiStepForm({ bankData, initialOrder }: Props) {
             <MarkAsPaidForm orderId={order.id} notifyStep1Complete={notifyStepComplete} />
           )}
           {step === 3 && order && paymentMethod === "MercadoPago" && (
-            <p>MercadoPago paso 4</p>
+            <p className="text-center">Redicreccionando a MercadoPago</p>            
+          )}
+          {step === 4 && order && paymentMethod === "MercadoPago" && mpStatus &&  (
+            <MpCallback status={mpStatus} />
           )}
           {step === 4 && paymentMethod === "TransferenciaBancaria" && (
             <div className="text-center space-y-4">
@@ -168,9 +179,6 @@ export function MultiStepForm({ bankData, initialOrder }: Props) {
               <p>Hemos recibido tus datos correctamente.</p>
               <p>En cuanto recibamos el pago, te enviaremos un correo con la confirmación de la inscripción.</p>
             </div>
-          )}
-          {step === 4 && paymentMethod === "MercadoPago" && (
-            <p>MercadoPago Mensaje de confirmación</p>
           )}
         </div>
       </CardContent>
