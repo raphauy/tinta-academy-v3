@@ -6,6 +6,7 @@ import { CourseDAO } from "./course-services"
 import { StudentDAO } from "./student-services"
 import { MercadoPagoConfig, Preference } from 'mercadopago'
 import { getCourseTitle } from "@/lib/utils"
+import { sendNotifyTransferSentEmail } from "./email-services"
 
 export type OrderDAO = {
 	id: string
@@ -176,7 +177,7 @@ export async function setOrderTransferenciaBancariaPaymentSentWithBank(orderId: 
       }
   })
 
-  //await sendNotifyTransferSentEmail(order.id)
+  await sendNotifyTransferSentEmail(order.id)
 
   return updated
 }

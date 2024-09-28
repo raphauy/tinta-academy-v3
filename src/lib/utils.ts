@@ -24,7 +24,7 @@ export function getCourseTypeLabel(type: CourseType | string) {
   }
 }
 
-export function getCourseTitle(type: CourseType | string) {
+export function getCourseTitle(type: CourseType) {
   switch (type) {
     case CourseType.WSET_LEVEL_1:
       return "WSET Level 1 Award in Wines"
@@ -67,4 +67,8 @@ export function getCourseDateSlug(course: CourseDAO) {
     return '-'
   }
   return format(course.classDates[0], 'yyyy-MMMM', { locale: es })
+}
+
+export function completeWithZeros(number: number): string {
+  return number.toString().padStart(4, "0")
 }
