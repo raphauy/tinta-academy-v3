@@ -54,7 +54,7 @@ export default function NotifyTransferEmail({ buyerName, buyerEmail, courseName,
             <Text className="text-black text-[14px] leading-[24px] text-center mt-10 mb-5">
                 Banco: <strong>{comment}</strong>
             </Text>
-            <Text className="text-black text-[14px] leading-[24px] text-center mt-10 mb-5">1
+            <Text className="text-black text-[14px] leading-[24px] text-center mt-10 mb-5">
               Orden: <strong>{orderNumber}</strong>
             </Text>
             <Section className="text-center mt-[32px] mb-[32px]">
