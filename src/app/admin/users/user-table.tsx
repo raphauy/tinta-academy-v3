@@ -20,33 +20,9 @@ export function DataTableToolbar<TData>({ table }: DataTableToolbarProps<TData>)
   return (
     <div className="flex gap-1 dark:text-white items-center">
         
-          <Input className="max-w-xs" placeholder="email filter..."
+          <Input className="max-w-xs" placeholder="email..."
               value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
               onChange={(event) => table.getColumn("email")?.setFilterValue(event.target.value)}                
-          />
-          
-      
-          <Input className="max-w-xs" placeholder="clerkUserId filter..."
-              value={(table.getColumn("clerkUserId")?.getFilterValue() as string) ?? ""}
-              onChange={(event) => table.getColumn("clerkUserId")?.setFilterValue(event.target.value)}                
-          />
-          
-      
-          <Input className="max-w-xs" placeholder="firstName filter..."
-              value={(table.getColumn("firstName")?.getFilterValue() as string) ?? ""}
-              onChange={(event) => table.getColumn("firstName")?.setFilterValue(event.target.value)}                
-          />
-          
-      
-          <Input className="max-w-xs" placeholder="lastName filter..."
-              value={(table.getColumn("lastName")?.getFilterValue() as string) ?? ""}
-              onChange={(event) => table.getColumn("lastName")?.setFilterValue(event.target.value)}                
-          />
-          
-      
-          <Input className="max-w-xs" placeholder="imageUrl filter..."
-              value={(table.getColumn("imageUrl")?.getFilterValue() as string) ?? ""}
-              onChange={(event) => table.getColumn("imageUrl")?.setFilterValue(event.target.value)}                
           />
           
         {/* {table.getColumn("role") && roles && (
@@ -66,9 +42,6 @@ export function DataTableToolbar<TData>({ table }: DataTableToolbarProps<TData>)
             <X className="w-4 h-4 ml-2" />
           </Button>
         )}
-        <div className="flex-1 ">
-          <DataTableViewOptions table={table}/>
-        </div>
     </div>
   )
 }

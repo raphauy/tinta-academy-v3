@@ -43,6 +43,15 @@ export async function getUserDAO(id: string) {
   })
   return found as UserDAO
 }
+
+export async function getUserByClerkUserId(clerkUserId: string): Promise<UserDAO | null> {
+  const found = await prisma.user.findUnique({
+    where: {
+      clerkUserId
+    },
+  })
+  return found as UserDAO | null
+}
     
 export async function createUser(data: UserFormValues) {
   // TODO: implement createUser

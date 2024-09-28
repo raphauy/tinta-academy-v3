@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button"
-import { WsetLevel1Card } from "@/components/wset-level-1-card"
+import { WsetLevel1Card } from "@/components/wset/wset-level-1-card"
 import { CourseDAO, getCoursesDAO } from "@/services/course-services"
 import { format } from "date-fns"
 import { es } from "date-fns/locale"

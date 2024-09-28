@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import { toast } from "@/components/ui/use-toast"
+import { toast } from "@/hooks/use-toast"
 import { useEffect, useState } from "react"
 import { deleteUserAction, createOrUpdateUserAction, getUserDAOAction } from "./user-actions"
 import { userSchema, UserFormValues } from '@/services/user-services'

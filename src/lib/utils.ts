@@ -61,3 +61,10 @@ export function getCourseLink(course: CourseDAO) {
   const courseDateSlug = format(course.classDates[0], 'yyyy-MMMM', { locale: es })
   return `/cursos/${courseTypeSlug}/${courseDateSlug}`
 }
+
+export function getCourseDateSlug(course: CourseDAO) {
+  if (course.classDates.length === 0) {
+    return '-'
+  }
+  return format(course.classDates[0], 'yyyy-MMMM', { locale: es })
+}

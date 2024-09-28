@@ -20,26 +20,37 @@ export function DataTableToolbar<TData>({ table }: DataTableToolbarProps<TData>)
   return (
     <div className="flex gap-1 dark:text-white items-center">
         
-      <Input className="max-w-xs" placeholder="nombre..."
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
-          onChange={(event) => table.getColumn("name")?.setFilterValue(event.target.value)}                
-      />
+          <Input className="max-w-xs" placeholder="name filter..."
+              value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+              onChange={(event) => table.getColumn("name")?.setFilterValue(event.target.value)}                
+          />
+          
       
-      <Input className="max-w-xs" placeholder="email..."
-          value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
-          onChange={(event) => table.getColumn("email")?.setFilterValue(event.target.value)}                
-      />
-      
-      {isFiltered && (
-        <Button
-          variant="ghost"
-          onClick={() => table.resetColumnFilters()}
-          className="h-8 px-2 lg:px-3"
-        >
-          Reset
-          <X className="w-4 h-4 ml-2" />
-        </Button>
-      )}
+          <Input className="max-w-xs" placeholder="info filter..."
+              value={(table.getColumn("info")?.getFilterValue() as string) ?? ""}
+              onChange={(event) => table.getColumn("info")?.setFilterValue(event.target.value)}                
+          />
+          
+        {/* {table.getColumn("role") && roles && (
+          <DataTableFacetedFilter
+            column={table.getColumn("role")}
+            title="Rol"
+            options={roles}
+          />
+        )} */}
+        {isFiltered && (
+          <Button
+            variant="ghost"
+            onClick={() => table.resetColumnFilters()}
+            className="h-8 px-2 lg:px-3"
+          >
+            Reset
+            <X className="w-4 h-4 ml-2" />
+          </Button>
+        )}
+        <div className="flex-1 ">
+          <DataTableViewOptions table={table}/>
+        </div>
     </div>
   )
 }

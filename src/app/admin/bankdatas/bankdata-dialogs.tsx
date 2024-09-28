@@ -5,17 +5,20 @@ import { ArrowLeftRight, ChevronsLeft, ChevronsRight, Loader, Pencil, PlusCircle
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { toast } from "@/hooks/use-toast";
-import { EducatorForm, DeleteEducatorForm } from "./educator-forms"
-import { getEducatorDAOAction } from "./educator-actions"
+import { BankDataForm, DeleteBankDataForm } from "./bankdata-forms"
+import { getBankDataDAOAction } from "./bankdata-actions"
 
+import { getComplentaryOrdersAction, setOrdersAction } from "./bankdata-actions"
+import { OrderDAO } from "@/services/order-services"  
+  
 type Props= {
   id?: string
 }
 
-const addTrigger= <Button><PlusCircle size={22} className="mr-2"/>Crear Educator</Button>
+const addTrigger= <Button><PlusCircle size={22} className="mr-2"/>Create BankData</Button>
 const updateTrigger= <Pencil size={30} className="pr-2 hover:cursor-pointer"/>
 
-export function EducatorDialog({ id }: Props) {
+export function BankDataDialog({ id }: Props) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -25,10 +28,10 @@ export function EducatorDialog({ id }: Props) {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{id ? 'Update' : 'Create'} Educator
+          <DialogTitle>{id ? 'Update' : 'Create'} BankData
           </DialogTitle>
         </DialogHeader>
-        <EducatorForm closeDialog={() => setOpen(false)} id={id} />
+        <BankDataForm closeDialog={() => setOpen(false)} id={id} />
       </DialogContent>
     </Dialog>
   )
@@ -39,7 +42,7 @@ type DeleteProps= {
   description: string
 }
 
-export function DeleteEducatorDialog({ id, description }: DeleteProps) {
+export function DeleteBankDataDialog({ id, description }: DeleteProps) {
   const [open, setOpen] = useState(false)
 
   return (
@@ -49,21 +52,11 @@ export function DeleteEducatorDialog({ id, description }: DeleteProps) {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Delete Educator</DialogTitle>
+          <DialogTitle>Delete BankData</DialogTitle>
           <DialogDescription className="py-8">{description}</DialogDescription>
         </DialogHeader>
-        <DeleteEducatorForm closeDialog={() => setOpen(false)} id={id} />
+        <DeleteBankDataForm closeDialog={() => setOpen(false)} id={id} />
       </DialogContent>
     </Dialog>
   )
 }
-
-interface CollectionProps{
-  id: string
-  title: string
-}
-
-
-
-
-  

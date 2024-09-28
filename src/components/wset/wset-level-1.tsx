@@ -10,6 +10,7 @@ import { EducatorDAO } from "@/services/educator-services"
 import { addHours, format, parse } from "date-fns"
 import { es } from "date-fns/locale"
 import { getCourseTitle } from "@/lib/utils"
+import Link from "next/link"
 
 // const defaultCourse = {
 //   type: "WSET_LEVEL_1",
@@ -196,9 +197,11 @@ export function WsetLevel1({ course, educator }: Props) {
       </Card>
 
       <div className="text-center mb-8">
-        <Button size="lg" className="font-bold" disabled>
-          Inscribite ahora
-        </Button>
+        <Link href={`/cursos/inscripcion?courseId=${course.id}`}>
+          <Button size="lg" className="font-bold">
+            Inscribite ahora
+          </Button>
+        </Link>
         <p className="mt-2 text-sm text-muted-foreground">
           Para reservar tu lugar, hacé clic acá y completa tus datos.
         </p>

@@ -1,4 +1,4 @@
-import { WsetLevel1 } from "@/components/wset-level-1";
+import { WsetLevel1 } from "@/components/wset/wset-level-1";
 import { findCourseByDateSlug } from "@/services/course-services";
 
 type Props = {

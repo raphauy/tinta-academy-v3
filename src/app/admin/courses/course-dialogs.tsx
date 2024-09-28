@@ -1,12 +1,10 @@
 "use client"
 
-import { useEffect, useState } from "react";
-import { ArrowLeftRight, Calendar, ChevronsLeft, ChevronsRight, Loader, Pencil, PlusCircle, Trash2 } from "lucide-react";
-import { Button } from "@/components/ui/button"
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { toast } from "@/components/ui/use-toast";
-import { AddDatesForm, CourseForm, DeleteCourseForm, EducatorSelect } from "./course-forms"
-import { getCourseDAOAction } from "./course-actions"
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Calendar, Pencil, PlusCircle, Trash2 } from "lucide-react";
+import { useState } from "react";
+import { AddDatesForm, CourseForm, DeleteCourseForm } from "./course-forms";
 
 type Props= {
   id?: string

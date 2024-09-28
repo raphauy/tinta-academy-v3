@@ -3,33 +3,36 @@
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { EducatorFormValues, educatorSchema } from '@/services/educator-services'
+import { toast } from "@/hooks/use-toast"
+import { OrderFormValues, orderSchema } from '@/services/order-services'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Loader } from "lucide-react"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
-import { createOrUpdateEducatorAction, deleteEducatorAction, getEducatorDAOAction } from "./educator-actions"
-import { toast } from "@/hooks/use-toast"
-import { Textarea } from "@/components/ui/textarea"
+import { createOrderAction, deleteOrderAction, getOrderDAOAction, updateOrderAction } from "./order-actions"
 
 type Props= {
   id?: string
   closeDialog: () => void
 }
 
-export function EducatorForm({ id, closeDialog }: Props) {
-  const form = useForm<EducatorFormValues>({
-    resolver: zodResolver(educatorSchema),
+export function OrderForm({ id, closeDialog }: Props) {
+  const form = useForm<OrderFormValues>({
+    resolver: zodResolver(orderSchema),
     defaultValues: {},
     mode: "onChange",
   })
   const [loading, setLoading] = useState(false)
 
-  const onSubmit = async (data: EducatorFormValues) => {
+  const onSubmit = async (data: OrderFormValues) => {
     setLoading(true)
     try {
-      await createOrUpdateEducatorAction(id ? id : null, data)
-      toast({ title: id ? "Educator updated" : "Educator created" })
+      if (id) {
+        await updateOrderAction(id, data)
+      } else {
+        await createOrderAction(data.courseId, data.studentId, data.paymentMethod)
+      }
+      toast({ title: id ? "Order updated" : "Order created" })
       closeDialog()
     } catch (error: any) {
       toast({ title: "Error", description: error.message, variant: "destructive" })
@@ -40,7 +43,7 @@ export function EducatorForm({ id, closeDialog }: Props) {
 
   useEffect(() => {
     if (id) {
-      getEducatorDAOAction(id).then((data) => {
+      getOrderDAOAction(id).then((data) => {
         if (data) {
           form.reset(data)
         }
@@ -60,12 +63,12 @@ export function EducatorForm({ id, closeDialog }: Props) {
           
           <FormField
             control={form.control}
-            name="name"
+            name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Name</FormLabel>
+                <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input placeholder="Educator's name" {...field} />
+                  <Input placeholder="Order's email" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -75,12 +78,12 @@ export function EducatorForm({ id, closeDialog }: Props) {
       
           <FormField
             control={form.control}
-            name="title"
+            name="paymentMethod"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Title</FormLabel>
+                <FormLabel>PaymentMethod</FormLabel>
                 <FormControl>
-                  <Input placeholder="Educator's title" {...field} />
+                  <Input placeholder="Order's paymentMethod" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -90,12 +93,12 @@ export function EducatorForm({ id, closeDialog }: Props) {
       
           <FormField
             control={form.control}
-            name="bio"
+            name="courseId"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Bio</FormLabel>
+                <FormLabel>CourseId</FormLabel>
                 <FormControl>
-                  <Textarea rows={6} placeholder="Educator's bio" {...field} />
+                  <Input placeholder="Order's courseId" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -105,12 +108,12 @@ export function EducatorForm({ id, closeDialog }: Props) {
       
           <FormField
             control={form.control}
-            name="imageUrl"
+            name="studentId"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>ImageUrl</FormLabel>
+                <FormLabel>StudentId</FormLabel>
                 <FormControl>
-                  <Input placeholder="Educator's imageUrl" {...field} />
+                  <Input placeholder="Order's studentId" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -130,15 +133,15 @@ export function EducatorForm({ id, closeDialog }: Props) {
   )
 }
 
-export function DeleteEducatorForm({ id, closeDialog }: Props) {
+export function DeleteOrderForm({ id, closeDialog }: Props) {
   const [loading, setLoading] = useState(false)
 
   async function handleDelete() {
     if (!id) return
     setLoading(true)
-    deleteEducatorAction(id)
+    deleteOrderAction(id)
     .then(() => {
-      toast({title: "Educator deleted" })
+      toast({title: "Order deleted" })
     })
     .catch((error) => {
       toast({title: "Error", description: error.message, variant: "destructive"})

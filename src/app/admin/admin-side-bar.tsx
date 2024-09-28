@@ -1,14 +1,21 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Bell, BookOpen, GraduationCap, Home, List, User } from "lucide-react"
+import { Separator } from "@/components/ui/separator"
+import { Bell, BookOpen, GraduationCap, Home, Landmark, List, User } from "lucide-react"
 import Link from "next/link"
 
 const menu = [
   { name: "Dashboard", icon: Home, href: "/admin" },
-  { name: "Estudiantes", icon: User, href: "/admin/students" },
+  { name: "--dash--", icon: Home, href: "/" },
   { name: "Cursos", icon: BookOpen, href: "/admin/courses" },
+  { name: "--dash--", icon: Home, href: "/" },
+  { name: "Estudiantes", icon: User, href: "/admin/students" },
   { name: "Educators", icon: GraduationCap, href: "/admin/educators" },
   { name: "Usuarios", icon: User, href: "/admin/users" },
+  { name: "--dash--", icon: Home, href: "/" },
+  { name: "Datos Bancarios", icon: Landmark, href: "/admin/bankdatas" },
+  { name: "Ordenes de Pago", icon: List, href: "/admin/orders" },
+  { name: "--dash--", icon: Home, href: "/" },
 ]
 
 export default function AdminSideBar() {
@@ -17,16 +24,23 @@ export default function AdminSideBar() {
       <div className="flex h-full max-h-screen flex-col gap-2">
         <div className="flex-1">
           <nav className="grid items-start px-2 font-medium lg:px-4">
-            {menu.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-              >
-                <item.icon className="h-4 w-4" />
-                {item.name}
-              </Link>
-            ))}
+            {menu.map((item, index) => {
+              if (item.name === "--dash--") {
+                return (
+                  <Separator key={index} />
+                )
+              }
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                >
+                  <item.icon className="h-4 w-4" />
+                  {item.name}
+                </Link>
+              )
+            })}
           </nav>
         </div>
         {/* <div className="mt-auto p-4">

@@ -37,6 +37,8 @@ model Student {
 
   user          User @relation(fields: [userId], references: [id])
   userId        String
+
+  orders      Order[]    
 }
 
 enum CourseType {
@@ -65,6 +67,8 @@ model Course {
 
   createdAt             DateTime @default(now())       // gennext: skip.zod
   updatedAt             DateTime @updatedAt            // gennext: skip.zod
+
+  orders      Order[]    
 }
 
 model Educator {
@@ -78,4 +82,57 @@ model Educator {
 
   createdAt             DateTime @default(now())       // gennext: skip.zod
   updatedAt             DateTime @updatedAt            // gennext: skip.zod
+}
+
+model BankData {
+  id          String    @id @default(cuid())
+  name        String                                      // gennext: show.column
+  info        String                                      // gennext: show.column
+
+  createdAt   DateTime    @default(now())                 // gennext: skip.zod
+  updatedAt   DateTime    @updatedAt                      // gennext: skip.zod
+
+  orders      Order[]    @relation("BankDataToOrder")
+}
+
+enum PaymentMethod {
+  MercadoPago
+  TransferenciaBancaria
+}
+
+enum OrderStatus {
+  Created
+  Pending
+  PaymentSent
+  Paid
+  Rejected
+  Refunded
+  Cancelled
+}
+
+model Order {
+  id            String    @id @default(cuid())
+  number        Int @default(autoincrement())
+  status        OrderStatus   @default(Created)          // gennext: show.column
+  email         String                                   // gennext: show.column
+
+  paymentMethod PaymentMethod                            // gennext: show.column
+
+  amount        Float
+  currency      String
+
+  createdAt     DateTime    @default(now())              // gennext: skip.zod
+  updatedAt     DateTime    @updatedAt                   // gennext: skip.zod
+
+  bankData    BankData?  @relation("BankDataToOrder", fields: [bankDataId], references: [id])
+  bankDataId  String?
+  bankTransferComment String?
+
+  course     Course @relation(fields: [courseId], references: [id])
+  courseId   String
+
+  student     Student @relation(fields: [studentId], references: [id])
+  studentId   String
+
+  @@index([studentId])                                  // gennext: show.list skip.zod
 }

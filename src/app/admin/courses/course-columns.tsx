@@ -12,18 +12,6 @@ import { getCourseTypeLabel } from "@/lib/utils"
 export const columns: ColumnDef<CourseDAO>[] = [
   
   {
-    accessorKey: "location",
-    header: ({ column }) => {
-        return (
-          <Button variant="ghost" className="pl-0 dark:text-white"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-            Location
-            <ArrowUpDown className="w-4 h-4 ml-1" />
-          </Button>
-    )},
-  },
-
-  {
     accessorKey: "maxCapacity",
     header: ({ column }) => {
         return (

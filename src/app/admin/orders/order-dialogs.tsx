@@ -1,21 +1,19 @@
 "use client"
 
-import { useEffect, useState } from "react";
-import { ArrowLeftRight, ChevronsLeft, ChevronsRight, Loader, Pencil, PlusCircle, Trash2 } from "lucide-react";
-import { Button } from "@/components/ui/button"
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { toast } from "@/hooks/use-toast";
-import { EducatorForm, DeleteEducatorForm } from "./educator-forms"
-import { getEducatorDAOAction } from "./educator-actions"
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Pencil, PlusCircle, Trash2 } from "lucide-react";
+import { useState } from "react";
+import { DeleteOrderForm, OrderForm } from "./order-forms";
 
 type Props= {
   id?: string
 }
 
-const addTrigger= <Button><PlusCircle size={22} className="mr-2"/>Crear Educator</Button>
+const addTrigger= <Button><PlusCircle size={22} className="mr-2"/>Create Order</Button>
 const updateTrigger= <Pencil size={30} className="pr-2 hover:cursor-pointer"/>
 
-export function EducatorDialog({ id }: Props) {
+export function OrderDialog({ id }: Props) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -25,10 +23,10 @@ export function EducatorDialog({ id }: Props) {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{id ? 'Update' : 'Create'} Educator
+          <DialogTitle>{id ? 'Update' : 'Create'} Order
           </DialogTitle>
         </DialogHeader>
-        <EducatorForm closeDialog={() => setOpen(false)} id={id} />
+        <OrderForm closeDialog={() => setOpen(false)} id={id} />
       </DialogContent>
     </Dialog>
   )
@@ -39,7 +37,7 @@ type DeleteProps= {
   description: string
 }
 
-export function DeleteEducatorDialog({ id, description }: DeleteProps) {
+export function DeleteOrderDialog({ id, description }: DeleteProps) {
   const [open, setOpen] = useState(false)
 
   return (
@@ -49,10 +47,10 @@ export function DeleteEducatorDialog({ id, description }: DeleteProps) {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Delete Educator</DialogTitle>
+          <DialogTitle>Delete Order</DialogTitle>
           <DialogDescription className="py-8">{description}</DialogDescription>
         </DialogHeader>
-        <DeleteEducatorForm closeDialog={() => setOpen(false)} id={id} />
+        <DeleteOrderForm closeDialog={() => setOpen(false)} id={id} />
       </DialogContent>
     </Dialog>
   )

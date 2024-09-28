@@ -1,35 +1,35 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { EducatorFormValues, educatorSchema } from '@/services/educator-services'
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Loader } from "lucide-react"
-import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
-import { createOrUpdateEducatorAction, deleteEducatorAction, getEducatorDAOAction } from "./educator-actions"
-import { toast } from "@/hooks/use-toast"
-import { Textarea } from "@/components/ui/textarea"
+import { toast } from "@/hooks/use-toast";
+import { useEffect, useState } from "react"
+import { deleteBankDataAction, createOrUpdateBankDataAction, getBankDataDAOAction } from "./bankdata-actions"
+import { bankDataSchema, BankDataFormValues } from '@/services/bankdata-services'
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { Loader } from "lucide-react"
+import { Textarea } from "@/components/ui/textarea";
 
 type Props= {
   id?: string
   closeDialog: () => void
 }
 
-export function EducatorForm({ id, closeDialog }: Props) {
-  const form = useForm<EducatorFormValues>({
-    resolver: zodResolver(educatorSchema),
+export function BankDataForm({ id, closeDialog }: Props) {
+  const form = useForm<BankDataFormValues>({
+    resolver: zodResolver(bankDataSchema),
     defaultValues: {},
     mode: "onChange",
   })
   const [loading, setLoading] = useState(false)
 
-  const onSubmit = async (data: EducatorFormValues) => {
+  const onSubmit = async (data: BankDataFormValues) => {
     setLoading(true)
     try {
-      await createOrUpdateEducatorAction(id ? id : null, data)
-      toast({ title: id ? "Educator updated" : "Educator created" })
+      await createOrUpdateBankDataAction(id ? id : null, data)
+      toast({ title: id ? "BankData updated" : "BankData created" })
       closeDialog()
     } catch (error: any) {
       toast({ title: "Error", description: error.message, variant: "destructive" })
@@ -40,7 +40,7 @@ export function EducatorForm({ id, closeDialog }: Props) {
 
   useEffect(() => {
     if (id) {
-      getEducatorDAOAction(id).then((data) => {
+      getBankDataDAOAction(id).then((data) => {
         if (data) {
           form.reset(data)
         }
@@ -65,7 +65,7 @@ export function EducatorForm({ id, closeDialog }: Props) {
               <FormItem>
                 <FormLabel>Name</FormLabel>
                 <FormControl>
-                  <Input placeholder="Educator's name" {...field} />
+                  <Input placeholder="BankData's name" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -75,42 +75,12 @@ export function EducatorForm({ id, closeDialog }: Props) {
       
           <FormField
             control={form.control}
-            name="title"
+            name="info"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Title</FormLabel>
+                <FormLabel>Info</FormLabel>
                 <FormControl>
-                  <Input placeholder="Educator's title" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          
-      
-          <FormField
-            control={form.control}
-            name="bio"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Bio</FormLabel>
-                <FormControl>
-                  <Textarea rows={6} placeholder="Educator's bio" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          
-      
-          <FormField
-            control={form.control}
-            name="imageUrl"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>ImageUrl</FormLabel>
-                <FormControl>
-                  <Input placeholder="Educator's imageUrl" {...field} />
+                  <Textarea rows={7} placeholder="BankData's info" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -130,15 +100,15 @@ export function EducatorForm({ id, closeDialog }: Props) {
   )
 }
 
-export function DeleteEducatorForm({ id, closeDialog }: Props) {
+export function DeleteBankDataForm({ id, closeDialog }: Props) {
   const [loading, setLoading] = useState(false)
 
   async function handleDelete() {
     if (!id) return
     setLoading(true)
-    deleteEducatorAction(id)
+    deleteBankDataAction(id)
     .then(() => {
-      toast({title: "Educator deleted" })
+      toast({title: "BankData deleted" })
     })
     .catch((error) => {
       toast({title: "Error", description: error.message, variant: "destructive"})

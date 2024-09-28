@@ -11,6 +11,8 @@ import { ClerkProvider } from '@clerk/nextjs'
 import { esES } from '@clerk/localizations'
 
 import './globals.css'
+import { Toaster } from '@/components/ui/toaster'
+import { TailwindIndicator } from '@/components/tailwind-indicator'
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -57,6 +59,7 @@ export default function RootLayout({
               {children}
             </main>
             <Footer />
+            <Toaster />
           </Providers>
         </body>
       </html>

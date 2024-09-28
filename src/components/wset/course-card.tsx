@@ -11,34 +11,20 @@ import { EducatorDAO } from "@/services/educator-services"
 import { getCourseLink, getCourseTitle, getCourseTypeLabel, getLevel } from "@/lib/utils"
 import { format } from "date-fns"
 import { es } from "date-fns/locale"
+import { CourseDialog, DeleteCourseDialog } from "@/app/admin/courses/course-dialogs"
 
 type Props = {
   course: CourseDAO
-  educator: EducatorDAO
 }
 
-export function WsetLevel1Card({ course, educator }: Props) {
-  const startDate= course.classDates[0]
+export function CourseCard({ course }: Props) {
+  const startDate = course.classDates[0]
   if (!startDate) {
     return <div>No hay clases programadas</div>
   }
+  const courseLink = getCourseLink(course)
   return (
     <Card className="w-full hover:shadow-lg transition-shadow duration-300">
-      <CardHeader className="relative pb-0">
-        <div className="absolute top-4 right-4 z-10">
-          <Badge variant="secondary" className="font-semibold border border-muted-foreground">
-            Nivel {getLevel(course.type)}
-          </Badge>
-        </div>
-        <div className="relative w-full h-64 sm:h-80 rounded-t-lg overflow-hidden">
-          <Image
-            src="/Wine_WSET.jpg"
-            alt="WSET course"
-            layout="fill"
-            objectFit="cover"
-          />
-        </div>
-      </CardHeader>
       <CardContent className="pt-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4">
           <CardTitle className="text-2xl mb-2 sm:mb-0">{getCourseTitle(course.type)}</CardTitle>
@@ -47,7 +33,6 @@ export function WsetLevel1Card({ course, educator }: Props) {
             <span className="text-lg font-semibold">{format(startDate, 'PPP', { locale: es })}</span>
           </div>
         </div>
-        <p className="text-muted-foreground mb-4">El WSET Level 1 Award in Wines es la puerta de entrada ideal al mundo del vino, diseñado para ofrecer una introducción práctica y estructurada. Este curso cubre desde los estilos principales de vino hasta las técnicas de almacenamiento, servicio y maridaje, capacitando a los participantes a realizar recomendaciones informadas y ofrecer un servicio de alta calidad.</p>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm">
           <div className="flex items-center">
             <Clock className="h-5 w-5 mr-2 text-muted-foreground" />
@@ -82,11 +67,15 @@ export function WsetLevel1Card({ course, educator }: Props) {
               <p className="text-sm text-muted-foreground">{course.educator.title}</p>
             </div>
           </div>
-          <Button asChild>
-            <Link href={getCourseLink(course)}>Ver detalles</Link>
-          </Button>
+
+          <div className="flex items-center gap-2">
+            <CourseDialog id={course.id} />
+            <DeleteCourseDialog id={course.id} description="¿Estás seguro de que quieres eliminar este curso?"/>
+          </div>
+
         </div>
       </CardContent>
+
     </Card>
   )
 }

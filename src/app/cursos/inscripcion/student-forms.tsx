@@ -1,29 +1,30 @@
 "use client"
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { toast } from "@/hooks/use-toast"
-import { useEffect, useState } from "react"
-import { deleteStudentAction, createOrUpdateStudentAction, getStudentDAOAction } from "./student-actions"
-import { studentSchema, StudentFormValues } from '@/services/student-services'
+import { createOrUpdateStudentAction, getStudentDAOAction } from "@/app/admin/students/student-actions"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import { Calendar } from "@/components/ui/calendar"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { CalendarIcon, ChevronRight, Loader } from "lucide-react"
+import { Input } from "@/components/ui/input"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { toast } from "@/hooks/use-toast"
 import { cn } from "@/lib/utils"
+import { StudentFormValues, studentSchema } from '@/services/student-services'
+import { useUser } from "@clerk/nextjs"
+import { zodResolver } from "@hookform/resolvers/zod"
 import { addMonths, format, subMonths } from "date-fns"
 import { es } from "date-fns/locale"
-import { Calendar } from "@/components/ui/calendar"
-import { useUser } from "@clerk/nextjs"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { CalendarIcon, Loader } from "lucide-react"
+import { useEffect, useState } from "react"
+import { useForm } from "react-hook-form"
 
 type Props= {
   id?: string
-  closeDialog?: () => void
+  courseId: string
+  notifyStep1Complete: (stepCompleted: number) => void
 }
 
-export function StudentForm({ id, closeDialog }: Props) {
+export function StudentForm({ id, courseId, notifyStep1Complete }: Props) {
   const { user } = useUser()
   const form = useForm<StudentFormValues>({
     resolver: zodResolver(studentSchema),
@@ -42,21 +43,24 @@ export function StudentForm({ id, closeDialog }: Props) {
   const [openCalendar, setOpenCalendar] = useState(false)
   const [currentMonth, setCurrentMonth] = useState(new Date())
 
-  const onSubmit = async (data: StudentFormValues) => {
+  const onSubmit = (data: StudentFormValues) => {
     setLoading(true)
-    try {
-      await createOrUpdateStudentAction(id ? id : null, data)
-      toast({ title: id ? "Student updated" : "Student created" })
-      closeDialog && closeDialog()
-    } catch (error: any) {
+    createOrUpdateStudentAction(id ? id : null, data)
+    .then(() => {
+      toast({ title: "Datos guardados" })
+      notifyStep1Complete(1)
+    })
+    .catch((error) => {
       toast({ title: "Error", description: error.message, variant: "destructive" })
-    } finally {
+    })
+    .finally(() => {
       setLoading(false)
-    }
+    })
   }
 
   useEffect(() => {
     if (id) {
+      setLoading(true)
       getStudentDAOAction(id).then((data) => {
         if (data) {
           form.reset(data)
@@ -67,6 +71,7 @@ export function StudentForm({ id, closeDialog }: Props) {
           }
         })
       })
+      .finally(() => setLoading(false))
     }
   }, [form, id])
 
@@ -77,8 +82,10 @@ export function StudentForm({ id, closeDialog }: Props) {
   }
   return (
     <div className="bg-background rounded-md">
+      <div>Email: {user?.emailAddresses[0]?.emailAddress}</div>         
+
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 mt-4">
           
           <FormField
             control={form.control}
@@ -173,7 +180,8 @@ export function StudentForm({ id, closeDialog }: Props) {
               </FormItem>
             )}
           />         
-      
+     
+     
           <FormField
             control={form.control}
             name="phone"
@@ -249,10 +257,10 @@ export function StudentForm({ id, closeDialog }: Props) {
           />
           
 
-        <div className="flex justify-end">
-            {closeDialog && <Button onClick={() => closeDialog()} type="button" variant={"secondary"} className="w-32">Cancelar</Button>}
-            <Button type="submit" className="w-32 ml-2">
-              {loading ? <Loader className="h-4 w-4 animate-spin" /> : <p>Guardar</p>}
+          <div className="flex justify-end">
+            <Button type="submit" className="w-32">
+              {loading && <Loader className="h-4 w-4 animate-spin" />}
+              <p>Siguiente</p>
             </Button>
           </div>
         </form>
@@ -260,34 +268,3 @@ export function StudentForm({ id, closeDialog }: Props) {
     </div>     
   )
 }
-
-export function DeleteStudentForm({ id, closeDialog }: Props) {
-  const [loading, setLoading] = useState(false)
-
-  async function handleDelete() {
-    if (!id) return
-    setLoading(true)
-    deleteStudentAction(id)
-    .then(() => {
-      toast({title: "Student deleted" })
-    })
-    .catch((error) => {
-      toast({title: "Error", description: error.message, variant: "destructive"})
-    })
-    .finally(() => {
-      setLoading(false)
-      closeDialog && closeDialog()
-    })
-  }
-  
-  return (
-    <div>
-      <Button onClick={() => closeDialog && closeDialog()} type="button" variant={"secondary"} className="w-32">Cancel</Button>
-      <Button onClick={handleDelete} variant="destructive" className="w-32 ml-2 gap-1">
-        { loading && <Loader className="h-4 w-4 animate-spin" /> }
-        Delete  
-      </Button>
-    </div>
-  )
-}
-

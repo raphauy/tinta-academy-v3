@@ -22,8 +22,8 @@ export default async function UserPage(params: { searchParams: { search?: string
 
   return (
     <div className="w-full">      
-      <h1>This is the admin dashboard</h1>
-      <p>This page is restricted to users with the admin role.</p>
+      <h1 className="text-2xl font-bold text-center">Usuarios</h1>
+      {/* <p>This page is restricted to users with the admin role.</p>
 
       <SearchUsers />
 
@@ -56,7 +56,7 @@ export default async function UserPage(params: { searchParams: { search?: string
             </div>
           </div>
         )
-      })}
+      })} */}
 
       <div className="container bg-white p-3 py-4 mx-auto mt-10 border rounded-md text-muted-foreground dark:text-white dark:bg-black">
         <DataTable columns={columns} data={data} subject="User"/>      

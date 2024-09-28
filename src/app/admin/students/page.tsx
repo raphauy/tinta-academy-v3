@@ -10,9 +10,11 @@ export default async function StudentPage() {
   return (
     <div className="w-full">      
 
-      <div className="flex justify-end mx-auto my-2">
+      <h1 className="text-2xl font-bold text-center mb-4">Estudiantes</h1>
+
+      {/* <div className="flex justify-end mx-auto my-2">
         <StudentDialog />
-      </div>
+      </div> */}
 
       <div className="container bg-white p-3 py-4 mx-auto border rounded-md text-muted-foreground dark:text-white dark:bg-black">
         <DataTable columns={columns} data={data} subject="Student"/>      

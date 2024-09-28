@@ -10,6 +10,8 @@ export default async function EducatorPage() {
   return (
     <div className="w-full">      
 
+      <h1 className="text-2xl font-bold text-center mb-4">Educators</h1>
+
       <div className="flex justify-end mx-auto my-2">
         <EducatorDialog />
       </div>

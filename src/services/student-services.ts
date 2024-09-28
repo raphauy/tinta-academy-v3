@@ -1,5 +1,6 @@
-import * as z from "zod"
 import { prisma } from "@/lib/db"
+import * as z from "zod"
+import { UserDAO } from "./user-services"
 
 export type StudentDAO = {
 	id: string
@@ -14,6 +15,7 @@ export type StudentDAO = {
 	country: string
 	createdAt: Date
 	updatedAt: Date
+  user: UserDAO
 	userId: string
 }
 
@@ -21,13 +23,11 @@ export const studentSchema = z.object({
 	firstName: z.string().min(1, "El nombre es obligatorio."),
 	lastName: z.string().min(1, "El apellido es obligatorio."),
 	dateOfBirth: z.date({required_error: "La fecha de nacimiento es obligatoria."}),
-	email: z.string().min(1, "El correo electrónico es obligatorio."),
 	phone: z.string().min(1, "El teléfono es obligatorio."),
 	address: z.string().min(1, "La dirección es obligatoria."),
 	city: z.string().min(1, "La ciudad es obligatoria."),
 	zip: z.string().optional(),
 	country: z.string().min(1, "El país es obligatorio."),
-  userId: z.string().min(1, "El usuario es obligatorio."),
 })
 
 export type StudentFormValues = z.infer<typeof studentSchema>
@@ -38,6 +38,9 @@ export async function getStudentsDAO() {
     orderBy: {
       id: 'asc'
     },
+    include: {
+      user: true
+    }
   })
   return found as StudentDAO[]
 }
@@ -50,12 +53,29 @@ export async function getStudentDAO(id: string) {
   })
   return found as StudentDAO
 }
-    
-export async function createStudent(data: StudentFormValues) {
-  // TODO: implement createStudent
-  const created = await prisma.student.create({
-    data
+
+export async function getCurrentStudentId(email: string) {
+  const found = await prisma.student.findUnique({
+    where: {
+      email
+    },
   })
+  return found?.id
+}
+    
+export async function createStudent(userDAO: UserDAO,data: StudentFormValues) {
+  const created = await prisma.student.create({
+    data: {
+      ...data,
+      userId: userDAO.id,
+      email: userDAO.email
+    }
+  })
+  if (!created) {
+    throw new Error("No se pudo crear el estudiante.")
+  }
+  // set the studentId to clerk metadata
+  // TODO
   return created
 }
 
