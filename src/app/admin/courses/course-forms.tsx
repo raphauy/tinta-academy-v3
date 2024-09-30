@@ -34,7 +34,7 @@ export function CourseForm({ id, closeDialog }: Props) {
   const form = useForm<CourseFormValues>({
     resolver: zodResolver(courseSchema),
     defaultValues: {
-      type: CourseType.WSET_LEVEL_1,
+      type: CourseType.WSET_NIVEL_1,
       totalDuration: "6",
       classDuration: "2",
       location: "",

@@ -12,23 +12,6 @@ import { es } from "date-fns/locale"
 import { cn, getCourseTitle } from "@/lib/utils"
 import Link from "next/link"
 
-// const defaultCourse = {
-//   type: "WSET_LEVEL_1",
-//   totalDuration: 6,
-//   classDuration: 2,
-//   location: "Hotel Costanero MGallery, Montevideo",
-//   maxCapacity: 15,
-//   priceUSD: 450,
-//   priceUYU: 10000,
-//   classDates: [
-//     new Date("2024-10-15T18:30:00"),
-//     new Date("2024-10-22T18:30:00"),
-//     new Date("2024-10-29T18:30:00")
-//   ],
-//   examDate: new Date("2024-10-29T18:30:00"),
-//   registrationDeadline: new Date("2024-10-11")
-// }
-
 const defaultEducator = {
   name: "Gabi Zimmer",
   title: "WSET Certified Educator",

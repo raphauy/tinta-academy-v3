@@ -47,9 +47,16 @@ enum CourseType {
   WSET_NIVEL_3
 }
 
+enum CourseStatus {
+  Anunciado
+  Inscribiendo
+  Finalizado
+}
+
 model Course {
   id                    String   @id @default(cuid())
-  type                  CourseType 
+  type                  CourseType
+  status                CourseStatus @default(Anunciado)
   totalDuration         Int                            // gennext: show.column
   startTime             String    @default("18:30")    // gennext: show.column
   classDuration         Int                            // gennext: show.column
@@ -58,8 +65,8 @@ model Course {
   priceUSD              Float                          // gennext: show.column
   priceUYU              Float                          // gennext: show.column
   classDates            DateTime[]                     // gennext: show.column
-  examDate              DateTime                       // gennext: show.column
-  registrationDeadline  DateTime                       // gennext: show.column
+  examDate              DateTime?                       // gennext: show.column
+  registrationDeadline  DateTime?                       // gennext: show.column
 
   educator              Educator @relation(fields: [educatorId], references: [id])
   educatorId            String
