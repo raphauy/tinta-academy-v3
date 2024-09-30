@@ -82,11 +82,18 @@ export function WsetLevel2({ course, studentRegistered }: Props) {
         </CardHeader>
         <CardContent>
           <div className="grid sm:grid-cols-2 gap-4">
-            <div className="flex items-center space-x-2">
-              <Clock className="h-5 w-5 text-muted-foreground" />
-              <span>Duración: {course.totalDuration} horas (16 horas presenciales)</span>
+            <div>
+              <div className="flex items-center space-x-2">
+                <Clock className="h-5 w-5 text-muted-foreground" />
+                <span>Duración total: 28 horas</span>
+              </div>
+              <ul className="list-disc pl-5 text-muted-foreground text-sm ml-7">
+                <li>16 horas presenciales</li>
+                <li>11 horas de estudio personal y revisión.</li>
+                <li>Examen de 1 hora.</li>
+              </ul>
             </div>
-            <div className="flex items-center space-x-2">
+            <div className="flex space-x-2">
               <MapPin className="h-5 w-5 text-muted-foreground" />
               <span>Lugar: {course.location}</span>
             </div>
