@@ -45,7 +45,7 @@ export default function WelcomeToTintaAcademy({ buyerName, courseName }: Props) 
               <Row>
                 <Column align="left">
                   <Img
-                    src="https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18ybVltaU5OQUszUWZwQWlhS3JHNGt3UFRFMFoifQ"
+                    src="https://academy.tinta.wine/gabi.jpeg"
                     width="50"
                     height="50"
                     alt="Gabi Zimmer"

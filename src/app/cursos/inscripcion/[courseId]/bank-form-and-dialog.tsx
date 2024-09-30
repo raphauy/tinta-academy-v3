@@ -39,7 +39,6 @@ export function MarkAsPaidForm({ orderId, notifyStep1Complete }: FormProps) {
     mode: "onChange",
   })
   const [loading, setLoading] = useState(false)
-  const [bankId, setBankId] = useState("")
   const [bankData, setBankData] = useState<BankDataDAO[] | null>([])
 
   const onSubmit = async (data: BankFormValues) => {
@@ -114,7 +113,7 @@ export function MarkAsPaidForm({ orderId, notifyStep1Complete }: FormProps) {
               Atrás
             </Button>
             <Button type="submit" className="w-32 ml-2">
-              {loading && <Loader className="h-4 w-4 animate-spin" />}
+              {loading && <Loader className="h-4 w-4 mr-2 animate-spin" />}
               <p>Siguiente</p>
             </Button>
           </div>

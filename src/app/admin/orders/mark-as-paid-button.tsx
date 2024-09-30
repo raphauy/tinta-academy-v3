@@ -53,8 +53,9 @@ export default function MarkAsPaidButton({ order }: Props) {
     return (
         <div className='flex flex-col gap-1'>
             <p className='text-center'>{order.bankTransferComment}</p>
-            <Button variant="outline" className="" onClick={handleClick}>
-                {loading ? <Loader className="w-4 h-4 animate-spin" /> : "Marcar transferencia recibida"}
+            <Button variant="outline" className="w-60" onClick={handleClick}>
+                {loading && <Loader className="w-4 h-4 mr-2 animate-spin" />}
+                Marcar transferencia recibida
             </Button>
         </div>
     )
