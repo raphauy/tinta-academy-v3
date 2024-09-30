@@ -21,7 +21,7 @@ export function CourseDialog({ id }: Props) {
       <DialogTrigger asChild>
         {id ? updateTrigger : addTrigger }
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="max-w-2xl">
         <DialogHeader>
           <DialogTitle>{id ? 'Actualizar Curso' : 'Crear Curso'}</DialogTitle>
         </DialogHeader>

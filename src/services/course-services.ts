@@ -25,6 +25,7 @@ export type CourseDAO = {
 
 export const courseSchema = z.object({
 	type: z.nativeEnum(CourseType),
+  status: z.nativeEnum(CourseStatus),
 	totalDuration: z.string().refine((val) => !isNaN(Number(val)), { message: "(debe ser un número)" }).optional(),
 	startTime: z.string().refine((val) => !isNaN(Number(val)), { message: "(debe ser un número)" }).optional(),
 	classDuration: z.string().refine((val) => !isNaN(Number(val)), { message: "(debe ser un número)" }).optional(),

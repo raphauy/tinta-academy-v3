@@ -15,7 +15,7 @@ import { cn, getCourseTypeLabel } from "@/lib/utils"
 import { format, parse } from "date-fns"
 import { Calendar } from "@/components/ui/calendar"
 import { es } from "date-fns/locale"
-import { CourseType } from "@prisma/client"
+import { CourseStatus, CourseType } from "@prisma/client"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { getEducatorsAction } from "../educators/educator-actions"
 
@@ -35,6 +35,7 @@ export function CourseForm({ id, closeDialog }: Props) {
     resolver: zodResolver(courseSchema),
     defaultValues: {
       type: CourseType.WSET_NIVEL_1,
+      status: CourseStatus.Anunciado,
       totalDuration: "6",
       classDuration: "2",
       location: "",
@@ -72,6 +73,8 @@ export function CourseForm({ id, closeDialog }: Props) {
     if (id) {
       getCourseDAOAction(id).then((data) => {
         if (data) {
+          form.setValue("type", data.type)
+          form.setValue("status", data.status)
           form.setValue("priceUSD", data.priceUSD.toString())
           form.setValue("priceUYU", data.priceUYU.toString())
           data.examDate && form.setValue("examDate", data.examDate)
@@ -95,13 +98,38 @@ export function CourseForm({ id, closeDialog }: Props) {
     <div className="p-4 bg-white rounded-md">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          
-        <FormField
-            control={form.control}
-            name="type"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Tipo de curso:</FormLabel>
+
+          <div className="w-full grid grid-cols-2 gap-4">
+            <FormField
+              control={form.control}
+              name="type"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormLabel>Tipo de curso:</FormLabel>
+                  <Select onValueChange={(value) => field.onChange(value)} value={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Selecciona un tipo" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {types.map(type => (
+                        <SelectItem key={type} value={type}>{getCourseTypeLabel(type)}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="status"
+              render={({ field }) => (
+              <FormItem className="w-full">
+                <FormLabel>Estado:</FormLabel>
                 <Select onValueChange={(value) => field.onChange(value)} value={field.value}
                 >
                   <FormControl>
@@ -110,107 +138,135 @@ export function CourseForm({ id, closeDialog }: Props) {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {types.map(type => (
-                      <SelectItem key={type} value={type}>{getCourseTypeLabel(type)}</SelectItem>
+                    {Object.values(CourseStatus).map(status => (
+                      <SelectItem key={status} value={status}>{status}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
                 <FormMessage />
-              </FormItem>
-            )}
-          />
+                </FormItem>
+              )}
+              />
+
+          </div>
+          
+
+          <div className="w-full grid grid-cols-2 gap-4">
+            <FormField
+              control={form.control}
+              name="totalDuration"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Duración total en horas:</FormLabel>
+                  <FormControl>
+                    <Input placeholder="6" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+                    
+            <FormField
+              control={form.control}
+              name="classDuration"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Duración de cada clase en horas:</FormLabel>
+                  <FormControl>
+                    <Input placeholder="2" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>          
+          
           
       
+          <div className="w-full grid grid-cols-2 gap-4">
+            <FormField
+              control={form.control}
+              name="priceUSD"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Precio del curso en USD:</FormLabel>
+                  <FormControl>
+                    <Input placeholder="450" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />            
+        
+            <FormField
+              control={form.control}
+              name="priceUYU"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Precio del curso en UYU (pesos uruguayos):</FormLabel>
+                  <FormControl>
+                    <Input placeholder="18000" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+      
+          <div className="w-full grid grid-cols-2 gap-4">
+            <FormField
+              control={form.control}
+              name="maxCapacity"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Capacidad máxima de estudiantes:</FormLabel>
+                  <FormControl>
+                    <Input placeholder="15" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />        
+          
+            <FormField
+              control={form.control}
+              name="educatorId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Educador:</FormLabel>
+                  <Select onValueChange={(value) => field.onChange(value)} value={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Selecciona un educador" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {educators.map(educator => (
+                        <SelectItem key={educator.id} value={educator.id}>{educator.name}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
           <FormField
-            control={form.control}
-            name="totalDuration"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Duración total del curso en horas:</FormLabel>
-                <FormControl>
-                  <Input placeholder="6" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          
-      
-          <FormField
-            control={form.control}
-            name="classDuration"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Duración de cada clase en horas:</FormLabel>
-                <FormControl>
-                  <Input placeholder="2" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          
-      
-          <FormField
-            control={form.control}
-            name="location"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Lugar donde se imparte el curso:</FormLabel>
-                <FormControl>
-                  <Input placeholder="Hotel Costanero MGallery, Montevideo" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          
-      
-          <FormField
-            control={form.control}
-            name="maxCapacity"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Capacidad máxima de estudiantes:</FormLabel>
-                <FormControl>
-                  <Input placeholder="15" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          
-      
-          <FormField
-            control={form.control}
-            name="priceUSD"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Precio del curso en USD:</FormLabel>
-                <FormControl>
-                  <Input placeholder="450" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          
-      
-          <FormField
-            control={form.control}
-            name="priceUYU"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Precio del curso en UYU (pesos uruguayos):</FormLabel>
-                <FormControl>
-                  <Input placeholder="18000" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          
-      
+              control={form.control}
+              name="location"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Lugar donde se imparte el curso:</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Hotel Costanero MGallery, Montevideo" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
           <FormField
             control={form.control}
             name="examDate"
@@ -301,32 +357,6 @@ export function CourseForm({ id, closeDialog }: Props) {
             )}
           />
             
-          
-      
-          <FormField
-            control={form.control}
-            name="educatorId"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Educador:</FormLabel>
-                <Select onValueChange={(value) => field.onChange(value)} value={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Selecciona un educador" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {educators.map(educator => (
-                      <SelectItem key={educator.id} value={educator.id}>{educator.name}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          
 
         <div className="flex justify-end">
             <Button onClick={() => closeDialog()} type="button" variant={"secondary"} className="w-32">Cancelar</Button>
