@@ -25,6 +25,8 @@ type Props = {
 }
 
 export function WsetLevel1({ course, educator, studentRegistered }: Props) {
+  const examDate = course.examDate ? course.examDate.toLocaleDateString('es-UY', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : "Sin definir"
+  const registrationDeadline = course.registrationDeadline ? course.registrationDeadline.toLocaleDateString('es-UY', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : "Sin definir"
   // format date to "Octubre 2024"
   const firstClassDate = course.classDates[0]
   if (!firstClassDate) {
@@ -129,11 +131,11 @@ export function WsetLevel1({ course, educator, studentRegistered }: Props) {
             })}
             <div className="flex items-center space-x-2">
               <CalendarDays className="h-5 w-5 text-muted-foreground" />
-              <span>Examen: {course.examDate.toLocaleDateString('es-UY', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span>
+              <span>Examen: {examDate}</span>
             </div>
             <div className="flex items-center space-x-2">
               <CalendarDays className="h-5 w-5 text-muted-foreground" />
-              <span>Fecha límite de inscripción: {course.registrationDeadline.toLocaleDateString('es-UY', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span>
+              <span>Fecha límite de inscripción: {registrationDeadline}</span>
             </div>
           </div>
         </CardContent>

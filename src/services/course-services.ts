@@ -1,11 +1,12 @@
 import * as z from "zod"
 import { prisma } from "@/lib/db"
 import { EducatorDAO } from "./educator-services"
-import { CourseType } from "@prisma/client"
+import { CourseStatus, CourseType } from "@prisma/client"
 
 export type CourseDAO = {
 	id: string
 	type: CourseType
+  status: CourseStatus
 	totalDuration: number
 	startTime: string
 	classDuration: number
@@ -14,8 +15,8 @@ export type CourseDAO = {
 	priceUSD: number
 	priceUYU: number
 	classDates: Date[]
-	examDate: Date
-	registrationDeadline: Date
+	examDate: Date | null | undefined
+	registrationDeadline: Date | null | undefined
 	educator: EducatorDAO
 	educatorId: string
 	createdAt: Date

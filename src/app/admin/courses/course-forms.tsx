@@ -74,8 +74,8 @@ export function CourseForm({ id, closeDialog }: Props) {
         if (data) {
           form.setValue("priceUSD", data.priceUSD.toString())
           form.setValue("priceUYU", data.priceUYU.toString())
-          form.setValue("examDate", data.examDate)
-          form.setValue("registrationDeadline", data.registrationDeadline)
+          data.examDate && form.setValue("examDate", data.examDate)
+          data.registrationDeadline && form.setValue("registrationDeadline", data.registrationDeadline)
           form.setValue("totalDuration", data.totalDuration.toString())
           form.setValue("classDuration", data.classDuration.toString())
           form.setValue("location", data.location)
