@@ -85,7 +85,7 @@ export function WsetLevel2({ course, studentRegistered }: Props) {
             <div>
               <div className="flex items-center space-x-2">
                 <Clock className="h-5 w-5 text-muted-foreground" />
-                <span>Duración total: 28 horas</span>
+                <span>Duración total: {course.totalDuration} horas</span>
               </div>
               <ul className="list-disc pl-5 text-muted-foreground text-sm ml-7">
                 <li>16 horas presenciales</li>
