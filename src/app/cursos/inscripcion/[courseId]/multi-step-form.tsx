@@ -115,6 +115,15 @@ export function MultiStepForm({ bankData, initialOrder }: Props) {
     { number: 3, title: 'Confirmación' },
   ]
 
+  if (order?.status === "Paid" || order?.status === "PaymentSent") {
+    return (
+      <div className="text-center space-y-4">
+        <CheckIcon className="w-16 h-16 mx-auto text-green-500" />
+        <p className="text-xl font-semibold">¡Gracias por tu inscripción!</p>
+      </div>
+    )
+  }
+
   return (
     <Card className="w-[600px]">
       <CardHeader>

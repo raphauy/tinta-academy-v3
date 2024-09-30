@@ -3,13 +3,13 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { CalendarDays, Clock, MapPin, Users, GraduationCap, Wine, User } from "lucide-react"
+import { CalendarDays, Clock, MapPin, Users, GraduationCap, Wine, User, CheckCircleIcon } from "lucide-react"
 import Image from "next/image"
 import { CourseDAO } from "@/services/course-services"
 import { EducatorDAO } from "@/services/educator-services"
 import { addHours, format, parse } from "date-fns"
 import { es } from "date-fns/locale"
-import { getCourseTitle } from "@/lib/utils"
+import { cn, getCourseTitle } from "@/lib/utils"
 import Link from "next/link"
 
 // const defaultCourse = {
@@ -38,9 +38,10 @@ const defaultEducator = {
 type Props = {
   course: CourseDAO
   educator: EducatorDAO
+  studentRegistered: boolean
 }
 
-export function WsetLevel1({ course, educator }: Props) {
+export function WsetLevel1({ course, educator, studentRegistered }: Props) {
   // format date to "Octubre 2024"
   const firstClassDate = course.classDates[0]
   if (!firstClassDate) {
@@ -58,7 +59,7 @@ export function WsetLevel1({ course, educator }: Props) {
         </CardHeader>
         <CardContent>
           <p className="text-muted-foreground">
-            El WSET Level 1 Award in Wines es la puerta de entrada ideal al mundo del vino, diseñado para ofrecer una introducción práctica y estructurada. Este curso cubre desde los estilos principales de vino hasta las técnicas de almacenamiento, servicio y maridaje, capacitando a los participantes a realizar recomendaciones informadas y ofrecer un servicio de alta calidad.
+            WSET Nivel 1 Cualificación en Vinos es la puerta de entrada ideal al mundo del vino, diseñado para ofrecer una introducción práctica y estructurada. Este curso cubre desde los estilos principales de vino hasta las técnicas de almacenamiento, servicio y maridaje, capacitando a los participantes a realizar recomendaciones informadas y ofrecer un servicio de alta calidad.
           </p>
           <p className="mt-4 text-muted-foreground">
             Durante el curso, se explorarán los diferentes tipos y estilos de vino mediante la cata guiada, desarrollando habilidades clave para describir los vinos con precisión y conocer la recomendación con el tipo de comida adecuada. Al completar el curso con éxito, se recibirá un certificado WSET reconocido internacionalmente y un pin de solapa.
@@ -197,12 +198,13 @@ export function WsetLevel1({ course, educator }: Props) {
       </Card>
 
       <div className="text-center mb-8">
-        <Link href={`/cursos/inscripcion/${course.id}`}>
-          <Button size="lg" className="font-bold">
-            Inscribite ahora
-          </Button>
-        </Link>
-        <p className="mt-2 text-sm text-muted-foreground">
+        <Button size="lg" className="font-bold" disabled={studentRegistered}>
+          <Link href={`/cursos/inscripcion/${course.id}`} className="flex items-center">
+            {studentRegistered ? "Ya estas inscripto" : "Inscribite ahora"}
+            {studentRegistered && <CheckCircleIcon className="h-4 w-4 ml-2" />}
+          </Link>
+        </Button>
+        <p className={cn("mt-2 text-sm text-muted-foreground", studentRegistered && "hidden")}>
           Para reservar tu lugar, hacé clic acá y completa tus datos.
         </p>
       </div>

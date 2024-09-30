@@ -52,6 +52,22 @@ export async function getCoursesDAO() {
   return found as CourseDAO[]
 }
 
+export async function getStudentCoursesDAO(studentId: string | undefined) {
+  if (!studentId) return []
+
+  const found = await prisma.course.findMany({
+    where: {
+      orders: {
+        some: {
+          studentId
+        }
+      }
+    }
+  })
+
+  return found as CourseDAO[]
+}
+
 export async function getCourseDAO(id: string) {
   const found = await prisma.course.findUnique({
     where: {

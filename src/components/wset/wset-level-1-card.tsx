@@ -1,23 +1,24 @@
 'use client'
 
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { CalendarDays, Clock, MapPin, Users, GraduationCap, Wine, DollarSign, User } from "lucide-react"
-import Image from "next/image"
-import Link from "next/link"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { getCourseLink, getCourseTitle, getLevel } from "@/lib/utils"
 import { CourseDAO } from "@/services/course-services"
 import { EducatorDAO } from "@/services/educator-services"
-import { getCourseLink, getCourseTitle, getCourseTypeLabel, getLevel } from "@/lib/utils"
 import { format } from "date-fns"
 import { es } from "date-fns/locale"
+import { CalendarDays, CheckCircleIcon, Clock, DollarSign, MapPin, Users } from "lucide-react"
+import Image from "next/image"
+import Link from "next/link"
 
 type Props = {
   course: CourseDAO
   educator: EducatorDAO
+  studentRegistered: boolean
 }
 
-export function WsetLevel1Card({ course, educator }: Props) {
+export function WsetLevel1Card({ course, educator, studentRegistered }: Props) {
   const startDate= course.classDates[0]
   if (!startDate) {
     return <div>No hay clases programadas</div>
@@ -50,7 +51,7 @@ export function WsetLevel1Card({ course, educator }: Props) {
             <span className="text-lg font-semibold">{format(startDate, 'PPP', { locale: es })}</span>
           </div>
         </div>
-        <p className="text-muted-foreground mb-4">El WSET Level 1 Award in Wines es la puerta de entrada ideal al mundo del vino, diseñado para ofrecer una introducción práctica y estructurada. Este curso cubre desde los estilos principales de vino hasta las técnicas de almacenamiento, servicio y maridaje, capacitando a los participantes a realizar recomendaciones informadas y ofrecer un servicio de alta calidad.</p>
+        <p className="text-muted-foreground mb-4">WSET Nivel 1 Cualificación en Vinos es la puerta de entrada ideal al mundo del vino, diseñado para ofrecer una introducción práctica y estructurada. Este curso cubre desde los estilos principales de vino hasta las técnicas de almacenamiento, servicio y maridaje, capacitando a los participantes a realizar recomendaciones informadas y ofrecer un servicio de alta calidad.</p>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm">
           <div className="flex items-center">
             <Clock className="h-5 w-5 mr-2 text-muted-foreground" />
@@ -87,12 +88,13 @@ export function WsetLevel1Card({ course, educator }: Props) {
           </div>
 
           <div className="flex items-center gap-2">
-            <Button asChild className="w-32">
+            <Button asChild className="w-40">
               <Link href={courseLink}>Ver detalles</Link>
             </Button>
-            <Button className="w-32">
-              <Link href={`/cursos/inscripcion/${course.id}`}>
-                Inscribite ahora
+            <Button className="w-40" disabled={studentRegistered}>
+              <Link href={`/cursos/inscripcion/${course.id}`} className="flex items-center">
+                {studentRegistered ? "Ya estas inscripto" : "Inscribite ahora"}
+                {studentRegistered && <CheckCircleIcon className="h-4 w-4 ml-2" />}
               </Link>
             </Button>
           </div>

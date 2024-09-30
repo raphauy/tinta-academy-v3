@@ -1,5 +1,6 @@
 import { WsetLevel1 } from "@/components/wset/wset-level-1";
-import { findCourseByDateSlug } from "@/services/course-services";
+import { findCourseByDateSlug, getStudentCoursesDAO } from "@/services/course-services";
+import { currentUser } from "@clerk/nextjs/server";
 
 type Props = {
   params: {
@@ -14,9 +15,14 @@ export default async function WsetLevel1Page({ params }: Props) {
     return <div>Curso no encontrado</div>
   }
   const educator = course.educator
+
+  const user = await currentUser()
+  const studentId = user?.publicMetadata?.studentId as string | undefined
+  const studentCourses = await getStudentCoursesDAO(studentId)
+  const studentRegistered = studentCourses.some(sc => sc.id === course.id)
   return (
     <div>
-      <WsetLevel1 course={course} educator={educator} />
+      <WsetLevel1 course={course} educator={educator} studentRegistered={studentRegistered} />
     </div>
   )
 }

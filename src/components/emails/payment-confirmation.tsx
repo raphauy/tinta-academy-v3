@@ -100,6 +100,6 @@ export default function WelcomeToTintaAcademy({ buyerName, courseName }: Props) 
 
 WelcomeToTintaAcademy.PreviewProps = {
   buyerName: "Alan",
-  courseName: "WSET Level 1 Award in Wines"
+  courseName: "WSET Nivel 1 Cualificación en Vinos"
 } as Props;
 

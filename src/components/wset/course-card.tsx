@@ -11,7 +11,7 @@ import { EducatorDAO } from "@/services/educator-services"
 import { getCourseLink, getCourseTitle, getCourseTypeLabel, getLevel } from "@/lib/utils"
 import { format } from "date-fns"
 import { es } from "date-fns/locale"
-import { CourseDialog, DeleteCourseDialog } from "@/app/admin/courses/course-dialogs"
+import { AddDatesDialog, CourseDialog, DeleteCourseDialog } from "@/app/admin/courses/course-dialogs"
 
 type Props = {
   course: CourseDAO
@@ -69,6 +69,7 @@ export function CourseCard({ course }: Props) {
           </div>
 
           <div className="flex items-center gap-2">
+            <AddDatesDialog id={course.id} initialDates={course.classDates} initialStartTime={course.startTime} />
             <CourseDialog id={course.id} />
             <DeleteCourseDialog id={course.id} description="¿Estás seguro de que quieres eliminar este curso?"/>
           </div>

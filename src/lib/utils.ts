@@ -27,13 +27,13 @@ export function getCourseTypeLabel(type: CourseType | string) {
 export function getCourseTitle(type: CourseType) {
   switch (type) {
     case CourseType.WSET_LEVEL_1:
-      return "WSET Level 1 Award in Wines"
+      return "WSET Nivel 1 Cualificación en Vinos"
     case CourseType.WSET_LEVEL_2:
-      return "WSET Level 2 Award in Wines"
+      return "WSET Nivel 2 Cualificación en Vinos"
     case CourseType.WSET_LEVEL_3:
-      return "WSET Level 3 Award in Wines"
+      return "WSET Nivel 3 Cualificación en Vinos"
     case CourseType.WSET_LEVEL_4:
-      return "WSET Level 4 Award in Wines"
+      return "WSET Nivel 4 Cualificación en Vinos"
     default:
       return "Otro"
   }
