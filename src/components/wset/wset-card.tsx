@@ -34,7 +34,7 @@ export function WsetCard({ course, studentRegistered }: Props) {
         <div className="relative w-full h-64 sm:h-80 rounded-t-lg overflow-hidden">
           <Link href={courseLink}>
             <Image
-              src="/Wine_WSET.jpg"
+              src={`/Card_WSET_${courseLevel}.jpg`}
             alt="WSET course"
             layout="fill"
               objectFit="cover"
