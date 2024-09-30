@@ -19,11 +19,11 @@ export default async function CoursePage() {
         <DataTable columns={columns} data={data} subject="Course"/>      
       </div> */}
 
-      {data.map((course) => {
-        return (
-          <CourseCard key={course.id} course={course} />
-        )
-      })}
+      <div className="space-y-4">
+        {data.map((course) => {
+          return (<CourseCard key={course.id} course={course} />)
+        })}
+      </div>
     </div>
   )
 }

@@ -10,7 +10,7 @@ export type CourseDAO = {
 	totalDuration: number
 	startTime: string
 	classDuration: number
-	location: string
+	location: string | null | undefined
 	maxCapacity: number
 	priceUSD: number
 	priceUYU: number
@@ -28,12 +28,12 @@ export const courseSchema = z.object({
 	totalDuration: z.string().refine((val) => !isNaN(Number(val)), { message: "(debe ser un número)" }).optional(),
 	startTime: z.string().refine((val) => !isNaN(Number(val)), { message: "(debe ser un número)" }).optional(),
 	classDuration: z.string().refine((val) => !isNaN(Number(val)), { message: "(debe ser un número)" }).optional(),
-	location: z.string().min(1, "location is required."),
+	location: z.string().optional(),
 	maxCapacity: z.string().refine((val) => !isNaN(Number(val)), { message: "(debe ser un número)" }).optional(),
 	priceUSD: z.string().refine((val) => !isNaN(Number(val)), { message: "(debe ser un número)" }).optional(),
 	priceUYU: z.string().refine((val) => !isNaN(Number(val)), { message: "(debe ser un número)" }).optional(),
-	examDate: z.date({required_error: "examDate is required."}),
-	registrationDeadline: z.date({required_error: "registrationDeadline is required."}),
+	examDate: z.date({required_error: "examDate is required."}).optional(),
+	registrationDeadline: z.date({required_error: "registrationDeadline is required."}).optional(),
 	educatorId: z.string().min(1, "educatorId is required."),
 })
 
@@ -131,14 +131,17 @@ export async function deleteCourse(id: string) {
   return deleted
 }
     
-export async function findCourseByDateSlug(dateSlug: string) {
-  const date = new Date(dateSlug)
+export async function findCourseByDateSlug(dateSlug: string, type: CourseType) {
 
   const futureCourses = await prisma.course.findMany({
     where: {
+      type,
       examDate: {
         gte: new Date()
       }
+    },
+    orderBy: {
+      createdAt: 'desc'
     },
     include: {
       educator: true
@@ -147,9 +150,30 @@ export async function findCourseByDateSlug(dateSlug: string) {
 
   console.log(futureCourses)
 
-  const result= futureCourses.filter(course => course.classDates.some(date => date.getFullYear() === date.getFullYear() && date.getMonth() === date.getMonth()))
+  const slugDate = new Date(dateSlug)
+  console.log(slugDate)
 
-  return result
+  const result= futureCourses.filter(course => course.classDates.some(date => date.getFullYear() === slugDate.getFullYear() && date.getMonth() === slugDate.getMonth()))
+
+  if (result.length === 0) return null
+
+  return result[0]
+}
+
+export async function getFirstCourseAnounced(type: CourseType) {
+  const found = await prisma.course.findFirst({
+    where: {
+      type,
+      status: CourseStatus.Anunciado
+    },
+    orderBy: {
+      createdAt: 'asc'
+    },
+    include: {
+      educator: true
+    }
+  })
+  return found
 }
 
 export async function setClassDates(id: string, dates: Date[], startTime: string): Promise<boolean> {

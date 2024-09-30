@@ -9,7 +9,7 @@ import { CourseDAO } from "@/services/course-services"
 import { EducatorDAO } from "@/services/educator-services"
 import { addHours, format, parse } from "date-fns"
 import { es } from "date-fns/locale"
-import { cn, getCourseTitle, getLevel } from "@/lib/utils"
+import { cn, getCourseTitle } from "@/lib/utils"
 import Link from "next/link"
 
 const defaultEducator = {
@@ -23,15 +23,10 @@ type Props = {
   studentRegistered: boolean
 }
 
-export function WsetLevel1({ course, studentRegistered }: Props) {
+export function WsetLevel2({ course, studentRegistered }: Props) {
   const examDate = course.examDate ? course.examDate.toLocaleDateString('es-UY', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : "Sin definir"
   const registrationDeadline = course.registrationDeadline ? course.registrationDeadline.toLocaleDateString('es-UY', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : "Sin definir"
-  // format date to "Octubre 2024"
-  const firstClassDate = course.classDates[0]
-  if (!firstClassDate) {
-    return <div>El curso no tiene clases programadas</div>
-  }
-  const formatedDate = format(firstClassDate, "MMMM yyyy", { locale: es })
+  const formatedDate = course.classDates[0] ? format(course.classDates[0], "MMMM yyyy", { locale: es }) : "Sin definir"
   return (
     <div className="container mx-auto px-4 py-8 max-w-screen-lg">
       <h1 className="text-4xl font-bold text-center">{getCourseTitle(course.type)}</h1>
@@ -43,10 +38,10 @@ export function WsetLevel1({ course, studentRegistered }: Props) {
         </CardHeader>
         <CardContent>
           <p className="text-muted-foreground">
-            WSET Nivel 1 Cualificación en Vinos es la puerta de entrada ideal al mundo del vino, diseñado para ofrecer una introducción práctica y estructurada. Este curso cubre desde los estilos principales de vino hasta las técnicas de almacenamiento, servicio y maridaje, capacitando a los participantes a realizar recomendaciones informadas y ofrecer un servicio de alta calidad.
+            El WSET Nivel 2 es una calificación intermedia diseñada para profundizar el conocimiento del vino. Este curso explora en detalle las variedades de uva, las regiones clave y cómo los factores ambientales influyen en el estilo y la calidad del vino.
           </p>
           <p className="mt-4 text-muted-foreground">
-            Durante el curso, se explorarán los diferentes tipos y estilos de vino mediante la cata guiada, desarrollando habilidades clave para describir los vinos con precisión y conocer la recomendación con el tipo de comida adecuada. Al completar el curso con éxito, se recibirá un certificado WSET reconocido internacionalmente y un pin de solapa.
+            Al completar con éxito, recibirás un certificado internacional WSET y un pin de solapa. Este curso es ideal tanto para profesionales de la industria como para entusiastas avanzados que desean expandir sus conocimientos sobre el vino.
           </p>
         </CardContent>
       </Card>
@@ -58,12 +53,11 @@ export function WsetLevel1({ course, studentRegistered }: Props) {
           </CardHeader>
           <CardContent>
             <ul className="list-disc pl-5 space-y-2 text-muted-foreground">
-              <li>Los principales tipos y estilos de vino.</li>
-              <li>Uvas de vinificación comunes y sus características.</li>
-              <li>Técnicas de maridaje de comida y vino.</li>
-              <li>Cata de vinos guiada.</li>
-              <li>Métodos de almacenamiento y servicio de vinos.</li>
-              <li>Uso del Enfoque Sistemático para la Cata de Vino® (SAT) de Nivel 1 de WSET.</li>
+              <li>Cómo catar y describir vinos usando el Enfoque Sistemático (SAT).</li>
+              <li>Variedades de uva principales y sus características.</li>
+              <li>Factores ambientales y de elaboración que influyen en el vino.</li>
+              <li>Técnicas de almacenamiento y servicio de vinos.</li>
+              <li>Principios de maridaje de comida y vino.</li>
             </ul>
           </CardContent>
         </Card>
@@ -74,10 +68,9 @@ export function WsetLevel1({ course, studentRegistered }: Props) {
           </CardHeader>
           <CardContent>
             <ul className="list-disc pl-5 space-y-2 text-muted-foreground">
-              <li>Estás comenzando una carrera enológica.</li>
-              <li>Te estás preparando para tu primer trabajo en la industria del vino.</li>
-              <li>Formas parte del sector hotelero y queres capacitar a tu equipo.</li>
-              <li>Si sos un entusiasta del vino que quiere profundizar en su conocimiento.</li>
+              <li>Estás comenzando o consolidando tu carrera enológica.</li>
+              <li>Trabajas en la industria del vino o la hospitalidad y quieres mejorar tu servicio.</li>
+              <li>Eres un entusiasta avanzado del vino y deseas profundizar tu conocimiento.</li>
             </ul>
           </CardContent>
         </Card>
@@ -91,7 +84,7 @@ export function WsetLevel1({ course, studentRegistered }: Props) {
           <div className="grid sm:grid-cols-2 gap-4">
             <div className="flex items-center space-x-2">
               <Clock className="h-5 w-5 text-muted-foreground" />
-              <span>Duración: {course.totalDuration} horas de formación presencial</span>
+              <span>Duración: 28 horas (16 horas presenciales)</span>
             </div>
             <div className="flex items-center space-x-2">
               <MapPin className="h-5 w-5 text-muted-foreground" />
@@ -103,7 +96,7 @@ export function WsetLevel1({ course, studentRegistered }: Props) {
             </div>
             <div className="flex items-center space-x-2">
               <GraduationCap className="h-5 w-5 text-muted-foreground" />
-              <span>Examen: 30 preguntas, 45 minutos, 70% para aprobar</span>
+              <span>Examen: 50 preguntas, 60 minutos, 55% para aprobar</span>
             </div>
           </div>
         </CardContent>
@@ -125,7 +118,7 @@ export function WsetLevel1({ course, studentRegistered }: Props) {
               <div key={index} className="flex items-center space-x-2">
                 <CalendarDays className="h-5 w-5 text-muted-foreground" />
                 <span>Clase {index + 1}: {formatedDate} - {formatedTime} hs a {formatedEndTime} hs</span>
-                </div>
+              </div>
               )
             })}
             <div className="flex items-center space-x-2">
@@ -148,9 +141,9 @@ export function WsetLevel1({ course, studentRegistered }: Props) {
           <p className="text-3xl font-bold">{course.priceUSD} USD <span className="text-sm font-normal text-muted-foreground">(IVA incluido)</span></p>
           <p className="mt-4 font-semibold">El curso incluye:</p>
           <ul className="list-disc pl-5 mt-2 space-y-2 text-muted-foreground">
-            <li>Materiales de estudio: cuaderno de ejercicios WSET Nivel 1</li>
+            <li>Materiales de estudio: cuaderno de ejercicios WSET Nivel 2.</li>
             <li>Matrícula completa</li>
-            <li>Cata de 9 vinos durante el curso</li>
+            <li>Cata de una selección de vinos representativos</li>
             <li>Examen final</li>
             <li>Certificación internacional WSET y pin de solapa</li>
           </ul>
@@ -199,9 +192,8 @@ export function WsetLevel1({ course, studentRegistered }: Props) {
         </CardHeader>
         <CardContent>
           <ul className="list-disc pl-5 space-y-2 text-muted-foreground">
-            <li>No existen restricciones para participar en el Nivel 1 en Vinos de la WSET.</li>
             <li>No se requieren conocimientos previos.</li>
-            <li>Los estudiantes deben ser mayores de 18 años, la edad mínima legal para la compra de bebidas alcohólicas en Uruguay.</li>
+            <li>Los estudiantes deben ser mayores de 18 años.</li>
             <li>Se solicitará una identificación con foto el día del curso/examen.</li>
           </ul>
         </CardContent>

@@ -14,15 +14,14 @@ import Link from "next/link"
 
 type Props = {
   course: CourseDAO
-  educator: EducatorDAO
   studentRegistered: boolean
 }
 
-export function WsetLevel1Card({ course, educator, studentRegistered }: Props) {
+export function WsetCard({ course, studentRegistered }: Props) {
+  const courseLevel= getLevel(course.type)  
+  const shortDescription= shortDescriptions[courseLevel - 1]
   const startDate= course.classDates[0]
-  if (!startDate) {
-    return <div>No hay clases programadas</div>
-  }
+  const formatedStartDate = startDate ? format(startDate, 'PPP', { locale: es }) : "Sin definir"
   const courseLink = getCourseLink(course)
   return (
     <Card className="w-full hover:shadow-lg transition-shadow duration-300">
@@ -48,10 +47,10 @@ export function WsetLevel1Card({ course, educator, studentRegistered }: Props) {
           <CardTitle className="text-2xl mb-2 sm:mb-0">{getCourseTitle(course.type)}</CardTitle>
           <div className="flex items-center bg-primary/10 rounded-full px-4 py-2">
             <CalendarDays className="h-6 w-6 mr-2 text-primary" />
-            <span className="text-lg font-semibold">{format(startDate, 'PPP', { locale: es })}</span>
+            <span className="text-lg font-semibold">{formatedStartDate}</span>
           </div>
         </div>
-        <p className="text-muted-foreground mb-4">WSET Nivel 1 Cualificación en Vinos es la puerta de entrada ideal al mundo del vino, diseñado para ofrecer una introducción práctica y estructurada. Este curso cubre desde los estilos principales de vino hasta las técnicas de almacenamiento, servicio y maridaje, capacitando a los participantes a realizar recomendaciones informadas y ofrecer un servicio de alta calidad.</p>
+        <p className="text-muted-foreground mb-4">{shortDescription}</p>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm">
           <div className="flex items-center">
             <Clock className="h-5 w-5 mr-2 text-muted-foreground" />
@@ -104,3 +103,9 @@ export function WsetLevel1Card({ course, educator, studentRegistered }: Props) {
     </Card>
   )
 }
+
+
+const shortDescriptions= [
+  "WSET Nivel 1 es la puerta de entrada ideal al mundo del vino, diseñado para ofrecer una introducción práctica y estructurada. Este curso cubre desde los estilos principales de vino hasta las técnicas de almacenamiento, servicio y maridaje, capacitando a los participantes a realizar recomendaciones informadas y ofrecer un servicio de alta calidad.",
+  "El WSET Nivel 2 es una calificación intermedia diseñada para profundizar el conocimiento del vino. Este curso explora las variedades de uva más importantes, las regiones clave, y te capacita para describir los vinos con confianza."
+]

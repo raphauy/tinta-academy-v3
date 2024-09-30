@@ -1,5 +1,6 @@
 import { WsetLevel1 } from "@/components/wset/wset-level-1";
-import { CourseDAO, findCourseByDateSlug, getFirstCourseAnounced, getStudentCoursesDAO } from "@/services/course-services";
+import { WsetLevel2 } from "@/components/wset/wset-level-2";
+import { findCourseByDateSlug, getFirstCourseAnounced, getStudentCoursesDAO } from "@/services/course-services";
 import { currentUser } from "@clerk/nextjs/server";
 
 type Props = {
@@ -11,9 +12,9 @@ export default async function WsetLevel1Page({ params }: Props) {
   const dateSlug = params.dateSlug
   let course
   if (dateSlug === "sin-definir") {
-    course= await getFirstCourseAnounced("WSET_NIVEL_1")
+    course= await getFirstCourseAnounced("WSET_NIVEL_2")
   } else {
-    course= await findCourseByDateSlug(dateSlug, "WSET_NIVEL_1")
+    course= await findCourseByDateSlug(dateSlug, "WSET_NIVEL_2")
   }
 
   if (!course) return <div>Curso no encontrado</div>
@@ -24,7 +25,7 @@ export default async function WsetLevel1Page({ params }: Props) {
   const studentRegistered = studentCourses.some(sc => sc.id === course.id)
   return (
     <div>
-      <WsetLevel1 course={course} studentRegistered={studentRegistered} />
+      <WsetLevel2 course={course} studentRegistered={studentRegistered} />
     </div>
   )
 }

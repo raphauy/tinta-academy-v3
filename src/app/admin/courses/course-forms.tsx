@@ -78,7 +78,7 @@ export function CourseForm({ id, closeDialog }: Props) {
           data.registrationDeadline && form.setValue("registrationDeadline", data.registrationDeadline)
           form.setValue("totalDuration", data.totalDuration.toString())
           form.setValue("classDuration", data.classDuration.toString())
-          form.setValue("location", data.location)
+          data.location && form.setValue("location", data.location)
           form.setValue("maxCapacity", data.maxCapacity.toString())
           form.setValue("educatorId", data.educatorId)
         }

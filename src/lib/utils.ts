@@ -48,11 +48,8 @@ export function getLevel(type: CourseType) {
 
 export function getCourseLink(course: CourseDAO) {
 
-  if (course.classDates.length === 0) {
-    return `/cursos`
-  }
   const courseTypeSlug = course.type.toLowerCase().replaceAll('_', '-')
-  const courseDateSlug = format(course.classDates[0], 'yyyy-MMMM', { locale: es })
+  const courseDateSlug = course.classDates[0] ? format(course.classDates[0], 'yyyy-MMMM', { locale: es }) : "sin-definir"
   return `/cursos/${courseTypeSlug}/${courseDateSlug}`
 }
 

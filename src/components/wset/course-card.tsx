@@ -19,10 +19,7 @@ type Props = {
 
 export function CourseCard({ course }: Props) {
   const startDate = course.classDates[0]
-  if (!startDate) {
-    return <div>No hay clases programadas</div>
-  }
-  const courseLink = getCourseLink(course)
+  const formatedStartDate = startDate ? format(startDate, 'PPP', { locale: es }) : "Sin definir"
   return (
     <Card className="w-full hover:shadow-lg transition-shadow duration-300">
       <CardContent className="pt-6">
@@ -30,7 +27,7 @@ export function CourseCard({ course }: Props) {
           <CardTitle className="text-2xl mb-2 sm:mb-0">{getCourseTitle(course.type)}</CardTitle>
           <div className="flex items-center bg-primary/10 rounded-full px-4 py-2">
             <CalendarDays className="h-6 w-6 mr-2 text-primary" />
-            <span className="text-lg font-semibold">{format(startDate, 'PPP', { locale: es })}</span>
+            <span className="text-lg font-semibold">{formatedStartDate}</span>
           </div>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm">

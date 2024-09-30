@@ -1,6 +1,6 @@
-import { WsetLevel1Card } from "@/components/wset/wset-level-1-card"
+import { WsetCard } from "@/components/wset/wset-card"
 import { getCoursesDAO, getStudentCoursesDAO } from "@/services/course-services"
-import { auth, currentUser } from "@clerk/nextjs/server"
+import { currentUser } from "@clerk/nextjs/server"
 
 export default async function Cursos() {
 
@@ -13,12 +13,13 @@ export default async function Cursos() {
   return (
     <div className="mt-10 mx-auto max-w-4xl">
         <h1 className="text-2xl font-bold mb-10 text-center">Próximos cursos</h1>
-        <ul>
+        <ul className="space-y-10">
           {courses.map((course) => {
             const studentRegistered = studentCourses.some(sc => sc.id === course.id)
             return (
             <li key={course.id}>
-              <WsetLevel1Card course={course} educator={course.educator} studentRegistered={studentRegistered} />
+              { course.type === "WSET_NIVEL_1" && <WsetCard course={course} studentRegistered={studentRegistered} /> }
+              { course.type === "WSET_NIVEL_2" && <WsetCard course={course} studentRegistered={studentRegistered} /> }
             </li>
           )})}
         </ul>

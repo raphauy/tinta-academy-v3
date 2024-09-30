@@ -60,7 +60,7 @@ model Course {
   totalDuration         Int                            // gennext: show.column
   startTime             String    @default("18:30")    // gennext: show.column
   classDuration         Int                            // gennext: show.column
-  location              String                         // gennext: show.column
+  location              String?                        // gennext: show.column
   maxCapacity           Int                            // gennext: show.column
   priceUSD              Float                          // gennext: show.column
   priceUYU              Float                          // gennext: show.column
