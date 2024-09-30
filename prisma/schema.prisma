@@ -42,15 +42,14 @@ model Student {
 }
 
 enum CourseType {
-  WSET_LEVEL_1
-  WSET_LEVEL_2
-  WSET_LEVEL_3
-  WSET_LEVEL_4
+  WSET_NIVEL_1
+  WSET_NIVEL_2
+  WSET_NIVEL_3
 }
 
 model Course {
   id                    String   @id @default(cuid())
-  type                  CourseType
+  type                  CourseType 
   totalDuration         Int                            // gennext: show.column
   startTime             String    @default("18:30")    // gennext: show.column
   classDuration         Int                            // gennext: show.column

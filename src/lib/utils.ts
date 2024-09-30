@@ -11,14 +11,12 @@ export function cn(...inputs: ClassValue[]) {
 
 export function getCourseTypeLabel(type: CourseType | string) {
   switch (type) {
-    case CourseType.WSET_LEVEL_1:
-      return "WSET Level 1"
-    case CourseType.WSET_LEVEL_2:
-      return "WSET Level 2"
-    case CourseType.WSET_LEVEL_3:
-      return "WSET Level 3"
-    case CourseType.WSET_LEVEL_4:
-      return "WSET Level 4"
+    case CourseType.WSET_NIVEL_1:
+      return "WSET Nivel 1"
+    case CourseType.WSET_NIVEL_2:
+      return "WSET Nivel 2"
+    case CourseType.WSET_NIVEL_3:
+      return "WSET Nivel 3"
     default:
       return "Otro"
   }
@@ -26,14 +24,12 @@ export function getCourseTypeLabel(type: CourseType | string) {
 
 export function getCourseTitle(type: CourseType) {
   switch (type) {
-    case CourseType.WSET_LEVEL_1:
+    case CourseType.WSET_NIVEL_1:
       return "WSET Nivel 1 Cualificación en Vinos"
-    case CourseType.WSET_LEVEL_2:
+    case CourseType.WSET_NIVEL_2:
       return "WSET Nivel 2 Cualificación en Vinos"
-    case CourseType.WSET_LEVEL_3:
+    case CourseType.WSET_NIVEL_3:
       return "WSET Nivel 3 Cualificación en Vinos"
-    case CourseType.WSET_LEVEL_4:
-      return "WSET Nivel 4 Cualificación en Vinos"
     default:
       return "Otro"
   }
@@ -41,14 +37,12 @@ export function getCourseTitle(type: CourseType) {
 
 export function getLevel(type: CourseType) {
   switch (type) {
-    case CourseType.WSET_LEVEL_1:
+    case CourseType.WSET_NIVEL_1:
       return 1
-    case CourseType.WSET_LEVEL_2:
+    case CourseType.WSET_NIVEL_2:
       return 2
-    case CourseType.WSET_LEVEL_3:
+    case CourseType.WSET_NIVEL_3:
       return 3
-    case CourseType.WSET_LEVEL_4:
-      return 4
   }
 }
 
