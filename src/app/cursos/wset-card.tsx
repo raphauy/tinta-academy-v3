@@ -89,11 +89,11 @@ export function WsetCard({ course, studentRegistered, userObserving }: Props) {
           </div>
 
           <div className="flex items-center gap-2">
-            <Button asChild className="w-40">
+            <Button asChild className="w-40 font-bold">
               <Link href={courseLink}>Ver detalles</Link>
             </Button>
             <Button className="w-40" disabled={studentRegistered}>
-              <Link href={`/cursos/inscripcion/${course.id}`} className="flex items-center">
+              <Link href={`/cursos/inscripcion/${course.id}`} className="flex items-center font-bold">
                 {studentRegistered ? "Ya estas inscripto" : "Inscribite ahora"}
                 {studentRegistered && <CheckCircleIcon className="h-4 w-4 ml-2" />}
               </Link>
