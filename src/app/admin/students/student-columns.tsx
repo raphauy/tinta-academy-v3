@@ -27,7 +27,7 @@ export const columns: ColumnDef<StudentDAO>[] = [
       return (
         <div className="flex items-center justify-start gap-2">
           <Avatar>
-            <AvatarImage src={data.user.imageUrl} />
+            <AvatarImage src={data.user.imageUrl ?? ""} />
             <AvatarFallback>
               {data.firstName.charAt(0)}
               {data.lastName.charAt(0)}

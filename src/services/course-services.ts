@@ -229,6 +229,22 @@ export async function observeCourse(clerkUserId: string, courseId: string) {
   return created
 }
 
+export async function removeCourseObserver(clerkUserId: string, courseId: string) {
+  const user= await getUserByClerkUserId(clerkUserId)
+  if (!user) {
+    throw new Error("Usuario no encontrado")
+  }
+  const deleted = await prisma.courseObserver.delete({
+    where: {
+      userId_courseId: {
+        userId: user.id,
+        courseId
+      }
+    }
+  })
+  return deleted
+}
+
 export async function getCourseObservers(courseId: string) {
   const found = await prisma.courseObserver.findMany({
     where: {
@@ -252,6 +268,7 @@ export async function getCourseObservers(courseId: string) {
 }
 
 type CourseWithObserver= {
+  id: string
   label: string
   users: {
     name: string
@@ -269,6 +286,7 @@ export async function getCoursesWithObservers(): Promise<CourseWithObserver[]> {
     const users= await getCourseObservers(course.id)
     const label= getCourseTitle(course.type)
     res.push({
+      id: course.id,
       label,
       users
     })
