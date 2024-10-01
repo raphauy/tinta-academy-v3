@@ -19,7 +19,9 @@ model User {
   updatedAt     DateTime @updatedAt @default(now())  // gennext: skip.zod
 
   students      Student[]
+  observedCourses CourseObserver[]
 }
+
 model Student {
   id            String    @id @default(cuid())
   firstName     String                               // gennext: show.column
@@ -74,7 +76,8 @@ model Course {
   createdAt             DateTime @default(now())       // gennext: skip.zod
   updatedAt             DateTime @updatedAt            // gennext: skip.zod
 
-  orders      Order[]    
+  orders                Order[]    
+  observers             CourseObserver[]
 }
 
 model Educator {
@@ -141,4 +144,15 @@ model Order {
   studentId   String
 
   @@index([studentId])                                  // gennext: show.list skip.zod
+}
+
+model CourseObserver {
+  user        User     @relation(fields: [userId], references: [id])
+  userId      String
+  course      Course   @relation(fields: [courseId], references: [id])
+  courseId    String
+  clerkUserId String
+  createdAt   DateTime @default(now())
+
+  @@id([userId, courseId])
 }

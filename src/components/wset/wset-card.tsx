@@ -11,13 +11,15 @@ import { es } from "date-fns/locale"
 import { CalendarDays, CheckCircleIcon, Clock, DollarSign, MapPin, Users } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
+import { ObserveButton } from "./observe-button"
 
 type Props = {
   course: CourseDAO
   studentRegistered: boolean
+  userObserving: boolean
 }
 
-export function WsetCard({ course, studentRegistered }: Props) {
+export function WsetCard({ course, studentRegistered, userObserving }: Props) {
   const courseLevel= getLevel(course.type)  
   const shortDescription= shortDescriptions[courseLevel - 1]
   const startDate= course.classDates[0]
@@ -69,7 +71,7 @@ export function WsetCard({ course, studentRegistered }: Props) {
             <span>{course.location}</span>
           </div>
         </div>
-        <div className="mt-14 flex items-center justify-between">
+        <div className="mt-14 md:flex md:items-center md:justify-between grid gap-4">
           <div className="flex items-center">
             <div className="w-12 h-12 rounded-full overflow-hidden mr-3">
               <Image
@@ -96,6 +98,7 @@ export function WsetCard({ course, studentRegistered }: Props) {
                 {studentRegistered && <CheckCircleIcon className="h-4 w-4 ml-2" />}
               </Link>
             </Button>
+            <ObserveButton courseId={course.id} userObserving={userObserving} />
           </div>
 
         </div>

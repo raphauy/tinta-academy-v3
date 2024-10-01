@@ -2,6 +2,8 @@ import * as z from "zod"
 import { prisma } from "@/lib/db"
 import { EducatorDAO } from "./educator-services"
 import { CourseStatus, CourseType } from "@prisma/client"
+import { getUserByClerkUserId, getUserDAO, UserDAO } from "./user-services"
+import { getCourseTitle } from "@/lib/utils"
 
 export type CourseDAO = {
 	id: string
@@ -47,7 +49,7 @@ export async function getCoursesDAO() {
       id: 'asc'
     },
     include: {
-      educator: true
+      educator: true,
     }
   })
 
@@ -188,4 +190,103 @@ export async function setClassDates(id: string, dates: Date[], startTime: string
     }
   })
   return true
+}
+
+// model CourseObserver {
+//   user        User     @relation(fields: [userId], references: [id])
+//   userId      String
+//   course      Course   @relation(fields: [courseId], references: [id])
+//   courseId    String
+//   clerkUserId String
+//   createdAt   DateTime @default(now())
+
+//   @@id([userId, courseId])
+// }
+export async function observeCourse(clerkUserId: string, courseId: string) {
+  const user= await getUserByClerkUserId(clerkUserId)
+  if (!user) {
+    throw new Error("Usuario no encontrado")
+  }
+  // check if exists
+  const found = await prisma.courseObserver.findUnique({
+    where: {
+      userId_courseId: {
+        userId: user.id,
+        courseId
+      }
+    }
+  })
+  if (found) {
+    throw new Error("El usuario ya está asociado a este curso")
+  }
+  const created = await prisma.courseObserver.create({
+    data: {
+      userId: user.id,
+      courseId,
+      clerkUserId
+    }
+  })
+  return created
+}
+
+export async function getCourseObservers(courseId: string) {
+  const found = await prisma.courseObserver.findMany({
+    where: {
+      courseId
+    },
+    include: {
+      user: true      
+    }
+  })
+  console.log("courseObservers count: ", found.length)
+  const users= []
+  for (const observer of found) {
+    const name= observer.user.firstName ? observer.user.firstName + " " + observer.user.lastName : ""
+    users.push({
+      name,
+      email: observer.user.email
+    })
+  }
+  console.log("users: ", users)
+  return users
+}
+
+type CourseWithObserver= {
+  label: string
+  users: {
+    name: string
+    email: string
+  }[]
+}
+export async function getCoursesWithObservers(): Promise<CourseWithObserver[]> {
+
+  const res: CourseWithObserver[]= []
+
+  const courses= await getCoursesDAO()
+  console.log("courses count: ", courses.length)
+
+  for (const course of courses) {
+    const users= await getCourseObservers(course.id)
+    const label= getCourseTitle(course.type)
+    res.push({
+      label,
+      users
+    })
+  }
+
+  return res
+
+}
+
+export async function getObservedCoursesIds(clerkUserId: string) {
+  const res: string[]= []
+  const found = await prisma.courseObserver.findMany({
+    where: {
+      clerkUserId
+    }
+  })
+  for (const observer of found) {
+    res.push(observer.courseId)
+  }
+  return res
 }

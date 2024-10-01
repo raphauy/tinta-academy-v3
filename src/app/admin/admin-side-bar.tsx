@@ -1,13 +1,12 @@
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
-import { Bell, BookOpen, GraduationCap, Home, Landmark, List, User } from "lucide-react"
+import { BookOpen, GraduationCap, Home, Landmark, List, Megaphone, User } from "lucide-react"
 import Link from "next/link"
 
 const menu = [
   { name: "Dashboard", icon: Home, href: "/admin" },
   { name: "--dash--", icon: Home, href: "/" },
   { name: "Cursos", icon: BookOpen, href: "/admin/courses" },
+  { name: "Interesados", icon: Megaphone, href: "/admin/interest" },
   { name: "--dash--", icon: Home, href: "/" },
   { name: "Estudiantes", icon: User, href: "/admin/students" },
   { name: "Educators", icon: GraduationCap, href: "/admin/educators" },

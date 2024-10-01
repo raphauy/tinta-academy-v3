@@ -1,7 +1,7 @@
 "use server"
   
 import { revalidatePath } from "next/cache"
-import { CourseDAO, CourseFormValues, createCourse, updateCourse, getCourseDAO, deleteCourse, setClassDates } from "@/services/course-services"
+import { CourseDAO, CourseFormValues, createCourse, updateCourse, getCourseDAO, deleteCourse, setClassDates, observeCourse } from "@/services/course-services"
 
 export async function getCourseDAOAction(id: string): Promise<CourseDAO | null> {
     return getCourseDAO(id)
@@ -36,5 +36,14 @@ export async function setClassDatesAndTimeAction(id: string, dates: Date[], star
 
     revalidatePath("/admin/educators")
 
+    return true
+}
+
+export async function observeCourseAction(clerkUserId: string, courseId: string): Promise<boolean> {
+    const created= await observeCourse(clerkUserId, courseId)
+    if (!created) {
+        throw new Error("Error al agregar usuario a curso")
+    }
+    revalidatePath("/cursos")
     return true
 }

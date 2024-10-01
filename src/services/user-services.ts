@@ -7,9 +7,9 @@ export type UserDAO = {
 	id: string
 	email: string
 	clerkUserId: string
-	firstName: string | undefined
-	lastName: string | undefined
-	imageUrl: string | undefined
+	firstName: string | undefined | null
+	lastName: string | undefined | null
+	imageUrl: string | undefined | null
 	createdAt: Date
 	updatedAt: Date
 	students: StudentDAO[]
@@ -176,4 +176,4 @@ export async function getFullUserDAO(id: string) {
   })
   return found as UserDAO
 }
-    
+
