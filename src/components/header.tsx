@@ -18,7 +18,7 @@ export default function Header() {
   return (
     <header className='fixed inset-x-0 top-0 z-50 bg-background/20 py-4 backdrop-blur-sm'>
       <nav className='px-4 flex items-center justify-between mx-auto'>
-        <Sheet>
+        {/* <Sheet>
           <SheetTrigger className='sm:hidden'>
             <Menu className='h-6 w-6' />
           </SheetTrigger>
@@ -28,13 +28,13 @@ export default function Header() {
                 <SheetClose asChild>
                     <Link href="/" className="flex items-center gap-2 font-semibold">
                         <GraduationCap className="h-6 w-6" />
-                        <span>Tinta Academy</span>
+                        <span>Tinta Academy 2</span>
                     </Link>
                 </SheetClose>
               </li>
             </ul>
           </SheetContent>
-        </Sheet>
+        </Sheet> */}
 
         <ul className='hidden items-center gap-14 text-sm font-medium md:flex'>
           <li className='font-serif text-lg font-bold'>
