@@ -29,11 +29,7 @@ export function WsetLevel1({ course, studentRegistered, userObserving }: Props) 
   const examDate = course.examDate ? course.examDate.toLocaleDateString('es-UY', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : "Sin definir"
   const registrationDeadline = course.registrationDeadline ? course.registrationDeadline.toLocaleDateString('es-UY', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : "Sin definir"
   // format date to "Octubre 2024"
-  const firstClassDate = course.classDates[0]
-  if (!firstClassDate) {
-    return <div>El curso no tiene clases programadas</div>
-  }
-  const formatedDate = format(firstClassDate, "MMMM yyyy", { locale: es })
+  const formatedDate = course.classDates[0] ? format(course.classDates[0], "MMMM yyyy", { locale: es }) : "Sin definir"
   return (
     <div className="container mx-auto px-4 py-8 max-w-screen-lg">
       <h1 className="text-4xl font-bold text-center">{getCourseTitle(course.type)}</h1>
