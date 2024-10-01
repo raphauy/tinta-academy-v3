@@ -11,6 +11,7 @@ import { addHours, format, parse } from "date-fns"
 import { es } from "date-fns/locale"
 import { cn, getCourseTitle } from "@/lib/utils"
 import Link from "next/link"
+import { ObserveButton } from "@/app/cursos/observe-button"
 
 const defaultEducator = {
   name: "Gabi Zimmer",
@@ -21,9 +22,10 @@ const defaultEducator = {
 type Props = {
   course: CourseDAO
   studentRegistered: boolean
+  userObserving: boolean
 }
 
-export function WsetLevel2({ course, studentRegistered }: Props) {
+export function WsetLevel2({ course, studentRegistered, userObserving }: Props) {
   const examDate = course.examDate ? course.examDate.toLocaleDateString('es-UY', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : "Sin definir"
   const registrationDeadline = course.registrationDeadline ? course.registrationDeadline.toLocaleDateString('es-UY', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : "Sin definir"
   const formatedDate = course.classDates[0] ? format(course.classDates[0], "MMMM yyyy", { locale: es }) : "Sin definir"
@@ -191,6 +193,10 @@ export function WsetLevel2({ course, studentRegistered }: Props) {
         <p className={cn("mt-2 text-sm text-muted-foreground", studentRegistered && "hidden")}>
           Para reservar tu lugar, hacé clic acá y completa tus datos.
         </p>
+      </div>
+
+      <div className="text-center mb-8">
+        <ObserveButton courseId={course.id} userObserving={userObserving} />
       </div>
 
       <Card className="mb-8">

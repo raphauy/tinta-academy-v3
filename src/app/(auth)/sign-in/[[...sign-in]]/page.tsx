@@ -1,10 +1,17 @@
 import { SignIn } from "@clerk/nextjs";
 
-
-export default function SignInPage() {
+type Props = {
+  searchParams: {
+    fallbackRedirectUrl?: string
+  }
+}
+export default function SignInPage({ searchParams }: Props) {
+  const fallbackRedirectUrl = searchParams.fallbackRedirectUrl
   return (
     <div className="mx-auto w-full max-w-md mt-10 lg:mt-20 flex items-center justify-center">
-      <SignIn />
+      {
+        fallbackRedirectUrl ? <SignIn fallbackRedirectUrl={fallbackRedirectUrl} /> : <SignIn />
+      }
     </div>
   )
 }

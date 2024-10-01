@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { toast } from "@/hooks/use-toast"
 import { useUser } from "@clerk/nextjs"
 import { CheckCircleIcon, Loader } from "lucide-react"
+import { useRouter } from "next/navigation"
 import { useState } from "react"
 
 type Props = {
@@ -15,9 +16,11 @@ export function ObserveButton({ courseId, userObserving }: Props) {
     const [loading, setLoading] = useState(false)
     const { user } = useUser()
 
+    const router = useRouter()
+
     function handleClick() {
         if (!user) {
-            toast({ title: "Error", description: "No se ha iniciado sesión" })
+            router.push("/sign-in?fallbackRedirectUrl=/cursos")
             return
         }
         setLoading(true)
@@ -43,7 +46,7 @@ export function ObserveButton({ courseId, userObserving }: Props) {
     }
 
     return (
-        <Button onClick={handleClick} disabled={loading}>
+        <Button onClick={handleClick} disabled={loading} className="font-bold">
             {loading && <Loader className="w-4 h-4 mr-2" />}
             Quiero recibir novedades
         </Button>

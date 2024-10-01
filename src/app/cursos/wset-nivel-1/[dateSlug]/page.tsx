@@ -1,5 +1,5 @@
 import { WsetLevel1 } from "@/components/wset/wset-level-1";
-import { CourseDAO, findCourseByDateSlug, getFirstCourseAnounced, getStudentCoursesDAO } from "@/services/course-services";
+import { CourseDAO, findCourseByDateSlug, getFirstCourseAnounced, getObservedCoursesIds, getStudentCoursesDAO } from "@/services/course-services";
 import { currentUser } from "@clerk/nextjs/server";
 
 type Props = {
@@ -22,9 +22,11 @@ export default async function WsetLevel1Page({ params }: Props) {
   const studentId = user?.publicMetadata?.studentId as string | undefined
   const studentCourses = await getStudentCoursesDAO(studentId)
   const studentRegistered = studentCourses.some(sc => sc.id === course.id)
+  const observedCoursesIds = await getObservedCoursesIds(user?.id as string)
+  const userObserving = observedCoursesIds.includes(course.id)
   return (
     <div>
-      <WsetLevel1 course={course} studentRegistered={studentRegistered} />
+      <WsetLevel1 course={course} studentRegistered={studentRegistered} userObserving={userObserving} />
     </div>
   )
 }

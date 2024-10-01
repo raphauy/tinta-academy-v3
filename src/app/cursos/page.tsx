@@ -1,6 +1,6 @@
-import { WsetCard } from "@/components/wset/wset-card"
 import { getCoursesDAO, getObservedCoursesIds, getStudentCoursesDAO } from "@/services/course-services"
 import { currentUser } from "@clerk/nextjs/server"
+import { WsetCard } from "./wset-card"
 
 export default async function Cursos() {
 
@@ -10,6 +10,8 @@ export default async function Cursos() {
   const courses = await getCoursesDAO()
   const studentCourses = await getStudentCoursesDAO(studentId)
   const observedCoursesIds = await getObservedCoursesIds(user?.id as string)
+  console.log("userId: ", user?.id)
+  console.log("observedCoursesIds: ", observedCoursesIds)
   return (
     <div className="mt-10 mx-auto max-w-4xl">
         <h1 className="text-2xl font-bold mb-10 text-center">Próximos cursos</h1>

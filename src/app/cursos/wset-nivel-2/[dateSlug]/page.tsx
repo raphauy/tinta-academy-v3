@@ -1,4 +1,3 @@
-import { WsetLevel1 } from "@/components/wset/wset-level-1";
 import { WsetLevel2 } from "@/components/wset/wset-level-2";
 import { findCourseByDateSlug, getFirstCourseAnounced, getStudentCoursesDAO } from "@/services/course-services";
 import { currentUser } from "@clerk/nextjs/server";

@@ -297,6 +297,8 @@ export async function getCoursesWithObservers(): Promise<CourseWithObserver[]> {
 }
 
 export async function getObservedCoursesIds(clerkUserId: string) {
+  if (!clerkUserId) return []
+  
   const res: string[]= []
   const found = await prisma.courseObserver.findMany({
     where: {
