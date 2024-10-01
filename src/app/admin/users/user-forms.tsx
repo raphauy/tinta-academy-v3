@@ -41,7 +41,11 @@ export function UserForm({ id, closeDialog }: Props) {
     if (id) {
       getUserDAOAction(id).then((data) => {
         if (data) {
-          form.reset(data)
+          form.setValue("clerkUserId", data.clerkUserId)
+          form.setValue("email", data.email)
+          data.firstName && form.setValue("firstName", data.firstName)
+          data.lastName && form.setValue("lastName", data.lastName)
+          data.imageUrl && form.setValue("imageUrl", data.imageUrl)
         }
         Object.keys(form.getValues()).forEach((key: any) => {
           if (form.getValues(key) === null) {
