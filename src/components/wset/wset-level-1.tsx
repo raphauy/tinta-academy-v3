@@ -211,10 +211,10 @@ export function WsetLevel1({ course, studentRegistered, userObserving }: Props) 
 
       <div className="text-center">
         <p className="text-sm text-muted-foreground">
-          Por favor, consulta nuestra Política de Ajustes Razonables y notifica a Tinta Academy si requieres asistencia especial.
+          Por favor, consulta nuestra <Link href="/politicas/ajuste-razonable" className="underline">Política de Ajustes Razonables</Link> y notifica a Tinta Academy si requieres asistencia especial.
         </p>
         <p className="text-sm text-muted-foreground mt-2">
-          Conoce todas las Políticas de Tinta Academy disponibles en nuestro sitio web.
+          Conoce todas las <Link href="/politicas" className="underline">Políticas de Tinta Academy</Link> disponibles en nuestro sitio web.
         </p>
       </div>
     </div>
