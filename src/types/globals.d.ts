@@ -7,7 +7,7 @@ declare global {
   interface CustomJwtSessionClaims {
     metadata: {
       role?: Roles,
-      studentId: string
+      studentId?: string
     }
   }
 }

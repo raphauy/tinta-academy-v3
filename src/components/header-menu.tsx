@@ -15,6 +15,8 @@ const menuItems = [
   { icon: Mail, label: "Contacto", href: '/contact', roles: [], disabled: true },
   { icon: Calendar, label: "Próximos cursos", href: '/coming-soon', roles: [], disabled: true},
   { icon: LayoutDashboard, label: "Admin", href: '/admin', roles: ["admin"], disabled: false },
+  // student
+  { icon: Book, label: "Panel de Estudiante", href: '/student', roles: ["student"], disabled: false },
 ]
 
 export function HeaderMenu() {

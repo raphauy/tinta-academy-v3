@@ -1,4 +1,6 @@
+import { Button } from "@/components/ui/button"
 import { CheckIcon, XCircleIcon } from "lucide-react"
+import Link from "next/link"
 
 type Props = {
     status: string
@@ -13,6 +15,12 @@ export default function MpCallback({ status } : Props) {
                 <p>Hemos recibido tus datos correctamente.</p>
                 <p>Hemos recibido la confirmación de tu pago en Mercadopago.</p>
                 <p>Felicidades, ya formas parte de nuestro curso.</p>
+
+                <Button>
+                    <Link href="/student">
+                        Ir al Panel de Estudiante
+                    </Link>
+                </Button>
             </div>
         )
     }

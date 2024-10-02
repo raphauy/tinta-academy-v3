@@ -66,6 +66,9 @@ export async function getStudentCoursesDAO(studentId: string | undefined) {
           studentId
         }
       }
+    },
+    include: {
+      educator: true,
     }
   })
 

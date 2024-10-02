@@ -18,6 +18,7 @@ import { MarkAsPaidForm } from "./bank-form-and-dialog"
 import MpCallback from "./mp-callback"
 import Step2Box from "./step-2-box"
 import { StudentForm } from "./student-forms"
+import Link from "next/link"
 
 type Props = {
   bankData: BankDataDAO[]
@@ -119,7 +120,12 @@ export function MultiStepForm({ bankData, initialOrder }: Props) {
     return (
       <div className="text-center space-y-4">
         <CheckIcon className="w-16 h-16 mx-auto text-green-500" />
-        <p className="text-xl font-semibold">¡Gracias por tu inscripción!</p>
+        <p className="text-xl font-semibold pb-10">¡Gracias por tu inscripción!</p>
+        <Button>
+          <Link href="/student">
+            Ir al Panel de Estudiante
+          </Link>
+        </Button>
       </div>
     )
   }
@@ -209,8 +215,10 @@ export function MultiStepForm({ bankData, initialOrder }: Props) {
               <p>Siguiente</p>
             </Button>
           ) : (
-            <Button className="w-full mt-10" disabled>
-              Ir a Mis cursos
+            <Button className="w-full mt-10">
+              <Link href="/student">
+                Ir al Panel de Estudiante
+              </Link>
             </Button>
           )}
         </div>

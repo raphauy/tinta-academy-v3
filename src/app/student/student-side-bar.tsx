@@ -3,10 +3,10 @@ import { BookOpen, GraduationCap, Home, Landmark, List, Megaphone, User } from "
 import Link from "next/link"
 
 const menu = [
-  { name: "Dashboard", icon: Home, href: "/admin" },
+  { name: "Panel de Estudiante", icon: Home, href: "/student" },
   { name: "--dash--", icon: Home, href: "/" },
-  { name: "Mis Cursos", icon: BookOpen, href: "#" },
-  { name: "Mis Datos", icon: User, href: "#" },
+  { name: "Mis Cursos", icon: BookOpen, href: "/student/courses" },
+  { name: "Mis Datos", icon: User, href: "/student/my-data" },
   { name: "--dash--", icon: Home, href: "/" },
 ]
 

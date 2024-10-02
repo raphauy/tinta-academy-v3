@@ -37,9 +37,9 @@ export function WsetCard({ course, studentRegistered, userObserving }: Props) {
           <Link href={courseLink}>
             <Image
               src={`/Card_WSET_${courseLevel}.jpg`}
-            alt="WSET course"
-            layout="fill"
-              objectFit="cover"
+              alt="WSET course"
+              fill
+              className="object-cover"
             />
           </Link>
         </div>

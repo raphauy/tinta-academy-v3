@@ -108,3 +108,27 @@ export function formatWhatsAppStyle(date: Date | string): string {
     return format(parsedDate, 'dd/MM/yyyy')
   }
 }
+
+export function getOrderStatusLabel(orderStatus: OrderStatus | undefined) {
+  if (!orderStatus) {
+    return "Sin estado"
+  }
+  switch (orderStatus) {
+    case OrderStatus.Created:
+      return "Creada"
+    case OrderStatus.Pending:
+      return "Pendiente"
+    case OrderStatus.PaymentSent:
+      return "Transferencia enviada"
+    case OrderStatus.Paid:
+      return "Pagado"
+    case OrderStatus.Rejected:
+      return "Rechazado"
+    case OrderStatus.Refunded:
+      return "Reembolsado"
+    case OrderStatus.Cancelled:
+      return "Cancelado"
+    default:
+      return "Sin estado"
+  }
+}
