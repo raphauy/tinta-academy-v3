@@ -3,7 +3,7 @@ import type { NextRequest } from "next/server";
 import { MercadoPagoConfig, Payment } from "mercadopago";
 import { processOrderConfirmation, setOrderMercadoPagoNotApproved } from "@/services/order-services";
 
-export const maxDuration = 59; // This function can run for a maximum of 30 seconds
+export const maxDuration = 299
 export const dynamic = 'force-dynamic';
 
 const mercadopago = new MercadoPagoConfig({accessToken: process.env.MP_ACCESS_TOKEN!});
@@ -23,38 +23,44 @@ export async function POST(request: NextRequest) {
 //   if (secret !== process.env.MP_PAYMENT_SECRET_KEY) {
 // 	return Response.json({success: false});
 //   }
+  try {
+    const payment = await new Payment(mercadopago).get({ id })
 
-  const payment = await new Payment(mercadopago).get({ id })
+    const paymentStatus = payment.status
+    console.log("paymentStatus", paymentStatus)
+    
 
-  const paymentStatus = payment.status
-  console.log("paymentStatus", paymentStatus)  
+    const data = {
+      id: payment.id,
+      amount: payment.transaction_amount,
+      message: payment.description,
+    };
 
-  const data = {
-    id: payment.id,
-    amount: payment.transaction_amount,
-    message: payment.description,
-  };
+    console.log(data)
 
-  console.log(data)
+    const orderId= payment.metadata.order_id
+    const externalReference= payment.external_reference
+    console.log("externalReference", externalReference)
 
-  const orderId= payment.metadata.order_id
-  const externalReference= payment.external_reference
-  console.log("externalReference", externalReference)
-  
-  if (paymentStatus === "approved") {
-    const updated= await processOrderConfirmation(orderId)
+    if (paymentStatus === "approved") {
+      const updated= await processOrderConfirmation(orderId)
 
-    if (!updated) {
+      if (!updated) {
+        return Response.json({success: false});
+      }
+      
+      return Response.json({success: true });
+    } else {
+      await setOrderMercadoPagoNotApproved(orderId)
       return Response.json({success: false});
     }
-
-    return Response.json({success: true });
-  } else {
-    await setOrderMercadoPagoNotApproved(orderId)
+    
+  } catch (error) {
+    console.log(error)
     return Response.json({success: false});
   }
-}
+  }
 
-export async function GET(request: NextRequest) {
+  export async function GET(request: NextRequest) {
   return Response.json({success: true, message: "payment endpoint is working"});
 }
