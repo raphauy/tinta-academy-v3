@@ -5,6 +5,7 @@ import { WebhookEvent } from '@clerk/nextjs/server'
 import { revalidatePath } from 'next/cache'
 
 import { createUser, updateUserByClerkUserId, UserFormValues } from '@/services/user-services'
+import { sendSlackNotification } from '@/services/slack-notifications'
 
 //const qstashClient = new Client({ token: process.env.QSTASH_TOKEN as string })
 
@@ -82,22 +83,9 @@ export async function POST(req: Request) {
       })
     }
 
-    // Trigger a workflow
-    // try {
-    //   await qstashClient.publishJSON({
-    //     url: `${process.env.UPSTASH_WORKFLOW_URL}/api/workflow`,
-    //     body: {
-    //       user: {
-    //         id: id,
-    //         email: email,
-    //         firstName: first_name,
-    //         lastName: last_name
-    //       }
-    //     }
-    //   })
-    // } catch (error) {
-    //   console.error('Error triggering workflow:', error)
-    // }
+    // send slack notification
+    await sendSlackNotification(`[Academy] User created: ${email}`)
+
   }
 
   if (eventType === 'user.updated') {
