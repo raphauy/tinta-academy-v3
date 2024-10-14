@@ -19,6 +19,7 @@ export type CourseDAO = {
 	classDates: Date[]
 	examDate: Date | null | undefined
 	registrationDeadline: Date | null | undefined
+	description: string | null | undefined
 	educator: EducatorDAO
 	educatorId: string
 	createdAt: Date
@@ -37,6 +38,7 @@ export const courseSchema = z.object({
 	priceUYU: z.string().refine((val) => !isNaN(Number(val)), { message: "(debe ser un número)" }).optional(),
 	examDate: z.date({required_error: "examDate is required."}).optional(),
 	registrationDeadline: z.date({required_error: "registrationDeadline is required."}).optional(),
+  description: z.string().optional(),
 	educatorId: z.string().min(1, "educatorId is required."),
 })
 

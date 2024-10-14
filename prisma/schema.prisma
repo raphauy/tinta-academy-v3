@@ -47,6 +47,8 @@ enum CourseType {
   WSET_NIVEL_1
   WSET_NIVEL_2
   WSET_NIVEL_3
+  TALLER
+  CATA
 }
 
 enum CourseStatus {
@@ -69,6 +71,7 @@ model Course {
   classDates            DateTime[]                     // gennext: show.column
   examDate              DateTime?                       // gennext: show.column
   registrationDeadline  DateTime?                       // gennext: show.column
+  description           String?
 
   educator              Educator @relation(fields: [educatorId], references: [id])
   educatorId            String

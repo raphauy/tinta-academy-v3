@@ -21,8 +21,7 @@ export default async function Cursos() {
             const userObserving = observedCoursesIds.some(id => id === course.id)
             return (
             <li key={course.id}>
-              { course.type === "WSET_NIVEL_1" && <WsetCard course={course} studentRegistered={studentRegistered} userObserving={userObserving} /> }
-              { course.type === "WSET_NIVEL_2" && <WsetCard course={course} studentRegistered={studentRegistered} userObserving={userObserving} /> }
+              <WsetCard course={course} studentRegistered={studentRegistered} userObserving={userObserving} />
             </li>
           )})}
         </ul>

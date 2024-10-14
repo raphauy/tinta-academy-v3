@@ -17,6 +17,10 @@ export function getCourseTypeLabel(type: CourseType | string) {
       return "WSET Nivel 2"
     case CourseType.WSET_NIVEL_3:
       return "WSET Nivel 3"
+    case CourseType.TALLER:
+      return "Taller"
+    case CourseType.CATA:
+      return "Cata"
     default:
       return "Otro"
   }
@@ -30,6 +34,10 @@ export function getCourseTitle(type: CourseType) {
       return "WSET Nivel 2 Cualificación en Vinos"
     case CourseType.WSET_NIVEL_3:
       return "WSET Nivel 3 Cualificación en Vinos"
+    case CourseType.TALLER:
+      return "Taller"
+    case CourseType.CATA:
+      return "Cata"
     default:
       return "Otro"
   }
@@ -43,6 +51,8 @@ export function getLevel(type: CourseType) {
       return 2
     case CourseType.WSET_NIVEL_3:
       return 3
+    default:
+      return 0
   }
 }
 

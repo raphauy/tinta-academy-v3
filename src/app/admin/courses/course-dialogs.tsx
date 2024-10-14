@@ -5,6 +5,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Calendar, Pencil, PlusCircle, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { AddDatesForm, CourseForm, DeleteCourseForm } from "./course-forms";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 type Props= {
   id?: string
@@ -25,7 +26,9 @@ export function CourseDialog({ id }: Props) {
         <DialogHeader>
           <DialogTitle>{id ? 'Actualizar Curso' : 'Crear Curso'}</DialogTitle>
         </DialogHeader>
-        <CourseForm closeDialog={() => setOpen(false)} id={id} />
+        <ScrollArea className="h-full max-h-[650px]">
+          <CourseForm closeDialog={() => setOpen(false)} id={id} />
+        </ScrollArea>
       </DialogContent>
     </Dialog>
   )

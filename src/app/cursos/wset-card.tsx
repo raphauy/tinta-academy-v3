@@ -3,7 +3,7 @@
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { getCourseLink, getCourseTitle, getLevel } from "@/lib/utils"
+import { cn, getCourseLink, getCourseTitle, getLevel } from "@/lib/utils"
 import { CourseDAO } from "@/services/course-services"
 import { EducatorDAO } from "@/services/educator-services"
 import { format } from "date-fns"
@@ -12,6 +12,7 @@ import { CalendarDays, CheckCircleIcon, Clock, DollarSign, MapPin, Users } from 
 import Image from "next/image"
 import Link from "next/link"
 import { ObserveButton } from "./observe-button"
+import { CourseStatus, CourseType } from "@prisma/client"
 
 type Props = {
   course: CourseDAO
@@ -21,7 +22,7 @@ type Props = {
 
 export function WsetCard({ course, studentRegistered, userObserving }: Props) {
   const courseLevel= getLevel(course.type)  
-  const shortDescription= shortDescriptions[courseLevel - 1]
+  const shortDescription= courseLevel === 0 ? course.description : shortDescriptions[courseLevel - 1]
   const startDate= course.classDates[0]
   const formatedStartDate = startDate ? format(startDate, 'PPP', { locale: es }) : "Sin definir"
   const courseLink = getCourseLink(course)
@@ -30,13 +31,15 @@ export function WsetCard({ course, studentRegistered, userObserving }: Props) {
       <CardHeader className="relative pb-0">
         <div className="absolute top-4 right-4 z-10">
           <Badge variant="secondary" className="font-semibold border border-muted-foreground">
-            Nivel {getLevel(course.type)}
+            {
+              courseLevel === 0 ? getCourseTitle(course.type) : "Nivel " + getLevel(course.type)
+            }
           </Badge>
         </div>
         <div className="relative w-full h-64 sm:h-80 rounded-t-lg overflow-hidden">
           <Link href={courseLink}>
             <Image
-              src={`/Card_WSET_${courseLevel}.jpg`}
+              src={course.type.startsWith("WSET") ? `/Card_WSET_${courseLevel}.jpg` : `/Card_${course.type}.jpg`}
               alt="WSET course"
               fill
               className="object-cover"
@@ -89,10 +92,10 @@ export function WsetCard({ course, studentRegistered, userObserving }: Props) {
           </div>
 
           <div className="grid gap-4 md:flex md:items-center md:gap-2 ">
-            <Button asChild className="md:w-40 font-bold">
+            <Button asChild className={cn("md:w-40 font-bold", !course.type.startsWith("WSET") && "hidden")}>
               <Link href={courseLink}>Ver detalles</Link>
             </Button>
-            <Button className="md:w-40" disabled={studentRegistered}>
+            <Button className="md:w-40" disabled={studentRegistered || course.status !== CourseStatus.Inscribiendo}>
               <Link href={`/cursos/inscripcion/${course.id}`} className="flex items-center font-bold">
                 {studentRegistered ? "Ya estas inscripto" : "Inscribite ahora"}
                 {studentRegistered && <CheckCircleIcon className="h-4 w-4 ml-2" />}

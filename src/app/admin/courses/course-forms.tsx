@@ -18,6 +18,7 @@ import { es } from "date-fns/locale"
 import { CourseStatus, CourseType } from "@prisma/client"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { getEducatorsAction } from "../educators/educator-actions"
+import { Textarea } from "@/components/ui/textarea"
 
 const types= Object.values(CourseType)
 export type EducatorSelect = {
@@ -41,6 +42,7 @@ export function CourseForm({ id, closeDialog }: Props) {
       location: "",
       maxCapacity: "15",
       educatorId: "cm1htv3xf0000afkwt4cn4o98",
+      description: "",
     },
     mode: "onChange",
   })
@@ -48,6 +50,8 @@ export function CourseForm({ id, closeDialog }: Props) {
   const [examDateOpenCalendar, setExamDateOpenCalendar] = useState(false)
   const [registrationDeadlineOpenCalendar, setRegistrationDeadlineOpenCalendar] = useState(false)
   const [educators, setEducators] = useState<EducatorSelect[]>([])
+
+  const type= form.watch("type")
 
   useEffect(() => {
     getEducatorsAction()
@@ -84,6 +88,7 @@ export function CourseForm({ id, closeDialog }: Props) {
           data.location && form.setValue("location", data.location)
           form.setValue("maxCapacity", data.maxCapacity.toString())
           form.setValue("educatorId", data.educatorId)
+          data.description && form.setValue("description", data.description)
         }
         Object.keys(form.getValues()).forEach((key: any) => {
           if (form.getValues(key) === null) {
@@ -96,6 +101,7 @@ export function CourseForm({ id, closeDialog }: Props) {
 
   return (
     <div className="p-4 bg-white rounded-md">
+      <p>Tipo: {type}</p>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
 
@@ -165,8 +171,9 @@ export function CourseForm({ id, closeDialog }: Props) {
                 </FormItem>
               )}
             />
-                    
-            <FormField
+
+            {type.startsWith("WSET") && (
+              <FormField
               control={form.control}
               name="classDuration"
               render={({ field }) => (
@@ -178,7 +185,9 @@ export function CourseForm({ id, closeDialog }: Props) {
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            />            
+            )}
+                    
           </div>          
           
           
@@ -267,6 +276,7 @@ export function CourseForm({ id, closeDialog }: Props) {
               )}
             />
 
+          {type.startsWith("WSET") && (
           <FormField
             control={form.control}
             name="examDate"
@@ -311,6 +321,7 @@ export function CourseForm({ id, closeDialog }: Props) {
               </FormItem>
             )}
           />
+          )}
           
       
           <FormField
@@ -356,6 +367,23 @@ export function CourseForm({ id, closeDialog }: Props) {
               </FormItem>
             )}
           />
+
+          {!type.startsWith("WSET") && (
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Descripción corta:</FormLabel>
+                <FormControl>
+                  <Textarea rows={10} {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          )}
+
             
 
         <div className="flex justify-end">
