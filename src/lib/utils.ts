@@ -35,7 +35,7 @@ export function getCourseTitle(type: CourseType) {
     case CourseType.WSET_NIVEL_3:
       return "WSET Nivel 3 Cualificación en Vinos"
     case CourseType.TALLER:
-      return "Taller"
+      return "Redes Sociales para Productores de Vinos"
     case CourseType.CATA:
       return "Cata"
     default:

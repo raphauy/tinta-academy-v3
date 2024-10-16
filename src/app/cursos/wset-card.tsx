@@ -3,16 +3,15 @@
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { cn, getCourseLink, getCourseTitle, getLevel } from "@/lib/utils"
+import { cn, getCourseLink, getCourseTitle, getCourseTypeLabel, getLevel } from "@/lib/utils"
 import { CourseDAO } from "@/services/course-services"
-import { EducatorDAO } from "@/services/educator-services"
+import { CourseStatus } from "@prisma/client"
 import { format } from "date-fns"
 import { es } from "date-fns/locale"
 import { CalendarDays, CheckCircleIcon, Clock, DollarSign, MapPin, Users } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { ObserveButton } from "./observe-button"
-import { CourseStatus, CourseType } from "@prisma/client"
 
 type Props = {
   course: CourseDAO
@@ -32,7 +31,7 @@ export function WsetCard({ course, studentRegistered, userObserving }: Props) {
         <div className="absolute top-4 right-4 z-10">
           <Badge variant="secondary" className="font-semibold border border-muted-foreground">
             {
-              courseLevel === 0 ? getCourseTitle(course.type) : "Nivel " + getLevel(course.type)
+              courseLevel === 0 ? getCourseTypeLabel(course.type) : "Nivel " + getLevel(course.type)
             }
           </Badge>
         </div>
