@@ -72,7 +72,7 @@ export default function RootLayout({
               window.chatwootSettings = {"position":"right","type":"standard","launcherTitle":"Chatea con nosotros"};
               
               (function(d,t) {
-                var BASE_URL="https://chatwoot.raphauy.dev";
+                var BASE_URL="https://agentes.agency-planner.com";
                 var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
                 g.src=BASE_URL+"/packs/js/sdk.js";
                 g.defer = true;
@@ -80,7 +80,7 @@ export default function RootLayout({
                 s.parentNode.insertBefore(g,s);
                 g.onload=function(){
                   window.chatwootSDK.run({
-                    websiteToken: 'weBPEsyEAeNSixSUqkzmQj4Z',
+                    websiteToken: 'H4NDi7ZCW1JGdVHfuWjeEbyg',
                     baseUrl: BASE_URL
                   })
                 }
