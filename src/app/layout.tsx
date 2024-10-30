@@ -1,19 +1,18 @@
-import type { Metadata } from 'next'
-import localFont from 'next/font/local'
-import { Inter, Playfair_Display } from 'next/font/google'
 import { cn } from '@/lib/utils'
+import type { Metadata } from 'next'
+import { Inter, Playfair_Display } from 'next/font/google'
+import localFont from 'next/font/local'
 
-import Providers from '@/components/providers'
-import Header from '@/components/header'
 import Footer from '@/components/footer'
+import Header from '@/components/header'
+import Providers from '@/components/providers'
 
-import { ClerkProvider } from '@clerk/nextjs'
 import { esES } from '@clerk/localizations'
+import { ClerkProvider } from '@clerk/nextjs'
 
-import './globals.css'
 import { Toaster } from '@/components/ui/toaster'
-import { TailwindIndicator } from '@/components/tailwind-indicator'
 import Script from 'next/script'
+import './globals.css'
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -33,7 +32,12 @@ const playfair = Playfair_Display({
 
 export const metadata: Metadata = {
   title: 'Tinta Academy',
-  description: 'Centro de formación especializado en la educación sobre vinos donde vas a descubrir, enriquecer y elevar tu conocimiento sobre la cultura del vino con una perspectiva global.'
+  description: 'Centro de formación especializado en la educación sobre vinos donde vas a descubrir, enriquecer y elevar tu conocimiento sobre la cultura del vino con una perspectiva global.',
+  openGraph: {
+    title: 'Tinta Academy',
+    description: 'Centro de formación especializado en la educación sobre vinos donde vas a descubrir, enriquecer y elevar tu conocimiento sobre la cultura del vino con una perspectiva global.',
+    images: ['/og.jpg'],
+  },
 }
 
 export default function RootLayout({

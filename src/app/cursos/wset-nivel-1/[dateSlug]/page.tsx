@@ -1,7 +1,17 @@
 import { WsetLevel1 } from "@/components/wset/wset-level-1";
 import { CourseDAO, findCourseByDateSlug, getFirstCourseAnounced, getObservedCoursesIds, getStudentCoursesDAO } from "@/services/course-services";
 import { currentUser } from "@clerk/nextjs/server";
+import { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: 'WSET Nivel 1',
+  description: 'Curso de WSET Nivel 1',
+  openGraph: {
+    title: 'WSET Nivel 1',
+    description: 'WSET Nivel 1 Cualificación en Vinos',
+    images: ['/Card_WSET_1.jpg'],
+  },
+}
 type Props = {
   params: {
     dateSlug: string
