@@ -150,7 +150,7 @@ export function WsetLevel1({ course, studentRegistered, userObserving }: Props) 
             <li>Matrícula completa</li>
             <li>Cata de 9 vinos durante el curso</li>
             <li>Examen final</li>
-            <li>Certificación internacional WSET y pin de solapa</li>
+            <li>Certificación internacional WSET con Diploma Digital</li>
           </ul>
         </CardContent>
       </Card>
