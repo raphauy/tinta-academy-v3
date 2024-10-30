@@ -5,12 +5,17 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: 'WSET Nivel 1',
-  description: 'Curso de WSET Nivel 1',
+  description: 'WSET Nivel 1 Cualificación en Vinos',
   openGraph: {
     title: 'WSET Nivel 1',
     description: 'WSET Nivel 1 Cualificación en Vinos',
     images: ['/Card_WSET_1.jpg'],
   },
+  twitter: {
+    title: 'WSET Nivel 1',
+    description: 'WSET Nivel 1 Cualificación en Vinos',
+    images: ['/Card_WSET_1.jpg'],
+  }
 }
 type Props = {
   params: {

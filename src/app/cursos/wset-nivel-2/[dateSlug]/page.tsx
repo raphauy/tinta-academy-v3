@@ -12,6 +12,11 @@ export const metadata: Metadata = {
     description: 'WSET Nivel 2 Cualificación en Vinos',
     images: ['/Card_WSET_2.jpg'],
   },
+  twitter: {
+    title: 'WSET Nivel 2',
+    description: 'WSET Nivel 2 Cualificación en Vinos',
+    images: ['/Card_WSET_2.jpg'],
+  },
 }
 type Props = {
   params: {
