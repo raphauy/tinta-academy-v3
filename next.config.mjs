@@ -7,6 +7,11 @@ const nextConfig = {
               hostname: "img.clerk.com",
               port: "",
             },
+            {
+              protocol: "https",
+              hostname: "academy.tinta.wine",
+              port: "",
+            },
           ]
     }
 };
