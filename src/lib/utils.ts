@@ -40,8 +40,7 @@ export function getLevel(type: CourseType) {
 }
 
 export function getCourseLink(course: CourseDAO) {
-  const courseTypeSlug = course.type.toLowerCase().replaceAll('_', '-')
-  return `/cursos/${courseTypeSlug}/${course.slug}`
+  return `/cursos/${course.slug}`
 }
 
 export function getCourseDateSlug(course: CourseDAO) {

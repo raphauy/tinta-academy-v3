@@ -91,7 +91,7 @@ export function WsetCard({ course, studentRegistered, userObserving }: Props) {
           </div>
 
           <div className="grid gap-4 md:flex md:items-center md:gap-2 ">
-            <Button asChild className={cn("md:w-40 font-bold", !course.type.startsWith("WSET") && "hidden")}>
+            <Button asChild className={cn("md:w-40 font-bold")}>
               <Link href={courseLink}>Ver detalles</Link>
             </Button>
             {
