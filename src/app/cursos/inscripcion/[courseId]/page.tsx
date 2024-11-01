@@ -2,6 +2,7 @@ import { getBankDatasDAO } from "@/services/bankdata-services";
 import { getOrderByStudentAndCourse } from "@/services/order-services";
 import { auth } from "@clerk/nextjs/server";
 import { MultiStepForm } from "./multi-step-form";
+import { redirect } from "next/navigation";
 
 type Props = {
   params: {
@@ -9,7 +10,10 @@ type Props = {
   }
 }
 export default async function Inscripcion({ params }: Props) {
-  const { sessionClaims } = auth()
+  const { sessionClaims, userId } = auth()
+  if (!userId) {
+    return redirect("/sign-in")
+  }
   const studentId= sessionClaims?.metadata.studentId
 
   const bankData = await getBankDatasDAO()
