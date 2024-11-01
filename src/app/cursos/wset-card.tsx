@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { cn, getCourseLink, getCourseTypeLabel, getLevel } from "@/lib/utils"
 import { CourseDAO } from "@/services/course-services"
 import { CourseStatus } from "@prisma/client"
-import { format } from "date-fns"
+import { endOfDay, format, isAfter } from "date-fns"
 import { es } from "date-fns/locale"
 import { CalendarDays, CheckCircleIcon, Clock, DollarSign, MapPin, Users } from "lucide-react"
 import Image from "next/image"
@@ -25,6 +25,8 @@ export function WsetCard({ course, studentRegistered, userObserving }: Props) {
   const startDate= course.classDates[0]
   const formatedStartDate = startDate ? format(startDate, 'PPP', { locale: es }) : "Sin definir"
   const courseLink = getCourseLink(course)
+  const inscriptionDateLimit= course.registrationDeadline
+  const isOutdated= inscriptionDateLimit && isAfter(new Date(), endOfDay(inscriptionDateLimit)) ? true : false
   return (
     <Card className="w-full hover:shadow-lg transition-shadow duration-300">
       <CardHeader className="relative pb-0">
@@ -96,9 +98,9 @@ export function WsetCard({ course, studentRegistered, userObserving }: Props) {
             </Button>
             {
               course.status === CourseStatus.Inscribiendo && (
-                <Button className="md:w-40" disabled={studentRegistered}>
+                <Button className="md:w-40" disabled={studentRegistered || isOutdated}>
                   <Link href={`/cursos/inscripcion/${course.id}`} className="flex items-center font-bold">
-                    {studentRegistered ? "Ya estas inscripto" : "Inscribite ahora"}
+                    {studentRegistered ? "Ya estas inscripto" : isOutdated ? "Inscripción cerrada" : "Inscribite ahora"}
                     {studentRegistered && <CheckCircleIcon className="h-4 w-4 ml-2" />}
                 </Link>
               </Button>
