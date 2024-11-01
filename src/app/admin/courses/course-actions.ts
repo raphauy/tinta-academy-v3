@@ -1,7 +1,7 @@
 "use server"
   
 import { revalidatePath } from "next/cache"
-import { CourseDAO, CourseFormValues, createCourse, updateCourse, getCourseDAO, deleteCourse, setClassDates, observeCourse, removeCourseObserver } from "@/services/course-services"
+import { CourseDAO, CourseFormValues, createCourse, updateCourse, getCourseDAO, deleteCourse, setClassDates, observeCourse, removeCourseObserver, checkSlug } from "@/services/course-services"
 
 export async function getCourseDAOAction(id: string): Promise<CourseDAO | null> {
     return getCourseDAO(id)
@@ -55,4 +55,8 @@ export async function removeCourseObserverAction(clerkUserId: string, courseId: 
     }
     revalidatePath("/cursos")
     return true
+}
+
+export async function checkSlugAction(slug: string, courseId?: string): Promise<boolean> {
+    return await checkSlug(slug, courseId)
 }

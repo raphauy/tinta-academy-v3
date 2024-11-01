@@ -1,5 +1,5 @@
 import { Separator } from "@/components/ui/separator"
-import { BookOpen, GraduationCap, Home, Landmark, List, Megaphone, User } from "lucide-react"
+import { BookOpen, GraduationCap, Home, Landmark, List, Megaphone, Ticket, User } from "lucide-react"
 import Link from "next/link"
 
 const menu = [
@@ -14,6 +14,8 @@ const menu = [
   { name: "--dash--", icon: Home, href: "/" },
   { name: "Datos Bancarios", icon: Landmark, href: "/admin/bankdatas" },
   { name: "Ordenes de Pago", icon: List, href: "/admin/orders" },
+  { name: "--dash--", icon: Home, href: "/" },
+  { name: "Cupones", icon: Ticket, href: "/admin/coupons" },
   { name: "--dash--", icon: Home, href: "/" },
 ]
 

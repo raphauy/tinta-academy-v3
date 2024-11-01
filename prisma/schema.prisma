@@ -61,16 +61,18 @@ model Course {
   id                    String   @id @default(cuid())
   type                  CourseType
   status                CourseStatus @default(Anunciado)
-  totalDuration         Int                            // gennext: show.column
-  startTime             String    @default("18:30")    // gennext: show.column
-  classDuration         Int                            // gennext: show.column
-  location              String?                        // gennext: show.column
-  maxCapacity           Int                            // gennext: show.column
-  priceUSD              Float                          // gennext: show.column
-  priceUYU              Float                          // gennext: show.column
-  classDates            DateTime[]                     // gennext: show.column
-  examDate              DateTime?                       // gennext: show.column
-  registrationDeadline  DateTime?                       // gennext: show.column
+  title                 String  @default("")               // gennext: show.column
+  slug                  String  @unique               // gennext: show.column
+  totalDuration         Int                                // gennext: show.column
+  startTime             String    @default("18:30")        // gennext: show.column
+  classDuration         Int                                // gennext: show.column
+  location              String?                            // gennext: show.column
+  maxCapacity           Int                                // gennext: show.column
+  priceUSD              Float                              // gennext: show.column
+  priceUYU              Float                              // gennext: show.column
+  classDates            DateTime[]                         // gennext: show.column
+  examDate              DateTime?                          // gennext: show.column
+  registrationDeadline  DateTime?                          // gennext: show.column
   description           String?
 
   educator              Educator @relation(fields: [educatorId], references: [id])
@@ -81,6 +83,7 @@ model Course {
 
   orders                Order[]    
   observers             CourseObserver[]
+  coupons               Coupon[]
 }
 
 model Educator {
@@ -146,6 +149,9 @@ model Order {
   student     Student @relation(fields: [studentId], references: [id])
   studentId   String
 
+  coupon     Coupon? @relation(fields: [couponId], references: [id])
+  couponId   String?
+
   @@index([studentId])                                  // gennext: show.list skip.zod
 }
 
@@ -158,4 +164,24 @@ model CourseObserver {
   createdAt   DateTime @default(now())
 
   @@id([userId, courseId])
+}
+
+model Coupon {
+  id          String    @id @default(cuid())
+  code        String    @unique                                        // gennext: show.column
+  discount    Float                                                    // gennext: show.column
+  maxUses     Int @default(1)                                          // gennext: show.column
+  uses        Int @default(0)                                          // gennext: show.column  
+  email       String?                                                  // gennext: show.column
+  expiresAt   DateTime?                                                // gennext: show.column  
+
+  course      Course? @relation(fields: [courseId], references: [id])
+  courseId    String?    
+  
+  createdAt   DateTime  @default(now())                                // gennext: skip.zod
+  updatedAt   DateTime  @updatedAt                                     // gennext: skip.zod
+
+  orders      Order[]                                                  // gennext: skip.list
+
+  @@index([courseId])                                                  // gennext: show.list skip.zod
 }

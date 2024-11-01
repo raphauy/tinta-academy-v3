@@ -4,14 +4,14 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { toast } from "@/hooks/use-toast"
 import { useEffect, useState } from "react"
-import { deleteCourseAction, createOrUpdateCourseAction, getCourseDAOAction, setClassDatesAndTimeAction } from "./course-actions"
+import { deleteCourseAction, createOrUpdateCourseAction, getCourseDAOAction, setClassDatesAndTimeAction, checkSlugAction } from "./course-actions"
 import { courseSchema, CourseFormValues } from '@/services/course-services'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { CalendarIcon, Loader, TrashIcon } from "lucide-react"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { cn, getCourseTypeLabel } from "@/lib/utils"
+import { cn, generateSlug, getCourseTypeLabel } from "@/lib/utils"
 import { format, parse } from "date-fns"
 import { Calendar } from "@/components/ui/calendar"
 import { es } from "date-fns/locale"
@@ -37,6 +37,8 @@ export function CourseForm({ id, closeDialog }: Props) {
     defaultValues: {
       type: CourseType.WSET_NIVEL_1,
       status: CourseStatus.Anunciado,
+      title: "",
+      slug: "",
       totalDuration: "6",
       classDuration: "2",
       location: "",
@@ -63,6 +65,11 @@ export function CourseForm({ id, closeDialog }: Props) {
   const onSubmit = async (data: CourseFormValues) => {
     setLoading(true)
     try {
+      const exists= await checkSlugAction(data.slug, id)
+      if (exists) {
+        toast({ title: "Error", description: "Ya existe el slug " + data.slug, variant: "destructive" })
+        return
+      }
       await createOrUpdateCourseAction(id ? id : null, data)
       toast({ title: id ? "Course updated" : "Course created" })
       closeDialog()
@@ -79,6 +86,8 @@ export function CourseForm({ id, closeDialog }: Props) {
         if (data) {
           form.setValue("type", data.type)
           form.setValue("status", data.status)
+          form.setValue("title", data.title)
+          form.setValue("slug", data.slug)
           form.setValue("priceUSD", data.priceUSD.toString())
           form.setValue("priceUYU", data.priceUYU.toString())
           data.examDate && form.setValue("examDate", data.examDate)
@@ -98,6 +107,14 @@ export function CourseForm({ id, closeDialog }: Props) {
       })
     }
   }, [form, id])
+
+  const watchTitle= form.watch("title")
+  // generate slug from title
+  useEffect(() => {
+    if (watchTitle) {
+      form.setValue("slug", generateSlug(watchTitle))
+    }
+  }, [watchTitle, form])
 
   return (
     <div className="p-4 bg-white rounded-md">
@@ -154,6 +171,36 @@ export function CourseForm({ id, closeDialog }: Props) {
               )}
               />
 
+          </div>
+
+          <div className="w-full grid grid-cols-2 gap-4">
+            <FormField
+              control={form.control}
+              name="title"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Título:</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Título" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="slug"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Slug:</FormLabel>
+                  <FormControl>
+                    <Input placeholder="slug" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </div>
           
 

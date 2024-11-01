@@ -1,12 +1,12 @@
-import * as z from "zod"
 import { prisma } from "@/lib/db"
 import { OrderStatus, PaymentMethod } from "@prisma/client"
-import { BankDataDAO, getBankDataDAO } from "./bankdata-services"
-import { CourseDAO } from "./course-services"
-import { StudentDAO } from "./student-services"
 import { MercadoPagoConfig, Preference } from 'mercadopago'
-import { getCourseTitle } from "@/lib/utils"
+import * as z from "zod"
+import { BankDataDAO, getBankDataDAO } from "./bankdata-services"
+import { addCouponUse, CouponDAO } from "./coupon-services"
+import { CourseDAO } from "./course-services"
 import { sendNotifyPaymentEmail, sendNotifyTransferSentEmail, sendWelcomeToTintaAcademy } from "./email-services"
+import { StudentDAO } from "./student-services"
 
 export type OrderDAO = {
 	id: string
@@ -25,6 +25,8 @@ export type OrderDAO = {
 	courseId: string
 	student: StudentDAO
 	studentId: string
+	couponId: string | null
+	coupon: CouponDAO | null
 }
 
 export const orderSchema = z.object({
@@ -34,6 +36,7 @@ export const orderSchema = z.object({
   currency: z.string().min(1, "currency is required."),
 	courseId: z.string().min(1, "courseId is required."),
 	studentId: z.string().min(1, "studentId is required."),
+  couponId: z.string().optional()
 })
 
 export type OrderFormValues = z.infer<typeof orderSchema>
@@ -69,6 +72,9 @@ export async function createOrder(data: OrderFormValues) {
       bankData: true,
     }
   })
+  if (data.couponId) {
+    await addCouponUse(data.couponId)
+  }
   return created
 }
 
@@ -115,6 +121,7 @@ export async function getFullOrderDAO(id: string) {
 			bankData: true,
 			course: true,
 			student: true,
+      coupon: true,
 		}
   })
   return found as OrderDAO
@@ -214,7 +221,7 @@ export async function processOrderMercadoPago(order: OrderDAO) {
     body: {
       items: [{
         id: order.courseId,
-        title: getCourseTitle(order.course.type),
+        title: order.course.title,
         quantity: 1,
         unit_price: order.amount
       }],      

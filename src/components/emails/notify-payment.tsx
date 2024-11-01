@@ -1,3 +1,4 @@
+import { CouponDAO } from "@/services/coupon-services";
 import { Body, Container, Button, Column, Head, Hr, Html, Img, Link, Preview, Row, Section, Text, Tailwind, Heading } from "@react-email/components"
 import * as React from "react";
 
@@ -7,11 +8,12 @@ type Props = {
   paymentAmount: number;
   paymentMethod: string;
   orderNumber: string;
+  coupon: CouponDAO | null
 }
 
 const baseUrl = process.env.APP_URL!
 
-export default function NotifyPaymentEmail({ buyerName, buyerEmail, paymentAmount, paymentMethod, orderNumber }: Props) {
+export default function NotifyPaymentEmail({ buyerName, buyerEmail, paymentAmount, paymentMethod, orderNumber, coupon }: Props) {
   const previewText = `Pago recibido`;
 
   return (
@@ -46,6 +48,11 @@ export default function NotifyPaymentEmail({ buyerName, buyerEmail, paymentAmoun
             <Text className="text-black text-[20px] leading-[24px] text-center mt-10 mb-10">
               Monto: <strong>$ {paymentAmount}</strong>
             </Text>
+            {coupon && (
+              <Text className="text-black text-[14px] leading-[24px] text-center mt-10 mb-5">
+                Cupón: <strong>{coupon.code}</strong> (Descuento: {coupon.discount}%)
+              </Text>
+            )}
             <Text className="text-black text-[14px] leading-[24px] text-center mt-10 mb-5">
               Orden: <strong>{orderNumber}</strong>
             </Text>
@@ -74,4 +81,5 @@ NotifyPaymentEmail.PreviewProps = {
   paymentAmount: 100,
   paymentMethod: "Transferencia bancaria",
   orderNumber: "UV#00000123",
+  coupon: null
 } as Props;

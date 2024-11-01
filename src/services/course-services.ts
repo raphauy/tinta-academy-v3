@@ -1,14 +1,15 @@
-import * as z from "zod"
 import { prisma } from "@/lib/db"
-import { EducatorDAO } from "./educator-services"
 import { CourseStatus, CourseType } from "@prisma/client"
-import { getUserByClerkUserId, getUserDAO, UserDAO } from "./user-services"
-import { getCourseTitle } from "@/lib/utils"
+import * as z from "zod"
+import { EducatorDAO } from "./educator-services"
+import { getUserByClerkUserId } from "./user-services"
 
 export type CourseDAO = {
 	id: string
 	type: CourseType
   status: CourseStatus
+	title: string
+	slug: string
 	totalDuration: number
 	startTime: string
 	classDuration: number
@@ -29,6 +30,8 @@ export type CourseDAO = {
 export const courseSchema = z.object({
 	type: z.nativeEnum(CourseType),
   status: z.nativeEnum(CourseStatus),
+	title: z.string(),
+	slug: z.string(),
 	totalDuration: z.string().refine((val) => !isNaN(Number(val)), { message: "(debe ser un número)" }).optional(),
 	startTime: z.string().refine((val) => !isNaN(Number(val)), { message: "(debe ser un número)" }).optional(),
 	classDuration: z.string().refine((val) => !isNaN(Number(val)), { message: "(debe ser un número)" }).optional(),
@@ -139,33 +142,16 @@ export async function deleteCourse(id: string) {
   return deleted
 }
     
-export async function findCourseByDateSlug(dateSlug: string, type: CourseType) {
-
-  const futureCourses = await prisma.course.findMany({
+export async function findCourseBySlug(slug: string) {
+  const found = await prisma.course.findUnique({
     where: {
-      type,
-      examDate: {
-        gte: new Date()
-      }
-    },
-    orderBy: {
-      createdAt: 'desc'
+      slug
     },
     include: {
       educator: true
     }
   })
-
-  console.log(futureCourses)
-
-  const slugDate = new Date(dateSlug)
-  console.log(slugDate)
-
-  const result= futureCourses.filter(course => course.classDates.some(date => date.getFullYear() === slugDate.getFullYear() && date.getMonth() === slugDate.getMonth()))
-
-  if (result.length === 0) return null
-
-  return result[0]
+  return found
 }
 
 export async function getFirstCourseAnounced(type: CourseType) {
@@ -289,7 +275,7 @@ export async function getCoursesWithObservers(): Promise<CourseWithObserver[]> {
 
   for (const course of courses) {
     const users= await getCourseObservers(course.id)
-    const label= getCourseTitle(course.type)
+    const label= course.title
     res.push({
       id: course.id,
       label,
@@ -314,4 +300,49 @@ export async function getObservedCoursesIds(clerkUserId: string) {
     res.push(observer.courseId)
   }
   return res
+}
+
+export async function getActiveCourses() {
+  const found = await prisma.course.findMany({
+    where: {
+      status: {
+        in: [CourseStatus.Anunciado, CourseStatus.Inscribiendo]
+      }
+    },
+    include: {
+      educator: true
+    }
+  })
+  return found
+}
+
+export async function checkSlug(slug: string, courseId?: string) {
+  let originalSlug
+  if (courseId) {
+    const course= await prisma.course.findUnique({
+      where: {
+        id: courseId
+      },
+      select: {
+        slug: true
+      } 
+    })    
+    originalSlug= course?.slug
+  }
+  console.log("originalSlug: ", originalSlug)
+  const found = await prisma.course.findUnique({
+    where: {
+      slug
+    }
+  })
+  console.log("found: ", found)
+  if (!found) {
+    return false
+  }
+  console.log("found.slug: ", found?.slug)
+  if (found.slug === originalSlug) {
+    return false
+  }
+  console.log("true")
+  return true
 }

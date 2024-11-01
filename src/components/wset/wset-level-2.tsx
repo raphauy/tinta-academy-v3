@@ -1,17 +1,15 @@
 'use client'
 
+import { ObserveButton } from "@/app/cursos/observe-button"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { CalendarDays, Clock, MapPin, Users, GraduationCap, Wine, User, CheckCircleIcon } from "lucide-react"
-import Image from "next/image"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { cn } from "@/lib/utils"
 import { CourseDAO } from "@/services/course-services"
-import { EducatorDAO } from "@/services/educator-services"
 import { addHours, format, parse } from "date-fns"
 import { es } from "date-fns/locale"
-import { cn, getCourseTitle } from "@/lib/utils"
+import { CalendarDays, CheckCircleIcon, Clock, GraduationCap, MapPin, Users } from "lucide-react"
+import Image from "next/image"
 import Link from "next/link"
-import { ObserveButton } from "@/app/cursos/observe-button"
 
 const defaultEducator = {
   name: "Gabi Zimmer",
@@ -31,7 +29,7 @@ export function WsetLevel2({ course, studentRegistered, userObserving }: Props) 
   const formatedDate = course.classDates[0] ? format(course.classDates[0], "MMMM yyyy", { locale: es }) : "Sin definir"
   return (
     <div className="container mx-auto px-4 py-8 max-w-screen-lg">
-      <h1 className="text-4xl font-bold text-center">{getCourseTitle(course.type)}</h1>
+      <h1 className="text-4xl font-bold text-center">{course.title}</h1>
       <h2 className="text-muted-foreground text-center mb-8">{formatedDate}</h2>
       
       <Card className="mb-8">
@@ -43,7 +41,7 @@ export function WsetLevel2({ course, studentRegistered, userObserving }: Props) 
             El WSET Nivel 2 es una calificación intermedia diseñada para profundizar el conocimiento del vino. Este curso explora en detalle las variedades de uva, las regiones clave y cómo los factores ambientales influyen en el estilo y la calidad del vino.
           </p>
           <p className="mt-4 text-muted-foreground">
-            Al completar con éxito, recibirás un certificado internacional WSET y un pin de solapa. Este curso es ideal tanto para profesionales de la industria como para entusiastas avanzados que desean expandir sus conocimientos sobre el vino.
+            Al completar con éxito, recibirás un certificado internacional WSET. Este curso es ideal tanto para profesionales de la industria como para entusiastas avanzados que desean expandir sus conocimientos sobre el vino.
           </p>
         </CardContent>
       </Card>

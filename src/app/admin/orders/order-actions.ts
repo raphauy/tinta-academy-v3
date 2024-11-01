@@ -1,5 +1,6 @@
 "use server"
   
+import { CouponDAO, getCouponDAO } from "@/services/coupon-services"
 import { getCourseDAO } from "@/services/course-services"
 import { OrderDAO, OrderFormValues, createOrder, deleteOrder, getFullOrderDAO, getOrderByStudentAndCourse, getOrderDAO, processOrderConfirmation, processOrderMercadoPago, setOrderStatus, setOrderTransferenciaBancariaPaymentSentWithBank, updateOrder, updatePaymentMethod } from "@/services/order-services"
 import { getStudentDAO } from "@/services/student-services"
@@ -12,17 +13,24 @@ export async function getOrderDAOAction(id: string): Promise<OrderDAO | null> {
     return getOrderDAO(id)
 }
 
-export async function createOrderAction(courseId: string, studentId: string, paymentMethod: string): Promise<OrderDAO | null> {       
+export async function createOrderAction(courseId: string, studentId: string, paymentMethod: string, couponId: string | undefined): Promise<OrderDAO | null> {       
     const course = await getCourseDAO(courseId)
     if (!course) {
         throw new Error("Course not found")
     }
+    
     let amount = course.priceUSD
     let currency = "USD"
     if (paymentMethod === "MercadoPago") {
         amount = course.priceUYU
         currency = "UYU"
     }
+
+    const coupon= couponId ? await getCouponDAO(couponId) : null
+    if (coupon) {
+        amount = amount - (amount * coupon.discount) / 100
+    }
+
     const student = await getStudentDAO(studentId)
     if (!student) {
         throw new Error("Student not found")
@@ -36,7 +44,8 @@ export async function createOrderAction(courseId: string, studentId: string, pay
             email: student.email,
             paymentMethod: paymentMethod as PaymentMethod,
             amount,
-            currency
+            currency,
+            couponId: coupon?.id
         }
         try {
             const created= await createOrder(orderValues)

@@ -26,23 +26,6 @@ export function getCourseTypeLabel(type: CourseType | string) {
   }
 }
 
-export function getCourseTitle(type: CourseType) {
-  switch (type) {
-    case CourseType.WSET_NIVEL_1:
-      return "WSET Nivel 1 Cualificación en Vinos"
-    case CourseType.WSET_NIVEL_2:
-      return "WSET Nivel 2 Cualificación en Vinos"
-    case CourseType.WSET_NIVEL_3:
-      return "WSET Nivel 3 Cualificación en Vinos"
-    case CourseType.TALLER:
-      return "Redes Sociales para Productores de Vinos"
-    case CourseType.CATA:
-      return "Cata"
-    default:
-      return "Otro"
-  }
-}
-
 export function getLevel(type: CourseType) {
   switch (type) {
     case CourseType.WSET_NIVEL_1:
@@ -57,10 +40,8 @@ export function getLevel(type: CourseType) {
 }
 
 export function getCourseLink(course: CourseDAO) {
-
   const courseTypeSlug = course.type.toLowerCase().replaceAll('_', '-')
-  const courseDateSlug = course.classDates[0] ? format(course.classDates[0], 'yyyy-MMMM', { locale: es }) : "sin-definir"
-  return `/cursos/${courseTypeSlug}/${courseDateSlug}`
+  return `/cursos/${courseTypeSlug}/${course.slug}`
 }
 
 export function getCourseDateSlug(course: CourseDAO) {
@@ -141,4 +122,25 @@ export function getOrderStatusLabel(orderStatus: OrderStatus | undefined) {
     default:
       return "Sin estado"
   }
+}
+
+const replacements = [
+  { from: 'á', to: 'a' },
+  { from: 'é', to: 'e' },
+  { from: 'í', to: 'i' },
+  { from: 'ó', to: 'o' },
+  { from: 'ú', to: 'u' },
+  { from: 'ñ', to: 'n' },
+  { from: '  ', to: ' ' },
+]
+export function generateSlug(title: string) {
+  // tener en cuenta tiles y eñes, espacios dobles, etc
+  if (!title) {
+    return ''
+  }
+  for (const replacement of replacements) {
+    title = title.replace(replacement.from, replacement.to)
+  }
+  const slug = title.toLowerCase().replaceAll(' ', '-')
+  return slug
 }

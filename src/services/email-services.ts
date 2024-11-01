@@ -1,9 +1,9 @@
+import NotifyPaymentEmail from "@/components/emails/notify-payment";
 import NotifyTransferEmail from "@/components/emails/notify-transfer";
-import { completeWithZeros, getCourseTitle } from "@/lib/utils";
+import WelcomeToTintaAcademy from "@/components/emails/payment-confirmation";
+import { completeWithZeros } from "@/lib/utils";
 import { Resend } from "resend";
 import { getFullOrderDAO } from "./order-services";
-import WelcomeToTintaAcademy from "@/components/emails/payment-confirmation";
-import NotifyPaymentEmail from "@/components/emails/notify-payment";
 
 export async function sendNotifyTransferSentEmail(orderId: string) {
 
@@ -16,7 +16,7 @@ export async function sendNotifyTransferSentEmail(orderId: string) {
   const orderNumber= `#${completeWithZeros(order.number)}`
   const subject = "Transferencia enviada, orden: " + orderNumber
 
-  const courseName= getCourseTitle(order.course.type)
+  const courseName= order.course.title
 
   const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -35,6 +35,7 @@ export async function sendNotifyTransferSentEmail(orderId: string) {
       paymentMethod: order.paymentMethod,
       comment: order.bankTransferComment || "",
       orderNumber,
+      coupon: order.coupon
     }),
   });
 
@@ -71,7 +72,7 @@ export async function sendWelcomeToTintaAcademy(orderId: string, testEmailTo?: s
     subject,
     react: WelcomeToTintaAcademy({ 
       buyerName: order.student.firstName,
-      courseName: getCourseTitle(order.course.type)
+      courseName: order.course.title
     }),
   });
 
@@ -113,6 +114,7 @@ export async function sendNotifyPaymentEmail(orderId: string) {
       paymentAmount: order.amount,
       paymentMethod: order.paymentMethod,
       orderNumber,
+      coupon: order.coupon
     }),
   })
 

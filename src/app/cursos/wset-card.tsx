@@ -3,7 +3,7 @@
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { cn, getCourseLink, getCourseTitle, getCourseTypeLabel, getLevel } from "@/lib/utils"
+import { cn, getCourseLink, getCourseTypeLabel, getLevel } from "@/lib/utils"
 import { CourseDAO } from "@/services/course-services"
 import { CourseStatus } from "@prisma/client"
 import { format } from "date-fns"
@@ -48,7 +48,7 @@ export function WsetCard({ course, studentRegistered, userObserving }: Props) {
       </CardHeader>
       <CardContent className="pt-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4">
-          <CardTitle className="text-2xl mb-2 sm:mb-0">{getCourseTitle(course.type)}</CardTitle>
+          <CardTitle className="text-2xl mb-2 sm:mb-0">{course.title}</CardTitle>
           <div className="flex items-center bg-primary/10 rounded-full px-4 py-2">
             <CalendarDays className="h-6 w-6 mr-2 text-primary" />
             <span className="text-lg font-semibold">{formatedStartDate}</span>
@@ -94,12 +94,15 @@ export function WsetCard({ course, studentRegistered, userObserving }: Props) {
             <Button asChild className={cn("md:w-40 font-bold", !course.type.startsWith("WSET") && "hidden")}>
               <Link href={courseLink}>Ver detalles</Link>
             </Button>
-            <Button className="md:w-40" disabled={studentRegistered || course.status !== CourseStatus.Inscribiendo}>
-              <Link href={`/cursos/inscripcion/${course.id}`} className="flex items-center font-bold">
-                {studentRegistered ? "Ya estas inscripto" : "Inscribite ahora"}
-                {studentRegistered && <CheckCircleIcon className="h-4 w-4 ml-2" />}
-              </Link>
-            </Button>
+            {
+              course.status === CourseStatus.Inscribiendo && (
+                <Button className="md:w-40" disabled={studentRegistered}>
+                  <Link href={`/cursos/inscripcion/${course.id}`} className="flex items-center font-bold">
+                    {studentRegistered ? "Ya estas inscripto" : "Inscribite ahora"}
+                    {studentRegistered && <CheckCircleIcon className="h-4 w-4 ml-2" />}
+                </Link>
+              </Button>
+            )}
             <ObserveButton courseId={course.id} userObserving={userObserving} />
           </div>
 

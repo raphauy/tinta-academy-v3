@@ -1,5 +1,5 @@
 import { WsetLevel2 } from "@/components/wset/wset-level-2";
-import { findCourseByDateSlug, getFirstCourseAnounced, getObservedCoursesIds, getStudentCoursesDAO } from "@/services/course-services";
+import { findCourseBySlug, getFirstCourseAnounced, getObservedCoursesIds, getStudentCoursesDAO } from "@/services/course-services";
 import { currentUser } from "@clerk/nextjs/server";
 
 import { Metadata } from "next";
@@ -20,17 +20,12 @@ export const metadata: Metadata = {
 }
 type Props = {
   params: {
-    dateSlug: string
+    slug: string
   }
 }
 export default async function WsetLevel1Page({ params }: Props) {
-  const dateSlug = params.dateSlug
-  let course
-  if (dateSlug === "sin-definir") {
-    course= await getFirstCourseAnounced("WSET_NIVEL_2")
-  } else {
-    course= await findCourseByDateSlug(dateSlug, "WSET_NIVEL_2")
-  }
+  const slug = params.slug
+  let course= await findCourseBySlug(slug)
 
   if (!course) return <div>Curso no encontrado</div>
 

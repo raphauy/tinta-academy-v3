@@ -1,17 +1,12 @@
 'use client'
 
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { CalendarDays, Clock, MapPin, Users, GraduationCap, Wine, DollarSign, User } from "lucide-react"
-import Image from "next/image"
-import Link from "next/link"
+import { AddDatesDialog, CourseDialog, DeleteCourseDialog } from "@/app/admin/courses/course-dialogs"
+import { Card, CardContent, CardTitle } from "@/components/ui/card"
 import { CourseDAO } from "@/services/course-services"
-import { EducatorDAO } from "@/services/educator-services"
-import { getCourseLink, getCourseTitle, getCourseTypeLabel, getLevel } from "@/lib/utils"
 import { format } from "date-fns"
 import { es } from "date-fns/locale"
-import { AddDatesDialog, CourseDialog, DeleteCourseDialog } from "@/app/admin/courses/course-dialogs"
+import { CalendarDays, Clock, DollarSign, MapPin, Users } from "lucide-react"
+import Image from "next/image"
 
 type Props = {
   course: CourseDAO
@@ -24,7 +19,7 @@ export function CourseCard({ course }: Props) {
     <Card className="w-full hover:shadow-lg transition-shadow duration-300">
       <CardContent className="pt-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4">
-          <CardTitle className="text-2xl mb-2 sm:mb-0">{getCourseTitle(course.type)}</CardTitle>
+          <CardTitle className="text-2xl mb-2 sm:mb-0">{course.title}</CardTitle>
           <div className="flex items-center bg-primary/10 rounded-full px-4 py-2">
             <CalendarDays className="h-6 w-6 mr-2 text-primary" />
             <span className="text-lg font-semibold">{formatedStartDate}</span>

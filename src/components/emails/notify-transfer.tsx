@@ -1,4 +1,5 @@
 import { BankDataDAO } from "@/services/bankdata-services";
+import { CouponDAO } from "@/services/coupon-services";
 import { Body, Column, Container, Head, Heading, Html, Img, Link, Preview, Row, Section, Tailwind, Text } from "@react-email/components";
 
 interface VercelInviteUserEmailProps {
@@ -10,9 +11,10 @@ interface VercelInviteUserEmailProps {
   paymentMethod: string
   comment: string
   orderNumber: string
+  coupon: CouponDAO | null
 }
 
-export default function NotifyTransferEmail({ buyerName, buyerEmail, courseName, paymentAmount, paymentCurrency, paymentMethod, comment, orderNumber }: VercelInviteUserEmailProps) {
+export default function NotifyTransferEmail({ buyerName, buyerEmail, courseName, paymentAmount, paymentCurrency, paymentMethod, comment, orderNumber, coupon }: VercelInviteUserEmailProps) {
 
   const baseUrl = process.env.APP_URL
 
@@ -51,6 +53,11 @@ export default function NotifyTransferEmail({ buyerName, buyerEmail, courseName,
             <Text className="text-black text-[20px] leading-[24px] text-center mt-10 mb-10">
               Monto: <strong>{paymentAmount} {paymentCurrency}</strong>
             </Text>
+            {coupon && (
+              <Text className="text-black text-[14px] leading-[24px] text-center mt-10 mb-5">
+                Cupón: <strong>{coupon.code}</strong> (Descuento: {coupon.discount}%)
+              </Text>
+            )}
             <Text className="text-black text-[14px] leading-[24px] text-center mt-10 mb-5">
                 Banco: <strong>{comment}</strong>
             </Text>

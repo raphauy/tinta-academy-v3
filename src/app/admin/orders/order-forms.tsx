@@ -30,7 +30,7 @@ export function OrderForm({ id, closeDialog }: Props) {
       if (id) {
         await updateOrderAction(id, data)
       } else {
-        await createOrderAction(data.courseId, data.studentId, data.paymentMethod)
+        await createOrderAction(data.courseId, data.studentId, data.paymentMethod, data.couponId)
       }
       toast({ title: id ? "Order updated" : "Order created" })
       closeDialog()
@@ -45,7 +45,11 @@ export function OrderForm({ id, closeDialog }: Props) {
     if (id) {
       getOrderDAOAction(id).then((data) => {
         if (data) {
-          form.reset(data)
+          form.setValue("couponId", data.couponId || undefined)
+          form.setValue("email", data.email)
+          form.setValue("paymentMethod", data.paymentMethod)
+          form.setValue("courseId", data.courseId)
+          form.setValue("studentId", data.studentId)          
         }
         Object.keys(form.getValues()).forEach((key: any) => {
           if (form.getValues(key) === null) {

@@ -5,20 +5,21 @@ import { createOrderAction } from "@/app/admin/orders/order-actions"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { toast } from "@/hooks/use-toast"
-import { cn, getCourseDateSlug, getCourseTitle } from "@/lib/utils"
+import { cn } from "@/lib/utils"
 import { BankDataDAO } from "@/services/bankdata-services"
+import { CouponDAO } from "@/services/coupon-services"
 import { CourseDAO } from "@/services/course-services"
 import { OrderDAO } from "@/services/order-services"
 import { useUser } from "@clerk/nextjs"
 import { PaymentMethod } from "@prisma/client"
 import { CheckIcon, Loader } from 'lucide-react'
+import Link from "next/link"
 import { useParams, useSearchParams } from "next/navigation"
 import { useEffect, useState } from 'react'
 import { MarkAsPaidForm } from "./bank-form-and-dialog"
 import MpCallback from "./mp-callback"
 import Step2Box from "./step-2-box"
 import { StudentForm } from "./student-forms"
-import Link from "next/link"
 
 type Props = {
   bankData: BankDataDAO[]
@@ -27,6 +28,7 @@ type Props = {
 
 export function MultiStepForm({ bankData, initialOrder }: Props) {
   const [course, setCourse] = useState<CourseDAO | null>(null)
+  const [coupon, setCoupon] = useState<CouponDAO | null>(null)
   const [studentId, setStudentId] = useState<string | undefined>(undefined)
   const [order, setOrder] = useState<OrderDAO | null>(initialOrder)
   const [step, setStep] = useState(1)
@@ -81,7 +83,7 @@ export function MultiStepForm({ bankData, initialOrder }: Props) {
     }
     console.log("Creating order with studentId", studentId)
     setLoading(true)
-    createOrderAction(course.id, studentId, paymentMethod)
+    createOrderAction(course.id, studentId, paymentMethod, coupon?.id)
     .then((order) => {
       setOrder(order)      
       setStep(3)
@@ -133,7 +135,7 @@ export function MultiStepForm({ bankData, initialOrder }: Props) {
   return (
     <Card className="w-[600px]">
       <CardHeader>
-        <CardTitle className="text-2xl font-bold">{course && getCourseTitle(course.type) + " (" + getCourseDateSlug(course) + ")"}</CardTitle>
+        <CardTitle className="text-2xl font-bold">{course && course.title}</CardTitle>
         <CardDescription>Completa los siguientes pasos para inscribirte en el curso</CardDescription>
       </CardHeader>
       <CardContent>
@@ -176,7 +178,7 @@ export function MultiStepForm({ bankData, initialOrder }: Props) {
             </div>
           )}
           {step === 2 && course &&  (
-            <Step2Box initialPaymentMethod={paymentMethod} handleRadioChange={handleRadioChange} bankData={bankData} course={course} />
+            <Step2Box initialPaymentMethod={paymentMethod} handleRadioChange={handleRadioChange} bankData={bankData} course={course} onCouponApplied={setCoupon} />
           )}
           {step === 3 && order && paymentMethod === "TransferenciaBancaria" && (
             <MarkAsPaidForm orderId={order.id} notifyStep1Complete={notifyStepComplete} />
