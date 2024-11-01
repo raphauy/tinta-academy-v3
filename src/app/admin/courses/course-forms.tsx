@@ -108,13 +108,17 @@ export function CourseForm({ id, closeDialog }: Props) {
     }
   }, [form, id])
 
-  const watchTitle= form.watch("title")
-  // generate slug from title
-  useEffect(() => {
-    if (watchTitle) {
-      form.setValue("slug", generateSlug(watchTitle))
-    }
-  }, [watchTitle, form])
+  function generateSlugFromTitle() {
+    const title= form.getValues("title")
+    let slug= generateSlug(title)
+    checkSlugAction(slug, id)
+    .then((exists) => {
+      if (exists) {
+        slug= slug + "-1"
+      }
+      form.setValue("slug", slug)
+    })
+  }
 
   return (
     <div className="p-4 bg-white rounded-md">
@@ -188,20 +192,23 @@ export function CourseForm({ id, closeDialog }: Props) {
               )}
             />
 
-            <FormField
-              control={form.control}
-              name="slug"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Slug:</FormLabel>
-                  <FormControl>
-                    <Input placeholder="slug" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
+              <FormField
+                control={form.control}
+                name="slug"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Slug:</FormLabel>
+                    <div className="flex items-center gap-2">
+                      <FormControl>
+                        <Input placeholder="slug" {...field} />
+                      </FormControl>
+                      <Button onClick={generateSlugFromTitle} type="button">Generar slug</Button>
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
           
 
           <div className="w-full grid grid-cols-2 gap-4">
