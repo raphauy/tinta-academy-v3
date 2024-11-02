@@ -7,6 +7,8 @@ import { format } from "date-fns"
 import { es } from "date-fns/locale"
 import { CalendarDays, Clock, DollarSign, MapPin, Users } from "lucide-react"
 import Image from "next/image"
+import { Badge } from "../ui/badge"
+import { CourseStatus } from "@prisma/client"
 
 type Props = {
   course: CourseDAO
@@ -19,7 +21,10 @@ export function CourseCard({ course }: Props) {
     <Card className="w-full hover:shadow-lg transition-shadow duration-300">
       <CardContent className="pt-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4">
-          <CardTitle className="text-2xl mb-2 sm:mb-0">{course.title}</CardTitle>
+          <CardTitle className="mb-2 sm:mb-0">            
+            <p className="text-2xl">{course.title}</p>
+            <Badge variant="course">{course.status}</Badge>
+          </CardTitle>
           <div className="flex items-center bg-primary/10 rounded-full px-4 py-2">
             <CalendarDays className="h-6 w-6 mr-2 text-primary" />
             <span className="text-lg font-semibold">{formatedStartDate}</span>
