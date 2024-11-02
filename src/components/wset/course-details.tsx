@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
 import { CourseDAO } from "@/services/course-services"
+import { CourseStatus } from "@prisma/client"
 import { addHours, format, parse } from "date-fns"
 import { es } from "date-fns/locale"
 import { CalendarDays, CheckCircleIcon, Clock, GraduationCap, MapPin, Users } from "lucide-react"
@@ -127,15 +128,19 @@ export function CourseDetails({ course, studentRegistered, userObserving }: Prop
       </Card>
 
       <div className="text-center mb-8">
-        <Button size="lg" className="font-bold" disabled={studentRegistered}>
-          <Link href={`/cursos/inscripcion/${course.id}`} className="flex items-center">
-            {studentRegistered ? "Ya estas inscripto" : "Inscribite ahora"}
-            {studentRegistered && <CheckCircleIcon className="h-4 w-4 ml-2" />}
-          </Link>
-        </Button>
-        <p className={cn("mt-2 text-sm text-muted-foreground", studentRegistered && "hidden")}>
-          Para reservar tu lugar, hacé clic acá arriba y completa tus datos.
-        </p>
+      { course.status === CourseStatus.Inscribiendo && (
+        <>
+          <Button size="lg" className="font-bold" disabled={studentRegistered}>
+            <Link href={`/cursos/inscripcion/${course.id}`} className="flex items-center">
+              {studentRegistered ? "Ya estas inscripto" : "Inscribite ahora"}
+              {studentRegistered && <CheckCircleIcon className="h-4 w-4 ml-2" />}
+            </Link>
+          </Button>
+          <p className={cn("mt-2 text-sm text-muted-foreground", studentRegistered && "hidden")}>
+            Para reservar tu lugar, hacé clic acá arriba y completa tus datos.
+          </p>
+        </>
+        )}
       </div>
 
       <div className="text-center mb-8">
