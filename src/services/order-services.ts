@@ -64,7 +64,7 @@ export async function createOrder(data: OrderFormValues) {
   const created = await prisma.order.create({
     data: {
       ...data,
-      status: "Pending",
+      status: OrderStatus.Pending,
     },
     include: {
       course: true,

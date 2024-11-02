@@ -11,7 +11,7 @@ import { CouponDAO } from "@/services/coupon-services"
 import { CourseDAO } from "@/services/course-services"
 import { OrderDAO } from "@/services/order-services"
 import { useUser } from "@clerk/nextjs"
-import { PaymentMethod } from "@prisma/client"
+import { CourseType, PaymentMethod } from "@prisma/client"
 import { CheckIcon, Loader } from 'lucide-react'
 import Link from "next/link"
 import { useParams, useSearchParams } from "next/navigation"
@@ -55,7 +55,12 @@ export function MultiStepForm({ bankData, initialOrder }: Props) {
 
     setLoading(true)
     getCourseDAOAction(courseId)
-    .then(setCourse)
+    .then(data => {
+      setCourse(data)
+      if (data?.priceUSD === 0) {
+        setPaymentMethod("Gratuito")
+      }
+    })
     .finally(() => setLoading(false))
   }, [courseId])
 
@@ -118,7 +123,7 @@ export function MultiStepForm({ bankData, initialOrder }: Props) {
     { number: 3, title: 'Confirmación' },
   ]
 
-  if (order?.status === "Paid" || order?.status === "PaymentSent") {
+  if (order?.status === "Paid" || order?.status === "PaymentSent" || (step === 3 && paymentMethod === "Gratuito")) {
     return (
       <div className="text-center space-y-4">
         <CheckIcon className="w-16 h-16 mx-auto text-green-500" />
@@ -131,6 +136,9 @@ export function MultiStepForm({ bankData, initialOrder }: Props) {
       </div>
     )
   }
+
+  const courseIsFree= course && course.priceUSD && course.priceUSD > 0 ? false : true
+  const courseLabel= course?.type === CourseType.TALLER ? "El Taller" : course?.type === CourseType.CATA ? "La Cata" : "El Curso"
 
   return (
     <Card className="w-[600px]">
@@ -177,8 +185,11 @@ export function MultiStepForm({ bankData, initialOrder }: Props) {
               { courseId && <StudentForm courseId={courseId} id={studentId} notifyStep1Complete={notifyStepComplete}/> }
             </div>
           )}
-          {step === 2 && course &&  (
+          {step === 2 && course && !courseIsFree && (
             <Step2Box initialPaymentMethod={paymentMethod} handleRadioChange={handleRadioChange} bankData={bankData} course={course} onCouponApplied={setCoupon} />
+          )}
+          {step === 2 && course && courseIsFree && (
+            <p className="text-center font-bold border p-4 rounded-md">{courseLabel} es gratis</p>
           )}
           {step === 3 && order && paymentMethod === "TransferenciaBancaria" && (
             <MarkAsPaidForm orderId={order.id} notifyStep1Complete={notifyStepComplete} />
@@ -211,7 +222,8 @@ export function MultiStepForm({ bankData, initialOrder }: Props) {
               className={cn("w-32", (step === 1 || (step === 3 && paymentMethod === "TransferenciaBancaria")) && "hidden")}
               onClick={handleNext} 
               disabled={
-                (step === 2 && !paymentMethod)
+                ((step === 2 && !paymentMethod) && !courseIsFree)
+                
             }>
               {loading && <Loader className="w-4 h-4 mr-2 animate-spin" />}
               <p>Siguiente</p>

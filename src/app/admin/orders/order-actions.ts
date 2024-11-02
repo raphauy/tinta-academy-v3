@@ -87,6 +87,10 @@ export async function createOrderAction(courseId: string, studentId: string, pay
         }
     }
 
+    if (order.paymentMethod === PaymentMethod.Gratuito) {
+        await processOrderConfirmation(order.id)
+    }
+
     return order
 }
 
