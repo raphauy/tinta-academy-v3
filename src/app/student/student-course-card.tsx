@@ -65,9 +65,13 @@ export function StudentCourseCard({ course, order }: Props) {
           </div>
 
           <div className="flex items-center gap-2">
-            <Badge className="rounded-full" variant="outline">
-              Estado: {getOrderStatusLabel(order?.status)}
-            </Badge>
+            {
+              paymentMethod !== "Gratuito" && (
+                <Badge className="rounded-full" variant="outline">
+                  Estado: {getOrderStatusLabel(order?.status)}
+                </Badge>
+              )
+            }
             <Badge className="rounded-full">{paymentMethod}</Badge>
           </div>
 

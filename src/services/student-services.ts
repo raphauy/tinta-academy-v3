@@ -98,3 +98,18 @@ export async function deleteStudent(id: string) {
   return deleted
 }
 
+export async function getCourseStudents(courseId: string): Promise<StudentDAO[]> {
+  const students = await prisma.course.findUnique({
+    where: { 
+      id: courseId 
+    },
+    include: { 
+      orders: {
+        include: {
+          student: true
+        }
+      }
+    }
+  })
+  return students?.orders.map((order) => order.student) as StudentDAO[]
+}

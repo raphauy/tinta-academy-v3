@@ -7,8 +7,8 @@ import { format } from "date-fns"
 import { es } from "date-fns/locale"
 import { CalendarDays, Clock, DollarSign, MapPin, Users } from "lucide-react"
 import Image from "next/image"
-import { Badge } from "../ui/badge"
-import { CourseStatus } from "@prisma/client"
+import { Badge } from "../../../components/ui/badge"
+import StudentsDialog from "./students-dialog"
 
 type Props = {
   course: CourseDAO
@@ -64,6 +64,8 @@ export function CourseCard({ course }: Props) {
               <p className="text-sm text-muted-foreground">{course.educator.title}</p>
             </div>
           </div>
+
+          <StudentsDialog courseId={course.id} />
 
           <div className="flex items-center gap-2">
             <AddDatesDialog id={course.id} initialDates={course.classDates} initialStartTime={course.startTime} />

@@ -1,8 +1,6 @@
+import { CourseCard } from "@/app/admin/courses/course-card"
 import { getCoursesDAO } from "@/services/course-services"
 import { CourseDialog } from "./course-dialogs"
-import { DataTable } from "./course-table"
-import { columns } from "./course-columns"
-import { CourseCard } from "@/components/wset/course-card"
 
 export default async function CoursePage() {
   

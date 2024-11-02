@@ -2,6 +2,7 @@
   
 import { revalidatePath } from "next/cache"
 import { CourseDAO, CourseFormValues, createCourse, updateCourse, getCourseDAO, deleteCourse, setClassDates, observeCourse, removeCourseObserver, checkSlug } from "@/services/course-services"
+import { getCourseStudents, StudentDAO } from "@/services/student-services"
 
 export async function getCourseDAOAction(id: string): Promise<CourseDAO | null> {
     return getCourseDAO(id)
@@ -59,4 +60,8 @@ export async function removeCourseObserverAction(clerkUserId: string, courseId: 
 
 export async function checkSlugAction(slug: string, courseId?: string): Promise<boolean> {
     return await checkSlug(slug, courseId)
+}
+
+export async function getCourseStudentsAction(courseId: string): Promise<StudentDAO[]> {
+    return await getCourseStudents(courseId)
 }
