@@ -1,29 +1,44 @@
 import { CourseDetails } from "@/components/wset/course-details";
 import { WsetLevel1 } from "@/components/wset/wset-level-1";
 import { WsetLevel2 } from "@/components/wset/wset-level-2";
-import { CourseDAO, findCourseBySlug, getFirstCourseAnounced, getObservedCoursesIds, getStudentCoursesDAO } from "@/services/course-services";
+import { findCourseBySlug, getObservedCoursesIds, getStudentCoursesDAO } from "@/services/course-services";
 import { currentUser } from "@clerk/nextjs/server";
 import { Metadata } from "next";
 
-export const metadata: Metadata = {
-  title: 'WSET Nivel 1',
-  description: 'WSET Nivel 1 Cualificación en Vinos',
-  openGraph: {
-    title: 'WSET Nivel 1',
-    description: 'WSET Nivel 1 Cualificación en Vinos',
-    images: ['/Card_WSET_1.jpg'],
-  },
-  twitter: {
-    title: 'WSET Nivel 1',
-    description: 'WSET Nivel 1 Cualificación en Vinos',
-    images: ['/Card_WSET_1.jpg'],
-  }
-}
 type Props = {
   params: {
     slug: string
   }
 }
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const course = await findCourseBySlug(params.slug)
+  
+  if (!course) {
+    return {
+      title: 'Curso no encontrado',
+      description: 'El curso que buscas no existe'
+    }
+  }
+
+  const imageUrl = course.type === "WSET_NIVEL_1" ? "/Card_WSET_1.jpg" : "/Card_WSET_2.jpg"
+
+  return {
+    title: course.title,
+    description: course.description,
+    openGraph: {
+      title: course.title,
+      description: course.description ?? "",
+      images: [imageUrl],
+    },
+    twitter: {
+      title: course.title,
+      description: course.description ?? "",
+      images: [imageUrl],
+    }
+  }
+}
+
 export default async function WsetLevel1Page({ params }: Props) {
   const slug = params.slug
   let course= await findCourseBySlug(slug)
