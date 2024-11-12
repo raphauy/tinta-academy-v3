@@ -22,18 +22,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   const imageUrl = course.type === "WSET_NIVEL_1" ? "/Card_WSET_1.jpg" : "/Card_WSET_2.jpg"
+  const description = course.type === "WSET_NIVEL_1" ? "WSET Nivel 1 Cualificación en Vinos" : course.type === "WSET_NIVEL_2" ? "WSET Nivel 2 Cualificación en Vinos" : course.description ?? ""
 
   return {
     title: course.title,
     description: course.description,
     openGraph: {
       title: course.title,
-      description: course.description ?? "",
+      description,
       images: [imageUrl],
     },
     twitter: {
       title: course.title,
-      description: course.description ?? "",
+      description,
       images: [imageUrl],
     }
   }
