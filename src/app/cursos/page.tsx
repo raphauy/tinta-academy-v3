@@ -1,4 +1,4 @@
-import { getCoursesDAO, getObservedCoursesIds, getStudentCoursesDAO } from "@/services/course-services"
+import { getActiveCoursesDAO, getObservedCoursesIds, getStudentCoursesDAO } from "@/services/course-services"
 import { currentUser } from "@clerk/nextjs/server"
 import { WsetCard } from "./wset-card"
 
@@ -7,7 +7,7 @@ export default async function Cursos() {
   const user= await currentUser()
   const studentId = user?.publicMetadata?.studentId as string | undefined
 
-  const courses = await getCoursesDAO()
+  const courses = await getActiveCoursesDAO()
   const studentCourses = await getStudentCoursesDAO(studentId)
   const observedCoursesIds = await getObservedCoursesIds(user?.id as string)
   console.log("userId: ", user?.id)

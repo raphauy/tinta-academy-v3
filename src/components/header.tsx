@@ -13,6 +13,7 @@ import { GraduationCap, Menu } from 'lucide-react'
 import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs'
 import { Button } from './ui/button'
 import { HeaderMenu } from './header-menu'
+import Logo from './logo'
 
 export default function Header() {
   return (
@@ -21,10 +22,7 @@ export default function Header() {
 
         <ul className='hidden items-center gap-14 text-sm font-medium md:flex'>
           <li className='font-serif text-lg font-bold'>
-            <Link href="/" className="flex items-center gap-2 font-semibold">
-                <GraduationCap className="h-6 w-6" />
-                <span className='text-xl font-bold whitespace-nowrap'>Tinta Academy</span>
-            </Link>
+            <Logo />
           </li>
         </ul>
 
