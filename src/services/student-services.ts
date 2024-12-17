@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/db"
 import * as z from "zod"
 import { UserDAO } from "./user-services"
+import { OrderStatus } from "@prisma/client"
 
 export type StudentDAO = {
 	id: string
@@ -107,6 +108,9 @@ export async function getCourseStudents(courseId: string): Promise<StudentDAO[]>
       orders: {
         include: {
           student: true
+        },
+        where: {
+          status: OrderStatus.Paid
         }
       }
     }
