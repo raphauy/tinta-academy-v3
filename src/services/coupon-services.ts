@@ -34,7 +34,7 @@ export type CouponFormValues = z.infer<typeof couponSchema>
 export async function getCouponsDAO() {
   const found = await prisma.coupon.findMany({
     orderBy: {
-      id: 'asc'
+      id: 'desc'
     },
     include: {
       course: true

@@ -45,7 +45,7 @@ export type OrderFormValues = z.infer<typeof orderSchema>
 export async function getOrdersDAO() {
   const found = await prisma.order.findMany({
     orderBy: {
-      id: 'asc'
+      id: 'desc'
     },
   })
   return found as OrderDAO[]
