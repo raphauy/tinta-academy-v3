@@ -55,7 +55,7 @@ export function WsetCard({ course, studentRegistered, userObserving }: Props) {
           <CardTitle className="text-xl line-clamp-1">{course.title}</CardTitle>
           <div className="flex items-center bg-primary/10 rounded-full px-3 py-1 text-sm">
             <CalendarDays className="h-4 w-4 mr-1 text-primary" />
-            <span className="font-medium">{formatedStartDate}</span>
+            <span className="font-medium whitespace-nowrap">{formatedStartDate}</span>
           </div>
         </div>
         
