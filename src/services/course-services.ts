@@ -70,6 +70,9 @@ export async function getActiveCoursesDAO() {
     },
     include: {
       educator: true,
+    },
+    orderBy: {
+      startTime: 'asc'
     }
   })
   return found as CourseDAO[]
