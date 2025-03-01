@@ -70,12 +70,25 @@ export async function getActiveCoursesDAO() {
     },
     include: {
       educator: true,
-    },
-    orderBy: {
-      startTime: 'asc'
     }
   })
-  return found as CourseDAO[]
+  
+  // Ordenar los cursos por la primera fecha de clase si existe
+  const sorted = found.sort((a, b) => {
+    // Si ambos tienen fechas de clase, comparar la primera fecha
+    if (a.classDates.length > 0 && b.classDates.length > 0) {
+      return new Date(a.classDates[0]).getTime() - new Date(b.classDates[0]).getTime();
+    }
+    
+    // Si solo uno tiene fechas de clase, ese va primero
+    if (a.classDates.length > 0) return -1;
+    if (b.classDates.length > 0) return 1;
+    
+    // Si ninguno tiene fechas de clase, ordenar por fecha de creación
+    return a.createdAt.getTime() - b.createdAt.getTime();
+  });
+  
+  return sorted as CourseDAO[];
 }
 
 export async function getStudentCoursesDAO(studentId: string | undefined) {
