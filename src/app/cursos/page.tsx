@@ -15,7 +15,7 @@ export default async function Cursos() {
   return (
     <div className="mt-10 mx-auto max-w-6xl px-4">
         <h1 className="text-2xl font-bold mb-10 text-center">Próximos cursos</h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
           {courses.map((course) => {
             const studentRegistered = studentCourses.some(sc => sc.id === course.id)
             const userObserving = observedCoursesIds.some(id => id === course.id)
