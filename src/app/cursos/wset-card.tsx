@@ -23,7 +23,7 @@ export function WsetCard({ course, studentRegistered, userObserving }: Props) {
   const courseLevel = getLevel(course.type)  
   const shortDescription = courseLevel === 0 ? course.description : shortDescriptions[courseLevel - 1]
   const startDate = course.classDates[0]
-  const formatedStartDate = startDate ? format(startDate, 'PPP', { locale: es }) : "Sin definir"
+  const formatedStartDate = startDate ? format(startDate, 'd \'de\' MMMM yyyy', { locale: es }) : "Sin definir"
   const courseLink = getCourseLink(course)
   const inscriptionDateLimit = course.registrationDeadline
   const isOutdated = inscriptionDateLimit && isAfter(new Date(), endOfDay(inscriptionDateLimit)) ? true : false
