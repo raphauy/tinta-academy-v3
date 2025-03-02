@@ -21,7 +21,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     }
   }
 
-  const imageUrl = course.type === "WSET_NIVEL_1" ? "/Card_WSET_1.jpg" : "/Card_WSET_2.jpg"
   const description = 
     course.type === "WSET_NIVEL_1" ? "Curso WSET Nivel 1 en Vinos: Introducción práctica al mundo del vino. Aprende estilos, técnicas de almacenamiento, servicio y maridaje para ofrecer recomendaciones informadas." : 
     course.type === "WSET_NIVEL_2" ? "Curso WSET Nivel 2: Obtén conocimientos intermedios sobre el vino, variedades de uva, regiones clave y factores que afectan estilo y calidad." : 
@@ -33,12 +32,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title: course.title,
       description,
-      images: [imageUrl],
+      images: [course.imageUrl || "/course_placeholder.jpg"],
     },
     twitter: {
       title: course.title,
       description,
-      images: [imageUrl],
+      images: [course.imageUrl || "/course_placeholder.jpg"],
     }
   }
 }
