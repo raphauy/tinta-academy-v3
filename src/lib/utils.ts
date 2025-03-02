@@ -21,6 +21,8 @@ export function getCourseTypeLabel(type: CourseType | string) {
       return "Taller"
     case CourseType.CATA:
       return "Cata"
+    case CourseType.CURSO:
+      return "Curso"
     default:
       return "Otro"
   }

@@ -51,7 +51,7 @@ export type CourseFormValues = z.infer<typeof courseSchema>
 export async function getCoursesDAO() {
   const found = await prisma.course.findMany({
     orderBy: {
-      id: 'asc'
+      createdAt: 'desc'
     },
     include: {
       educator: true,

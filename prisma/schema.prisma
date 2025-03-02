@@ -49,6 +49,7 @@ enum CourseType {
   WSET_NIVEL_3
   TALLER
   CATA
+  CURSO
 }
 
 enum CourseStatus {
