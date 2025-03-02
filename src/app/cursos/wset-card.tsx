@@ -2,16 +2,15 @@
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { cn, getCourseLink, getCourseTypeLabel, getLevel } from "@/lib/utils"
+import { CardTitle } from "@/components/ui/card"
+import { getCourseLink, getCourseTypeLabel, getLevel } from "@/lib/utils"
 import { CourseDAO } from "@/services/course-services"
 import { CourseStatus } from "@prisma/client"
 import { endOfDay, format, isAfter } from "date-fns"
 import { es } from "date-fns/locale"
-import { CalendarDays, CheckCircleIcon, Clock, DollarSign, MapPin, Users, Eye } from "lucide-react"
+import { CalendarDays, CheckCircleIcon, Clock, DollarSign, MapPin, Users } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
-import { ObserveButton } from "./observe-button"
 
 type Props = {
   course: CourseDAO

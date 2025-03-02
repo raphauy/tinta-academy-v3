@@ -1,6 +1,5 @@
 'use client'
 
-import { ObserveButton } from "@/app/cursos/observe-button"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
@@ -8,7 +7,7 @@ import { CourseDAO } from "@/services/course-services"
 import { CourseStatus } from "@prisma/client"
 import { addHours, format, parse } from "date-fns"
 import { es } from "date-fns/locale"
-import { CalendarDays, CheckCircleIcon, Clock, GraduationCap, MapPin, Users } from "lucide-react"
+import { CalendarDays, CheckCircleIcon, Clock, MapPin, Users } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 
@@ -143,9 +142,9 @@ export function CourseDetails({ course, studentRegistered, userObserving }: Prop
         )}
       </div>
 
-      <div className="text-center mb-8">
+      {/* <div className="text-center mb-8">
         <ObserveButton courseId={course.id} userObserving={userObserving} />
-      </div>
+      </div> */}
 
       <div className="text-center">
         <p className="text-sm text-muted-foreground">

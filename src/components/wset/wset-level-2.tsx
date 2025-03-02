@@ -1,6 +1,5 @@
 'use client'
 
-import { ObserveButton } from "@/app/cursos/observe-button"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
@@ -198,9 +197,9 @@ export function WsetLevel2({ course, studentRegistered, userObserving }: Props) 
         )}
       </div>
 
-      <div className="text-center mb-8">
+      {/* <div className="text-center mb-8">
         <ObserveButton courseId={course.id} userObserving={userObserving} />
-      </div>
+      </div> */}
 
       <Card className="mb-8">
         <CardHeader>

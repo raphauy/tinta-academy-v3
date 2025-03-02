@@ -226,8 +226,7 @@ export function CourseForm({ id, closeDialog }: Props) {
               )}
             />
 
-            {type.startsWith("WSET") && (
-              <FormField
+            <FormField
               control={form.control}
               name="classDuration"
               render={({ field }) => (
@@ -240,7 +239,6 @@ export function CourseForm({ id, closeDialog }: Props) {
                 </FormItem>
               )}
             />            
-            )}
                     
           </div>          
           
