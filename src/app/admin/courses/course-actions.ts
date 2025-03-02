@@ -1,7 +1,7 @@
 "use server"
   
 import { revalidatePath } from "next/cache"
-import { CourseDAO, CourseFormValues, createCourse, updateCourse, getCourseDAO, deleteCourse, setClassDates, observeCourse, removeCourseObserver, checkSlug } from "@/services/course-services"
+import { CourseDAO, CourseFormValues, createCourse, updateCourse, getCourseDAO, deleteCourse, setClassDates, observeCourse, removeCourseObserver, checkSlug, setCourseImage } from "@/services/course-services"
 import { getCourseStudents, StudentDAO } from "@/services/student-services"
 
 export async function getCourseDAOAction(id: string): Promise<CourseDAO | null> {
@@ -64,4 +64,13 @@ export async function checkSlugAction(slug: string, courseId?: string): Promise<
 
 export async function getCourseStudentsAction(courseId: string): Promise<StudentDAO[]> {
     return await getCourseStudents(courseId)
+}
+
+export async function setCourseImageAction(courseId: string, imageUrl: string): Promise<boolean> {
+    const updated= await setCourseImage(courseId, imageUrl)
+    if (!updated) {
+        throw new Error("Error setting course image")
+    }
+    revalidatePath("/admin/courses")
+    return true
 }

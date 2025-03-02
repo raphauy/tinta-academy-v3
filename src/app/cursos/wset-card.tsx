@@ -32,15 +32,13 @@ export function WsetCard({ course, studentRegistered, userObserving }: Props) {
       <div className="relative">
         <div className="absolute top-4 right-4 z-10">
           <Badge variant="secondary" className="font-semibold border border-muted-foreground">
-            {
-              courseLevel === 0 ? getCourseTypeLabel(course.type) : "Nivel " + getLevel(course.type)
-            }
+            { getCourseTypeLabel(course.type) }
           </Badge>
         </div>
         <div className="relative w-full h-52">
           <Link href={courseLink}>
             <Image
-              src={course.type.startsWith("WSET") ? `/Card_WSET_${courseLevel}.jpg` : `/Card_${course.type}.jpg`}
+              src={course.imageUrl || "/course_placeholder.jpg"}
               alt="WSET course"
               fill
               className="object-cover transition-transform hover:scale-105"

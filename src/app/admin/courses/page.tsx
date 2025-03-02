@@ -4,7 +4,7 @@ import { CourseDialog } from "./course-dialogs"
 
 export default async function CoursePage() {
   
-  const data= await getCoursesDAO()
+  const data = await getCoursesDAO()
 
   return (
     <div className="w-full">      
@@ -17,10 +17,10 @@ export default async function CoursePage() {
         <DataTable columns={columns} data={data} subject="Course"/>      
       </div> */}
 
-      <div className="space-y-4">
-        {data.map((course) => {
-          return (<CourseCard key={course.id} course={course} />)
-        })}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {data.map((course) => (
+          <CourseCard key={course.id} course={course} />
+        ))}
       </div>
     </div>
   )

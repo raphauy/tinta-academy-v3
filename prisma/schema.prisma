@@ -75,6 +75,7 @@ model Course {
   examDate              DateTime?                          // gennext: show.column
   registrationDeadline  DateTime?                          // gennext: show.column
   description           String?
+  imageUrl              String? @default("/course_placeholder.jpg")
 
   educator              Educator @relation(fields: [educatorId], references: [id])
   educatorId            String

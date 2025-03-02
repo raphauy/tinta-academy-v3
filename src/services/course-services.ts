@@ -21,6 +21,7 @@ export type CourseDAO = {
 	examDate: Date | null | undefined
 	registrationDeadline: Date | null | undefined
 	description: string | null | undefined
+	imageUrl: string | null | undefined
 	educator: EducatorDAO
 	educatorId: string
 	createdAt: Date
@@ -375,4 +376,16 @@ export async function checkSlug(slug: string, courseId?: string) {
   }
   console.log("true")
   return true
+}
+
+export async function setCourseImage(courseId: string, imageUrl: string) {
+  const updated = await prisma.course.update({
+    where: {
+      id: courseId
+    },
+    data: {
+      imageUrl
+    }
+  })
+  return updated
 }
