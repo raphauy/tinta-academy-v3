@@ -13,6 +13,7 @@ import { ClerkProvider } from '@clerk/nextjs'
 import { Toaster } from '@/components/ui/toaster'
 import Script from 'next/script'
 import './globals.css'
+import { WhatsAppButton } from '@/components/WhatsAppButton'
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -63,30 +64,11 @@ export default function RootLayout({
             <main className='flex flex-col flex-1 mt-20 border-t border-b'>
               {children}
             </main>
+            <WhatsAppButton />
             <Footer />
             <Toaster />
           </Providers>
 
-          <Script id="chatwoot" strategy="afterInteractive">
-            {`
-              window.chatwootSettings = {"position":"right","type":"standard","launcherTitle":"Chatea con nosotros"};
-              
-              (function(d,t) {
-                var BASE_URL="https://agentes.agency-planner.com";
-                var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
-                g.src=BASE_URL+"/packs/js/sdk.js";
-                g.defer = true;
-                g.async = true;
-                s.parentNode.insertBefore(g,s);
-                g.onload=function(){
-                  window.chatwootSDK.run({
-                    websiteToken: 'H4NDi7ZCW1JGdVHfuWjeEbyg',
-                    baseUrl: BASE_URL
-                  })
-                }
-              })(document,"script");
-            `}
-          </Script>
 
         </body>
       </html>
