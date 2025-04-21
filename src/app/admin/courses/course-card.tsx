@@ -88,7 +88,7 @@ export function CourseCard({ course }: Props) {
       </CardContent>
       
       <CardFooter className="flex justify-between pt-2 pb-4">
-        <StudentsDialog courseId={course.id} />
+        <StudentsDialog courseId={course.id} courseSlug={course.slug} />
         
         <div className="flex items-center gap-2">
           <AddDatesDialog id={course.id} initialDates={course.classDates} initialStartTime={course.startTime} />
