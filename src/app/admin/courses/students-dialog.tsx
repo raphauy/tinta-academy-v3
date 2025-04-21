@@ -8,6 +8,7 @@ import { StudentDAO } from "@/services/student-services"
 import { useEffect, useState } from "react"
 import { getCourseStudentsAction } from "./course-actions"
 import { Button } from "@/components/ui/button"
+import { ScrollArea } from "@/components/ui/scroll-area"
 
 interface Props {
   courseId: string
@@ -44,22 +45,24 @@ function MainContent({ students }: { students: StudentDAO[] }) {
       <DialogHeader>
         <DialogTitle>Lista de Estudiantes</DialogTitle>
       </DialogHeader>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Nombre</TableHead>
-            <TableHead>Email</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {students.map((student) => (
-            <TableRow key={student.id}>
-              <TableCell className="font-medium">{student.firstName + " " + student.lastName}</TableCell>
-              <TableCell>{student.email}</TableCell>
+      <ScrollArea className="h-full max-h-[400px]">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Nombre</TableHead>
+              <TableHead>Email</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {students.map((student) => (
+              <TableRow key={student.id}>
+                <TableCell className="font-medium">{student.firstName + " " + student.lastName}</TableCell>
+                <TableCell>{student.email}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </ScrollArea>
     </DialogContent>
   )
 }
