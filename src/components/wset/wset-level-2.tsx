@@ -150,7 +150,7 @@ export function WsetLevel2({ course, studentRegistered, userObserving }: Props) 
           <ul className="list-disc pl-5 mt-2 space-y-2 text-muted-foreground">
             <li>Materiales de estudio: cuaderno de ejercicios WSET Nivel 2.</li>
             <li>Matrícula completa</li>
-            <li>Cata de una selección de vinos representativos</li>
+            <li>Cata de una selección de 40 vinos</li>
             <li>Examen final</li>
             <li>Certificación internacional WSET con Diploma Digital</li>
           </ul>
